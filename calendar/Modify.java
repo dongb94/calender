@@ -1,5 +1,7 @@
 package calendar;
 
-public class Modify {
+import javax.swing.JPanel;
+
+public class Modify extends JPanel{
 
 }
