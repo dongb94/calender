@@ -53,6 +53,7 @@ public class Main extends JFrame{
 		//set detail
 		Detail D = new Detail();
 		D.setSize((int)(width*0.3), (int)(height*0.80));
+		D.setLocation(700, 100);
 		
 		add(C);
 		add(T);
