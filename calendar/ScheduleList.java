@@ -1,5 +1,7 @@
 package calendar;
 
-public class ScheduleList {
+import javax.swing.JPanel;
+
+public class ScheduleList extends JPanel{
 
 }

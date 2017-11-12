@@ -1,5 +1,7 @@
 package calendar;
 
-public class Calendar {
+import javax.swing.JPanel;
+
+public class Calendar extends JPanel{
 
 }
