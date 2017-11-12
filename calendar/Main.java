@@ -52,7 +52,8 @@ public class Main extends JFrame{
 		thread.start();
 		//set detail
 		Detail D = new Detail();
-		D.setSize((int)(width*0.3), (int)(height*0.80));
+		D.setSize((int)(width*0.3) - 20, (int)(height*0.80));
+		D.setLocation((int)(width-(width*0.3)), (int)(height*0.17));
 		
 		add(C);
 		add(T);
