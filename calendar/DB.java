@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /*
 create table( day varchar(100), title varchar(100), contents varchar(100));
-Å×ÀÌºí »ı¼ºÇÏ´Â sql¹®
+í…Œì´ë¸” ìƒì„±í•˜ëŠ” sqlë¬¸
 */
 public class DB {
 	Schedule sch;
@@ -33,7 +33,7 @@ public class DB {
 		pst.setString(2, schedule.getTitle());
 		pst.setString(3, schedule.getContents());
 		int cnt = pst.executeUpdate();
-		return cnt;// ¸®ÅÏ°ª intÀÎ ÀÌÀ¯´Â Ãß°¡ µÇ¾úÀ»‹š cnt>0 ÀÌ»óÀÏ°æ¿ì¿¡ µğºñ¿¡ Ãß°¡°¡ ¼º°øµÊÀ» ¾Ë ¼ö ÀÖ´Ù.
+		return cnt;// ë¦¬í„´ê°’ intì¸ ì´ìœ ëŠ” ì¶”ê°€ ë˜ì—ˆì„ë–„ cnt>0 ì´ìƒì¼ê²½ìš°ì— ë””ë¹„ì— ì¶”ê°€ê°€ ì„±ê³µë¨ì„ ì•Œ ìˆ˜ ìˆë‹¤.
 	}
 
 	public ArrayList<Schedule> getDaySchedule() throws Exception {
