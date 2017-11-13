@@ -1,8 +1,7 @@
 package calendar;
 
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +18,7 @@ public class PanNorth extends JPanel{
 		this.uP = upperPanel;
 		this.today = uP.getToday();
 		Font font = uP.getDefaultFont();
+		setBackground(new Color(0,0,0,0));
 
 
 		btnYearBefore = new JButton("◀◀");

@@ -8,19 +8,20 @@ public class PanSouth extends JPanel{
     private CalendarPanel uP;
     //Sunday ~ Saturday
     private DayPanel[] dayNames = {
-            new DayPanel("일",new Color(255,0,0)),
+            new DayPanel("일",new Color(255,0,0,150)),
             new DayPanel("월"),
             new DayPanel("화"),
             new DayPanel("수"),
             new DayPanel("목"),
             new DayPanel("금"),
-            new DayPanel("토",new Color(0,0,255))
+            new DayPanel("토",new Color(0,0,255,150))
     };
     // day 1 ~ 28/29(Feb) 30/31 + blanks
     private DayPanel[] dayBlock = new DayPanel[42];
 
     //Constructor #Entry Point
     public PanSouth(CalendarPanel upperPanel){
+		setBackground(new Color(0,0,0,0));
         this.uP = upperPanel;
         this.setLayout(new GridLayout(7,7,3,3));
         gridInit();
@@ -48,6 +49,8 @@ public class PanSouth extends JPanel{
             if((i+blockCount)%7 == 0) dayBlock[i + blockCount].setForeground(new Color(255,0,0));
             //Saturday
             else if((i+blockCount)%7 == 6) dayBlock[i + blockCount].setForeground(new Color(0,0,255));
+            //other
+            else dayBlock[i + blockCount].setForeground(new Color(255,255,255));
             dayBlock[i + blockCount].setText(String.valueOf(i + 1));
         }
     }

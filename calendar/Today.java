@@ -13,6 +13,10 @@ package calendar;
  * 수정내용	쓰레드 수정 및 텍스트 중앙배치
  * 작성자		변동건
  * ****************************
+ * 수정일		2017.11.14 01:04
+ * 수정내용	setText 재정의
+ * 작성자		변동건
+ * ****************************
  */
 /**화면 오른쪽 상단 현재시간을 보여주는 클래스*/
 
@@ -29,6 +33,9 @@ public class Today extends JPanel implements Runnable{
 	Today(){
 		makeGUI();
 		updateText();
+	}
+	private void setText(){
+		
 	}
 	private void makeGUI(){
 		setBackground(new Color(0,0,0,0));
