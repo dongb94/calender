@@ -8,9 +8,10 @@ import java.util.*;
 
 public class Modify extends JPanel {
 
-	Schedule modified_schedule = new Schedule();
+	Schedule modified_schedule;
+	DB sender;
 
-	JTextField schedule_title = new JTextField(20);
+	JTextField schedule_title = new JTextField();
 
 	JComboBox duration_start_month;
 	JComboBox duration_start_date;
@@ -40,6 +41,7 @@ public class Modify extends JPanel {
 	String du_minute[] = new String[60];
 
 	String title;
+	String date;
 	String duration;
 	String content;
 	String start_mon;
@@ -50,9 +52,14 @@ public class Modify extends JPanel {
 	String start_minute;
 	String end_time;
 	String end_minute;
+	String year = "2017";
+
+	int send_count;
 
 	Modify() {
 		setLayout(null);
+		setBackground(Color.green);
+		setOpaque(true);
 
 		for (int i = 1; i < 13; i++)
 			du_mon[i - 1] = Integer.toString(i) + "월";
@@ -150,18 +157,86 @@ public class Modify extends JPanel {
 			end_minute = (String) duration_end_minute.getSelectedItem();
 			end_minute = end_minute.replace("분", "");
 
-			System.out.println(title);
-			System.out.print(start_mon+"월");
-			System.out.print(start_day+"일~");
-			System.out.print(end_mon+"월");
-			System.out.println(end_day+"일");
-			System.out.print(start_time+"시");
-			System.out.print(start_minute+"분~");
-			System.out.print(end_time+"시");
-			System.out.print(end_minute+"분");
-			System.out.println();
-			System.out.println(content);
+			int start_date = Integer.parseInt(start_mon + start_day);
+			int end_date = Integer.parseInt(end_mon + end_day);
+			int start_mon_int = Integer.parseInt(start_mon);
+			int end_mon_int = Integer.parseInt(end_mon);
+			int start_day_int = Integer.parseInt(start_day);
+			int end_day_int = Integer.parseInt(end_day);
+			int year_int = Integer.parseInt(year);
 
+			int mon_count = end_mon_int - start_mon_int;
+			int temp_mon = start_mon_int;
+			int temp_start_day = start_day_int;
+			
+			if (start_mon_int > end_mon_int) {
+
+			} // 기간 범위는 1년 한정 아닐시 DB작업 NO
+			else {
+				if (start_day_int == end_day_int && start_mon_int == end_mon_int) {
+					send_count = 1;
+				} else {
+					if (start_mon_int == end_mon_int)
+						send_count = end_day_int - start_day_int + 1;
+					else {
+						for(int i = 0; i< mon_count; i++){
+						if (start_mon_int == 1 || start_mon_int == 3 || start_mon_int == 5 || start_mon_int == 7
+								|| start_mon_int == 8 || start_mon_int == 10 || start_mon_int == 12) {
+							start_day_int = 31 - start_day_int + 1;
+						} else if (start_mon_int == 4 || start_mon_int == 6 || start_mon_int == 9
+								|| start_mon_int == 11) {
+							start_day_int = 30 - start_day_int + 1;
+						} else {
+							if (year_int % 4 == 0 && year_int % 100 != 0 || year_int % 400 == 0)
+								start_day_int = 29 - start_day_int + 1;
+							else
+								start_day_int = 28 - start_day_int + 1;
+						}
+						send_count = send_count + start_day_int;
+						start_day_int = 0;
+					}
+					}send_count = send_count + end_day_int;
+
+				}
+				start_day_int = temp_start_day;
+				start_mon_int = temp_mon;
+				while (send_count > 0) {
+					date = year + "." + start_mon.toString() + "." + start_day.toString();
+					modified_schedule = new Schedule(title, date, content);
+
+					try {
+						new DB(modified_schedule).addDaySchedule(modified_schedule);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+
+					start_day_int++;
+					if (year_int % 4 == 0 && year_int % 100 != 0 || year_int % 400 == 0) {
+						if (start_mon_int == 2 && start_day_int == 29) {
+							start_day_int = 1;
+							start_mon_int++;
+						}
+					} else {
+						if (start_mon_int == 2 && start_day_int == 28) {
+							start_day_int = 1;
+							start_mon_int++;
+						}
+					}
+					if ((start_mon_int == 4 || start_mon_int == 6 || start_mon_int == 9 || start_mon_int == 11)
+							&& start_day_int == 30) {
+						start_day_int = 1;
+						start_mon_int++;
+					}
+					if ((start_mon_int == 1 || start_mon_int == 3 || start_mon_int == 5 || start_mon_int == 7
+							|| start_mon_int == 8 || start_mon_int == 10 || start_mon_int == 12)
+							&& start_day_int == 31) {
+						start_day_int = 1;
+						start_mon_int++;
+					}
+					start_day_int++;
+					send_count--;
+				}
+			} // 기간 범위가 1년
 		}
 
 	}
