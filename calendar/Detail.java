@@ -21,8 +21,8 @@ public class Detail extends JPanel{
 	Detail() {
 		setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
-		add = new JButton("Ãß°¡");
-		delete = new JButton("»èÁ¦");
+		add = new JButton("ì¶”ê°€");
+		delete = new JButton("ì‚­ì œ");
 		scheduleList = new ScheduleList(this);
 		
 		size = new Dimension();
