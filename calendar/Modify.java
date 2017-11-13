@@ -10,6 +10,7 @@ public class Modify extends JPanel {
 
 	Schedule modified_schedule;
 	DB sender;
+	Detail d;
 
 	JTextField schedule_title = new JTextField();
 
@@ -56,9 +57,10 @@ public class Modify extends JPanel {
 
 	int send_count;
 
-	Modify() {
+	Modify(Detail d) {
+		this.d = d;
 		setLayout(null);
-		setBackground(Color.green);
+		setBackground(Color.orange);
 		setOpaque(true);
 
 		for (int i = 1; i < 13; i++)
@@ -121,7 +123,6 @@ public class Modify extends JPanel {
 
 		confirm_button.addActionListener(new ConfirmAction());
 
-		setVisible(true);
 	}
 
 	public Schedule modify_schedule() {
@@ -248,7 +249,10 @@ public class Modify extends JPanel {
 					start_day_int++;
 					send_count--;
 				}
+				
 			} // 기간 범위가 1년
+			
+			d.change("scheduleList");
 		}
 
 	}
