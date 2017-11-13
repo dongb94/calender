@@ -168,7 +168,7 @@ public class Modify extends JPanel {
 			int mon_count = end_mon_int - start_mon_int;
 			int temp_mon = start_mon_int;
 			int temp_start_day = start_day_int;
-			
+
 			if (start_mon_int > end_mon_int) {
 
 			} // 기간 범위는 1년 한정 아닐시 DB작업 NO
@@ -179,29 +179,41 @@ public class Modify extends JPanel {
 					if (start_mon_int == end_mon_int)
 						send_count = end_day_int - start_day_int + 1;
 					else {
-						for(int i = 0; i< mon_count; i++){
-						if (start_mon_int == 1 || start_mon_int == 3 || start_mon_int == 5 || start_mon_int == 7
-								|| start_mon_int == 8 || start_mon_int == 10 || start_mon_int == 12) {
-							start_day_int = 31 - start_day_int + 1;
-						} else if (start_mon_int == 4 || start_mon_int == 6 || start_mon_int == 9
-								|| start_mon_int == 11) {
-							start_day_int = 30 - start_day_int + 1;
-						} else {
-							if (year_int % 4 == 0 && year_int % 100 != 0 || year_int % 400 == 0)
-								start_day_int = 29 - start_day_int + 1;
-							else
-								start_day_int = 28 - start_day_int + 1;
+						for (int i = 0; i < mon_count; i++) {
+							if (start_mon_int == 1 || start_mon_int == 3 || start_mon_int == 5 || start_mon_int == 7
+									|| start_mon_int == 8 || start_mon_int == 10 || start_mon_int == 12) {
+								start_day_int = 31 - start_day_int + 1;
+							} else if (start_mon_int == 4 || start_mon_int == 6 || start_mon_int == 9
+									|| start_mon_int == 11) {
+								start_day_int = 30 - start_day_int + 1;
+							} else {
+								if (year_int % 4 == 0 && year_int % 100 != 0 || year_int % 400 == 0)
+									start_day_int = 29 - start_day_int + 1;
+								else
+									start_day_int = 28 - start_day_int + 1;
+							}
+							send_count = send_count + start_day_int;
+							start_day_int = 0;
 						}
-						send_count = send_count + start_day_int;
-						start_day_int = 0;
 					}
-					}send_count = send_count + end_day_int;
+					send_count = send_count + end_day_int;
 
 				}
 				start_day_int = temp_start_day;
 				start_mon_int = temp_mon;
+				if(Integer.parseInt(start_time) < 10)
+					start_time = "0"+start_time;
+				if(Integer.parseInt(start_minute) < 10)
+					start_minute = "0"+start_minute;
+				if(Integer.parseInt(end_time) < 10)
+					end_time = "0"+end_time;
+				if(Integer.parseInt(end_minute) < 10)
+					end_minute = "0"+end_minute;
+				
 				while (send_count > 0) {
-					date = year + "." + start_mon.toString() + "." + start_day.toString();
+					
+					date = year + "." + start_mon.toString() + "." + start_day.toString() + "." + start_time + ";"
+							+ start_minute + "." + end_time + ":" + end_minute;
 					modified_schedule = new Schedule(title, date, content);
 
 					try {
