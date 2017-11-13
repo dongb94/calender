@@ -20,12 +20,12 @@ public class PanNorth extends JPanel{
         this.today = uP.getToday();
         Font font = uP.getDefaultFont();
 
-        btnBefore = new JButton("¢¸");
-        textYear = new JTextField(today.get(Calendar.YEAR)+"³â");
+        btnBefore = new JButton("â—€");
+        textYear = new JTextField(today.get(Calendar.YEAR)+"ë…„");
         textYear.setEnabled(false);
-        textMonth = new JTextField(today.get(Calendar.MONTH)+1+"¿ù", 3);
+        textMonth = new JTextField(today.get(Calendar.MONTH)+1+"ì›”", 3);
         textMonth.setEnabled(false);
-        btnAfter = new JButton("¢º");
+        btnAfter = new JButton("â–¶");
 
         textYear.setFont(font);
         textMonth.setFont(font);
@@ -70,9 +70,9 @@ public class PanNorth extends JPanel{
     }
     public void reload(){
         this.today = uP.getToday();
-        textYear.setText(today.get(Calendar.YEAR)+"³â");
+        textYear.setText(today.get(Calendar.YEAR)+"ë…„");
         textYear.setEnabled(false);
-        textMonth.setText(today.get(Calendar.MONTH)+1+"¿ù");
+        textMonth.setText(today.get(Calendar.MONTH)+1+"ì›”");
         textYear.setEnabled(false);
     }
 }
