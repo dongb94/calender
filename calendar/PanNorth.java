@@ -21,14 +21,14 @@ public class PanNorth extends JPanel{
 		Font font = uP.getDefaultFont();
 
 
-		btnYearBefore = new JButton("¢¸¢¸");
-		btnMonthBefore = new JButton("¢¸");
-		textYear = new JTextField(today.get(Calendar.YEAR)+"³â");
+		btnYearBefore = new JButton("â—€â—€");
+		btnMonthBefore = new JButton("â—€");
+		textYear = new JTextField(today.get(Calendar.YEAR)+"ë…„");
 		textYear.setEnabled(false);
-		textMonth = new JTextField(today.get(Calendar.MONTH)+1+"¿ù", 3);
+		textMonth = new JTextField(today.get(Calendar.MONTH)+1+"ì›”", 3);
 		textMonth.setEnabled(false);
-		btnMonthAfter = new JButton("¢º");
-		btnYearAfter = new JButton("¢º¢º");
+		btnMonthAfter = new JButton("â–¶");
+		btnYearAfter = new JButton("â–¶â–¶");
 
 		textYear.setFont(font);
 		textMonth.setFont(font);
@@ -94,7 +94,7 @@ public class PanNorth extends JPanel{
 	}
 	public void reload(){
 		this.today = uP.getToday();
-		textYear.setText(today.get(Calendar.YEAR)+"³â");
-		textMonth.setText(today.get(Calendar.MONTH)+1+"¿ù");
+		textYear.setText(today.get(Calendar.YEAR)+"ë…„");
+		textMonth.setText(today.get(Calendar.MONTH)+1+"ì›”");
 	}
 }
