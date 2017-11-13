@@ -12,6 +12,11 @@ create table( day varchar(100), title varchar(100), contents varchar(100));
 */
 public class DB {
 	Schedule sch;
+	
+	public DB() {
+		
+	}
+	
 	public DB(Schedule sch) {
 		this.sch = sch;
 	}
