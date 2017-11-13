@@ -11,6 +11,9 @@ public class Modify extends JPanel {
 	Schedule modified_schedule;
 	DB sender;
 	Detail d;
+	
+	private double width;
+	private double height;
 
 	JTextField schedule_title = new JTextField();
 
@@ -58,6 +61,12 @@ public class Modify extends JPanel {
 	int send_count;
 
 	Modify(Detail d) {
+		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
+		width = res.width*0.8;
+		height = res.height*0.8;
+		width = width*0.3;
+		height = height*0.82;
+		
 		this.d = d;
 		setLayout(null);
 		setBackground(Color.orange);
@@ -80,26 +89,28 @@ public class Modify extends JPanel {
 		duration_end_time = new JComboBox(du_time);
 		duration_start_minute = new JComboBox(du_minute);
 		duration_end_minute = new JComboBox(du_minute);
-
-		confirm_button.setBounds(200, 10, 100, 50);
-		la_title.setBounds(10, 50, 30, 30);
-		schedule_title.setBounds(10, 80, 290, 30);
-		la_duration.setBounds(10, 110, 30, 30);
-		la_start1.setBounds(10, 140, 50, 30);
-		duration_start_month.setBounds(40, 140, 60, 30);
-		duration_start_date.setBounds(100, 140, 60, 30);
-		la_end1.setBounds(160, 140, 50, 30);
-		duration_end_month.setBounds(190, 140, 60, 30);
-		duration_end_date.setBounds(250, 140, 60, 30);
-		la_time.setBounds(10, 170, 50, 30);
-		la_start2.setBounds(10, 200, 50, 30);
-		duration_start_time.setBounds(40, 200, 60, 30);
-		duration_start_minute.setBounds(100, 200, 60, 30);
-		la_end2.setBounds(160, 200, 50, 30);
-		duration_end_time.setBounds(190, 200, 60, 30);
-		duration_end_minute.setBounds(250, 200, 60, 30);
-		la_content.setBounds(10, 230, 50, 30);
-		schedule_content.setBounds(10, 270, 290, 350);
+		
+		//x y w h
+		confirm_button.setBounds((int)width*200/300, (int)height/80, (int)width*90/300, (int)height/13);
+		la_title.setBounds((int)width/30, (int)height/16, (int)width/10, (int)height*30/800);
+		schedule_title.setBounds((int)width/30, (int)height/10, (int)width*28/30, (int)height*30/800);
+		la_duration.setBounds((int)width*10/300, (int)height*110/800, (int)width*30/300, (int)height*30/800);
+		la_start1.setBounds((int)width*10/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
+		duration_start_month.setBounds((int)width*40/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
+		duration_start_date.setBounds((int)width*100/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
+		la_end1.setBounds((int)width*150/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
+		duration_end_month.setBounds((int)width*180/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
+		duration_end_date.setBounds((int)width*240/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
+		la_time.setBounds((int)width*10/300, (int)height*170/800, (int)width*50/300, (int)height*30/800);
+		la_start2.setBounds((int)width*10/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
+		duration_start_time.setBounds((int)width*40/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
+		duration_start_minute.setBounds((int)width*100/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
+		la_end2.setBounds((int)width*150/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
+		duration_end_time.setBounds((int)width*180/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
+		duration_end_minute.setBounds((int)width*240/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
+		la_content.setBounds((int)width*10/300, (int)height*230/800, (int)width*50/300, (int)height*30/800);
+		schedule_content.setBounds((int)width*10/300, (int)height*270/800, (int)width*280/300, (int)height*500/800);
+		// 300 * 800
 
 		add(confirm_button);
 		add(la_title);
