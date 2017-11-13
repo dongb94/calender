@@ -31,28 +31,21 @@ public class Detail extends JPanel implements ActionListener {
 	}
 
 	Detail() {
-<<<<<<< .merge_file_a11724
-
-=======
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 		width = res.width*0.8;
 		height = res.height*0.8;
 		width = width*0.3;
 		height = height*0.82;
 		
->>>>>>> .merge_file_a07948
 		setLayout(null);
 
 		scheduleList = new ScheduleList(this);
 		modify = new Modify(this);
 		add(scheduleList);
-<<<<<<< .merge_file_a11724
-		
-=======
+
 		scheduleList.setBounds(0, 0, (int)width, (int)height);
 
 		setBackground(Color.green);
->>>>>>> .merge_file_a07948
 		setVisible(true);
 	}
 
@@ -64,21 +57,15 @@ public class Detail extends JPanel implements ActionListener {
 		if (panelName.equals("scheduleList")) {
 			this.removeAll();
 			this.add(scheduleList);
-<<<<<<< .merge_file_a11724
 			scheduleList.setBounds(0, 0, getWidth(), getHeight());
-=======
 			scheduleList.setBounds(0, 0, (int)width, (int)height);
->>>>>>> .merge_file_a07948
 			scheduleList.setVisible(true);
 			this.updateUI();
 		} else {
 			this.removeAll();
 			this.add(modify);
-<<<<<<< .merge_file_a11724
 			modify.setBounds(0, 0, getWidth(), getHeight());
-=======
 			modify.setBounds(0, 0, (int)width, (int)height);
->>>>>>> .merge_file_a07948
 			modify.setVisible(true);
 			this.updateUI();
 		}
