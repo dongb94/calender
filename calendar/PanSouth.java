@@ -52,6 +52,7 @@ public class PanSouth extends JPanel{
         }
     }
     public void reload(){
+    	
         dayInit();
     }
 }
