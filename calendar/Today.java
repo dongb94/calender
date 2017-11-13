@@ -31,12 +31,12 @@ public class Today extends JPanel implements Runnable{
 		updateText();
 	}
 	private void makeGUI(){
-		setBackground(Color.white);
+		setBackground(new Color(0,0,0,0));
 		setLayout(new GridLayout(1,1));
-		now = new JLabel();
-		Font f = now.getFont();
-		f = new Font(f.getFamily(), f.getStyle(), 20);
-		now.setFont(f);
+		
+		now = new JLabel();		
+		now.setForeground(Color.white);
+		
 		add(now);
 		setVisible(true);
 	}
@@ -58,6 +58,11 @@ public class Today extends JPanel implements Runnable{
 		else
 			time += ":"+d.getSeconds();		
 		now.setText((d.getYear()+1900)+"."+(d.getMonth()+1)+"."+d.getDate()+"("+d.toString().substring(0,3)+")"+" "+time);
+	}
+	public void setTimer(){
+		Font f = now.getFont();
+		f = new Font(f.getFamily(), f.getStyle(), (int)(getHeight()/4.5));
+		now.setFont(f);
 	}
 	public void run() {
 		while(true){

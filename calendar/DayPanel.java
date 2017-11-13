@@ -1,5 +1,7 @@
 package calendar;
 
+
+//2017.11.13 - DayPanel 이미지 추가
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,6 +10,8 @@ public class DayPanel extends JPanel {
 	
 	public DayPanel(){
 		this.add(centerLabel, BorderLayout.CENTER);
+		ImageIcon img = new ImageIcon("image/day.png");
+		centerLabel.setIcon(img);
 	}
 	public DayPanel(String text){
 		this();

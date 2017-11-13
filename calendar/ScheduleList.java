@@ -13,9 +13,9 @@ import javax.swing.JScrollPane;
 public class ScheduleList extends JPanel{
 	
 	private Detail parent;
-	private DB db = new DB();
 	private ArrayList<Schedule> list;
 	private Schedule schedule;
+	private DB db = new DB(schedule);
 	private String start_time, end_time;
 	private JLabel blank;
 	private JScrollPane scroll;
@@ -27,7 +27,7 @@ public class ScheduleList extends JPanel{
 		setBackground(Color.BLUE);
 		
 		try {
-			//list = db.getDaySchedule(); // ³¯Â¥ ÀÎÀÚ ³Ñ°Ü¾ßÇÔ
+			//list = db.getDaySchedule(); // ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°Ü¾ï¿½ï¿½ï¿½
 			//JButton[] b_list = new JButton[list.size()];
 			//JLabel[] l_list = new JLabel[list.size() * 3];
 			JCheckBox[] c_list = new JCheckBox[30];
