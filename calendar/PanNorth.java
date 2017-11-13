@@ -20,6 +20,15 @@ public class PanNorth extends JPanel{
 		this.today = uP.getToday();
 		Font font = uP.getDefaultFont();
 
+<<<<<<< HEAD:PanNorth.java
+=======
+        btnBefore = new JButton("â—€");
+        textYear = new JTextField(today.get(Calendar.YEAR)+"ë…„");
+        textYear.setEnabled(false);
+        textMonth = new JTextField(today.get(Calendar.MONTH)+1+"ì›”", 3);
+        textMonth.setEnabled(false);
+        btnAfter = new JButton("â–¶");
+>>>>>>> a8243494a9202b3d8f91ac61a412e7a1d8b8543c:calendar/PanNorth.java
 
 		btnYearBefore = new JButton("¢¸¢¸");
 		btnMonthBefore = new JButton("¢¸");
@@ -50,6 +59,7 @@ public class PanNorth extends JPanel{
 			}
 		});
 
+<<<<<<< HEAD:PanNorth.java
 		btnMonthAfter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -97,4 +107,26 @@ public class PanNorth extends JPanel{
 		textYear.setText(today.get(Calendar.YEAR)+"³â");
 		textMonth.setText(today.get(Calendar.MONTH)+1+"¿ù");
 	}
+=======
+        textYear.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                //regex + update
+            }
+        });
+        textMonth.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e) {
+                //regex + update
+            }
+        });
+    }
+    public void reload(){
+        this.today = uP.getToday();
+        textYear.setText(today.get(Calendar.YEAR)+"ë…„");
+        textYear.setEnabled(false);
+        textMonth.setText(today.get(Calendar.MONTH)+1+"ì›”");
+        textYear.setEnabled(false);
+    }
+>>>>>>> a8243494a9202b3d8f91ac61a412e7a1d8b8543c:calendar/PanNorth.java
 }
