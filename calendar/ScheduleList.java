@@ -34,7 +34,7 @@ public class ScheduleList extends JPanel{
 	ScheduleList(Detail D) {
 		this.setBackground(new Color(0,0,0,150));
 
-		this.d = d;
+		this.d = D;
 		db = new DB();
 		btn_panel = new JPanel();
 		add = new JButton("추가");
@@ -74,9 +74,9 @@ public class ScheduleList extends JPanel{
 				et_list[i].setPreferredSize(new Dimension(50, 20));
 				c_list[i].setPreferredSize(new Dimension(170, 40));
 				
-				c_list[i].setBackground(new Color(0,0,0));
-				t_list[i].setBackground(new Color(0,0,0));
-				p_list[i].setBackground(new Color(0,0,0));
+				c_list[i].setBackground(new Color(10,10,10));
+				t_list[i].setBackground(new Color(10,10,10));
+				p_list[i].setBackground(new Color(10,10,10));
 			
 				t_list[i].add(st_list[i]);
 				t_list[i].add(et_list[i]);
