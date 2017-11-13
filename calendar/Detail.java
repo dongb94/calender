@@ -1,19 +1,92 @@
 package calendar;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-/* Version 1.0
- * ****************************
- * 작성일		2017.11.13 16:34
- * 작성내용	Main프레임에 Detail판넬 임시부착을 위한 배경색 정의
- * 작성자		변동건
- * ****************************
- * */
-
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class Detail extends JPanel{
-	Detail(){
-		setBackground(Color.BLACK);
+	
+	public ScheduleList scheduleList = null;
+	public Modify modify = null;
+	private JButton add, delete;
+	Dimension size;
+	
+	Detail() {
+		setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
+		add = new JButton("�߰�");
+		delete = new JButton("����");
+		scheduleList = new ScheduleList(this);
+		
+		size = new Dimension();
+		size.setSize(280, 500);
+		scheduleList.setPreferredSize(size);
+		
+		JScrollPane scrollPane=new JScrollPane(scheduleList, 
+				   ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,  
+				   ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		add.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		add(add);
+		add(delete);
+		add(this.scheduleList);
+		add(scrollPane);
+		
+		setBackground(Color.green);
+		setVisible(true);
 	}
+	
+	public void change(String panelName) {
+		if (panelName.equals("scheduleList")) {
+			removeAll();
+			add(scheduleList);
+			revalidate();
+			repaint();
+		} else {
+			removeAll();
+			add(modify);
+			revalidate();
+			repaint();
+		}
+	}
+	
 }
