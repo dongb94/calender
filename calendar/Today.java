@@ -1,19 +1,23 @@
 package calendar;
 /* Version 1.0
  * ****************************
- * ÃÖÃÊÀÛ¼ºÀÏ	2017.11.09 11:30
- * ÀÛ¼ºÀÚ		º¯µ¿°Ç
+ * ìµœì´ˆì‘ì„±ì¼	2017.11.09 11:30
+ * ì‘ì„±ì		ë³€ë™ê±´
  * ****************************
- * ¼öÁ¤ÀÏ		2017.11.13 02:31
- * ¼öÁ¤³»¿ë	Å¬·¡½º ÇÔ¼ö ¹× ¾²·¹µå ±¸Çö
- * ÀÛ¼ºÀÚ		º¯µ¿°Ç
+ * ìˆ˜ì •ì¼		2017.11.13 02:31
+ * ìˆ˜ì •ë‚´ìš©	ë‚´ë¶€ í•¨ìˆ˜ ë° ì“°ë ˆë“œ êµ¬í˜„
+ * ì‘ì„±ì		ë³€ë™ê±´
+ * ****************************
+ * ****************************
+ * ìˆ˜ì •ì¼		2017.11.13 16:59
+ * ìˆ˜ì •ë‚´ìš©	ì“°ë ˆë“œ ìˆ˜ì • ë° í…ìŠ¤íŠ¸ ì¤‘ì•™ë°°ì¹˜
+ * ì‘ì„±ì		ë³€ë™ê±´
  * ****************************
  */
+/**í™”ë©´ ì˜¤ë¥¸ìª½ ìƒë‹¨ í˜„ì¬ì‹œê°„ì„ ë³´ì—¬ì£¼ëŠ” í´ë˜ìŠ¤*/
 
 
-import java.awt.Color;
-import java.awt.Font;
-/**È­¸é ¿À¸¥ÂÊ »ó´Ü ÇöÀç½Ã°£À» º¸¿©ÁÖ´Â Å¬·¡½º*/
+import java.awt.*;
 import java.util.Date;
 
 import javax.swing.*;
@@ -23,21 +27,21 @@ public class Today extends JPanel implements Runnable{
 	private Date d;
 	private JLabel now;
 	Today(){
-		d =new Date();
 		makeGUI();
 		updateText();
 	}
 	private void makeGUI(){
+		setBackground(Color.white);
+		setLayout(new GridLayout(1,1));
 		now = new JLabel();
 		Font f = now.getFont();
 		f = new Font(f.getFamily(), f.getStyle(), 20);
 		now.setFont(f);
 		add(now);
-		
 		setVisible(true);
 	}
 	private void updateText(){
-		now.setSize(getSize());
+		d =new Date();
 		String time = null;
 		if(d.getHours()<10)
 			time = "0"+d.getHours(); 
@@ -52,8 +56,7 @@ public class Today extends JPanel implements Runnable{
 		if(d.getSeconds()<10)
 			time += ":0"+d.getSeconds();
 		else
-			time += ":"+d.getSeconds();
-		
+			time += ":"+d.getSeconds();		
 		now.setText((d.getYear()+1900)+"."+(d.getMonth()+1)+"."+d.getDate()+"("+d.toString().substring(0,3)+")"+" "+time);
 	}
 	public void run() {
