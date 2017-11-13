@@ -1,6 +1,7 @@
 package calendar;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,8 @@ public class ScheduleList extends JPanel{
 	private JPanel[] t_list, p_list;
 	
 	ScheduleList(Detail D) {
+		this.setBackground(new Color(0,0,0,150));
+
 		this.d = d;
 		db = new DB();
 		btn_panel = new JPanel();
@@ -42,6 +45,7 @@ public class ScheduleList extends JPanel{
 		
 		add.addActionListener(new MyActionListener());
 		
+		btn_panel.setBackground(new Color(0,0,0,150));
 		btn_panel.add(add);
 		btn_panel.add(delete);
 		add(btn_panel, BorderLayout.NORTH);
@@ -69,6 +73,10 @@ public class ScheduleList extends JPanel{
 				st_list[i].setPreferredSize(new Dimension(50, 20));
 				et_list[i].setPreferredSize(new Dimension(50, 20));
 				c_list[i].setPreferredSize(new Dimension(170, 40));
+				
+				c_list[i].setBackground(new Color(0,0,0));
+				t_list[i].setBackground(new Color(0,0,0));
+				p_list[i].setBackground(new Color(0,0,0));
 			
 				t_list[i].add(st_list[i]);
 				t_list[i].add(et_list[i]);

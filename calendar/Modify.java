@@ -60,8 +60,8 @@ public class Modify extends JPanel {
 	Modify(Detail d) {
 		this.d = d;
 		setLayout(null);
-		setBackground(Color.orange);
-		setOpaque(true);
+		
+		this.setBackground(new Color(0,0,0,150));
 
 		for (int i = 1; i < 13; i++)
 			du_mon[i - 1] = Integer.toString(i) + "월";

@@ -27,28 +27,31 @@ public class Detail extends JPanel implements ActionListener {
 	}
 
 	Detail() {
+
 		setLayout(null);
 
 		scheduleList = new ScheduleList(this);
 		modify = new Modify(this);
 		add(scheduleList);
-		scheduleList.setBounds(0, 0, 350, 700);
-
-		setBackground(Color.green);
+		
 		setVisible(true);
 	}
 
+	public void setPanel(){
+		scheduleList.setBounds(0, 0, getWidth(), getHeight());
+	}
+	
 	public void change(String panelName) {
 		if (panelName.equals("scheduleList")) {
 			this.removeAll();
 			this.add(scheduleList);
-			scheduleList.setBounds(0, 0, 350, 700);
+			scheduleList.setBounds(0, 0, getWidth(), getHeight());
 			scheduleList.setVisible(true);
 			this.updateUI();
 		} else {
 			this.removeAll();
 			this.add(modify);
-			modify.setBounds(0, 0, 350, 700);
+			modify.setBounds(0, 0, getWidth(), getHeight());
 			modify.setVisible(true);
 			this.updateUI();
 		}
