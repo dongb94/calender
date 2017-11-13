@@ -18,15 +18,15 @@ public class DB {
 	
 	static Connection conn;
 	
-	public void DBINFO() throws Exception {
-		String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+	public static void DBINFO() throws Exception {
+		String url = "jdbc:oracle:thin:@192.168.35.50:1521:xe";
 		String dbid = "system";
 		String dbpw = "2624";
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		conn = DriverManager.getConnection(url, dbid, dbpw);
 	}
 
-	public int addDaySchedule(Schedule schedule) throws Exception {
+	public static int addDaySchedule(Schedule schedule) throws Exception {
 		DBINFO();
 		PreparedStatement pst = conn.prepareStatement("insert into Calendar values(?,?,?)");
 		pst.setString(1, schedule.getDate());
@@ -36,7 +36,7 @@ public class DB {
 		return cnt;// 리턴값 int인 이유는 추가 되었을떄 cnt>0 이상일경우에 디비에 추가가 성공됨을 알 수 있다.
 	}
 
-	public ArrayList<Schedule> getDaySchedule() throws Exception {
+	public static ArrayList<Schedule> getDaySchedule() throws Exception {
 		DBINFO();
 			
 		ArrayList<Schedule> sch_list = new ArrayList<>();
