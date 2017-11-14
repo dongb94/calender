@@ -37,6 +37,7 @@ public class Detail extends JPanel implements ActionListener {
 		setVisible(true);
 	}
 
+	
 	public void setPanel(){
 		scheduleList.setBounds(0, 0, getWidth(), getHeight());
 	}
@@ -60,5 +61,19 @@ public class Detail extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		change("modify");
 	}
+
+	public void setModify() {
+		modify.set_modify();
+	}
+	public void setCreate() {
+		modify.set_create();
+	}
+	public void ifMod() {
+		modify.if_mod();
+	}
+	public void ifCre(String year, String mon, String day) {
+		modify.if_cre(year, mon, day);
+	}
+
 
 }

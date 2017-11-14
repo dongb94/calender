@@ -196,8 +196,9 @@ public class Modify extends JPanel {
 		this.year = year;
 		start_mon = mon;
 		start_day = day;
-		duration_start_month.setSelectedIndex(Integer.parseInt(start_mon));
-		duration_start_date.setSelectedIndex(Integer.parseInt(start_day));
+		System.out.println("this called"+year+"/"+mon+"/"+day);
+		duration_start_month.setSelectedIndex(Integer.parseInt(start_mon)-1);
+		duration_start_date.setSelectedIndex(Integer.parseInt(start_day)-1);
 	}
 	class CancelAction implements ActionListener {
 

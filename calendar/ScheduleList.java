@@ -38,6 +38,8 @@ public class ScheduleList extends JPanel{
 	private String arg_piece[]= new String[3];
 	private String date_piece[] = new String[7];
 	
+	private Modify m;
+	
 	ScheduleList(Detail detail) {
 		this.setBackground(new Color(0,0,0,150));
 
@@ -165,6 +167,9 @@ public class ScheduleList extends JPanel{
 			JButton btn = (JButton) e.getSource();
 			if (btn.getText().equals("추가")) {
 				d.change("modify");
+				d.setCreate();
+				System.out.println("this called 추가 : "+arg_piece[0]+arg_piece[1]+arg_piece[2]);
+				d.ifCre(arg_piece[0],arg_piece[1],arg_piece[2]);
 				 //년, 월, 일 인자 던져야함
 			} else if (btn.getText().equals("삭제")) {
 				for (int i=0; i<30; i++) { // list.size()만큼 해야함
@@ -185,6 +190,8 @@ public class ScheduleList extends JPanel{
 			// TODO Auto-generated method stub
 			JButton btn = (JButton) e.getSource();
 			d.change("modify");
+			d.setModify();
+			d.ifMod();
 		}
 		
 	}
