@@ -22,6 +22,8 @@ package calendar;
 
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Date;
 
 import javax.swing.*;
@@ -33,18 +35,24 @@ public class Today extends JPanel implements Runnable{
 	Today(){
 		makeGUI();
 		updateText();
+		addMouseListener(new TodayListener());
 	}
 	private void setText(){
 		
 	}
 	private void makeGUI(){
 		setBackground(new Color(0,0,0,0));
-		setLayout(new GridLayout(1,1));
+		setLayout(new BorderLayout());
 		
-		now = new JLabel();		
+		now = new JLabel();
 		now.setForeground(Color.white);
 		
-		add(now);
+		JButton exitButton = new JButton("프로그램 종료");
+		exitButton.setName("exit");
+		exitButton.addMouseListener(new TodayListener());
+		
+		add(now,BorderLayout.CENTER);
+		add(exitButton,BorderLayout.NORTH);
 		setVisible(true);
 	}
 	private void updateText(){
@@ -81,5 +89,18 @@ public class Today extends JPanel implements Runnable{
 				System.err.println(e);
 			}
 		}
+	}
+	
+	class TodayListener implements MouseListener{
+		public void mouseClicked(MouseEvent e) {
+			JButton exit = (JButton)e.getSource();
+			if(exit.getName().equals("exit")){
+				System.exit(1);
+			}
+		}
+		public void mouseEntered(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {	}
+		public void mousePressed(MouseEvent e) {}
+		public void mouseReleased(MouseEvent e) {}
 	}
 }
