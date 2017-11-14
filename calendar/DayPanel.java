@@ -1,28 +1,33 @@
 package calendar;
 
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Calendar;
 
 public class DayPanel extends JPanel {
 	JLabel centerLabel = new JLabel();
+	private PanSouth sPan;
+	String date;
+	// ScheduleList schedulelist = new ScheduleList();
 	
 	public DayPanel(){
 		this.add(centerLabel, BorderLayout.CENTER);
-		Font font = centerLabel.getFont();
-		font = new Font(font.getFamily(),font.getStyle(),30);
-		centerLabel.setFont(font);
-		//ImageIcon img = new ImageIcon("image/day.png");
-		//Image image = img.getImage(); // transform it 
-		//Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		//img = new ImageIcon(newimg);  // transform it back
-		//centerLabel.setIcon(img);
+		this.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				// schedulelist.setDate();
+			}
+		});
 	}
 	public DayPanel(String text){
 		this();
 		centerLabel.setText(text);
 		this.setForeground(new Color(255,255,255));
-		this.setBackground(new Color(0,0,0,150));
+		this.setBackground(new Color(150,150,150));
 	}
 	public DayPanel(String text,Color color){
 		this();
@@ -32,7 +37,7 @@ public class DayPanel extends JPanel {
 	}
 	public void setText(String text){
 		centerLabel.setText(text);
-		this.setBackground(new Color(0,0,0));
+		this.setBackground(new Color(255,255,255));
 	}
 	public void addText(String text){
 		this.add(new JLabel("* "+text), BorderLayout.SOUTH);

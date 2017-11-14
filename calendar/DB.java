@@ -10,10 +10,11 @@ import java.util.ArrayList;
 public class DB {
 	Schedule sch;
 	static Connection conn;
+	
 	public DB() {
 		
 	}
-
+	
 	public DB(Schedule sch) {
 		this.sch = sch;
 	}

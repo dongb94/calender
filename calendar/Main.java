@@ -54,15 +54,15 @@ public class Main extends JFrame{
 		C.setLocation(0, 0);
 		//set today
 		Today T = new Today();
-		T.setSize((int)(width*0.3), (int)(height*0.18));
+		T.setSize((int)(width*0.3), (int)(height*0.19));
 		T.setLocation((int)(width*0.7),0);
 		T.setTimer();
 		Thread thread = new Thread(T);
 		thread.start();
 		//set detail
 		Detail D = new Detail();
-		D.setSize((int)(width*0.3), (int)(height*0.82));
-		D.setLocation((int)(width*0.7), (int)(height*0.18));
+		D.setSize((int)(width*0.3), (int)(height*0.81));
+		D.setLocation((int)(width*0.7), (int)(height*0.19));
 		D.setPanel();
 		
 		add(C);

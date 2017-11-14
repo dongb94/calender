@@ -25,11 +25,12 @@ public class ScheduleList extends JPanel{
 	private String start_time, end_time;
 	private JLabel blank;
 	private JScrollPane scroll;
-	private JPanel btn_panel;
+	private JPanel btn_panel, list_panel;
 	private JButton add, delete;
 	private JCheckBox[] c_list;
 	private JLabel[] st_list, et_list;
 	private JPanel[] t_list, p_list;
+	private JScrollPane scrollPane;
 	
 	ScheduleList(Detail D) {
 		this.setBackground(new Color(0,0,0,150));
@@ -37,11 +38,13 @@ public class ScheduleList extends JPanel{
 		this.d = D;
 		db = new DB();
 		btn_panel = new JPanel();
+		list_panel = new JPanel();
 		add = new JButton("추가");
 		delete = new JButton("삭제");
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		btn_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		list_panel.setLayout(new BoxLayout(list_panel, BoxLayout.Y_AXIS));
 		
 		add.addActionListener(new MyActionListener());
 		delete.addActionListener(new MyActionListener());
@@ -51,6 +54,14 @@ public class ScheduleList extends JPanel{
 		btn_panel.add(delete);
 		add(btn_panel, BorderLayout.NORTH);
 		
+		setDate();
+	}
+	
+	public void setDate() {
+		setList();
+	}
+	
+	void setList() {
 		try {
 			//list = db.getDaySchedule(선택된 날짜);
 			
@@ -84,12 +95,15 @@ public class ScheduleList extends JPanel{
 				p_list[i].add(t_list[i]);
 				p_list[i].add(c_list[i]);
 
-				add(p_list[i]);
+				list_panel.add(p_list[i]);
 			}
+			scrollPane = new JScrollPane(list_panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPane.setBorder(null);
+			add(scrollPane);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}		
 	}
 	
 	private class MyActionListener implements ActionListener {
