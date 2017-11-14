@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.util.*;
 
 public class Modify extends JPanel {
-
+	
+	Schedule will_delete_schedule;
 	Schedule modified_schedule;
 	DB sender;
 	Detail d;
@@ -64,7 +65,9 @@ public class Modify extends JPanel {
 	int send_count;
 
 	Modify(Detail d) {
-
+		
+		will_delete_schedule = modified_schedule;
+		
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 		width = res.width * 0.8;
 		height = res.height * 0.8;
@@ -94,29 +97,11 @@ public class Modify extends JPanel {
 		duration_start_minute = new JComboBox(du_minute);
 		duration_end_minute = new JComboBox(du_minute);
 		
-		if(type_flag == "mod"){
-		
-		title = modified_schedule.getTitle();
-		String date_string = modified_schedule.getDate();
-		String date_piece[] = date_string.split(".");
-		content = modified_schedule.getContents();
-		
-		schedule_content.setText(content);
-		schedule_title.setText(title);
-		duration_start_month.setSelectedIndex(Integer.parseInt(date_piece[1])-1);
-		duration_start_date.setSelectedIndex(Integer.parseInt(date_piece[2])-1);
-		duration_end_month.setSelectedIndex(Integer.parseInt(date_piece[3])-1);
-		duration_end_date.setSelectedIndex(Integer.parseInt(date_piece[4])-1);
-		duration_start_time.setSelectedIndex(Integer.parseInt(date_piece[5]));
-		duration_start_minute.setSelectedIndex(Integer.parseInt(date_piece[6]));
-		duration_end_time.setSelectedIndex(Integer.parseInt(date_piece[7]));
-		duration_end_minute.setSelectedIndex(Integer.parseInt(date_piece[8]));
-		
-		}
+		set_init();
 		
 		// x y w h
-		confirm_button.setBounds((int) width * 100 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
-		cancel_button.setBounds((int) width * 200 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
+		cancel_button.setBounds((int) width * 100 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
+		confirm_button.setBounds((int) width * 200 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
 		la_title.setBounds((int) width / 30, (int) height / 16, (int) width / 10, (int) height * 30 / 800);
 		schedule_title.setBounds((int) width / 30, (int) height / 10, (int) width * 28 / 30, (int) height * 30 / 800);
 		la_duration.setBounds((int) width * 10 / 300, (int) height * 110 / 800, (int) width * 30 / 300,
@@ -175,7 +160,7 @@ public class Modify extends JPanel {
 		add(schedule_content);
 
 		confirm_button.addActionListener(new ConfirmAction());
-
+		cancel_button.addActionListener(new CancelAction());
 	}
 
 	public void set_modify() {
@@ -190,6 +175,35 @@ public class Modify extends JPanel {
 	public void set_schedule(Schedule schedule){
 		this.modified_schedule = schedule;
 		set_modify();
+	}
+	public void set_init(){
+		title = modified_schedule.getTitle();
+		String date_string = modified_schedule.getDate();
+		
+		StringTokenizer st = new StringTokenizer(date_string, ".");
+		content = modified_schedule.getContents();
+		
+		schedule_content.setText(content);
+		schedule_title.setText(title);
+		duration_start_month.setSelectedIndex(Integer.parseInt(st.nextToken()));
+		duration_start_date.setSelectedIndex(Integer.parseInt(st.nextToken()));
+		
+		if(type_flag == "mod"){
+		duration_start_time.setSelectedIndex(Integer.parseInt(st.nextToken()));
+		duration_start_minute.setSelectedIndex(Integer.parseInt(st.nextToken()));
+		duration_end_time.setSelectedIndex(Integer.parseInt(st.nextToken()));
+		duration_end_minute.setSelectedIndex(Integer.parseInt(st.nextToken()));
+		}
+	}
+	class CancelAction implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			d.change("scheduleList");
+			set_create();
+		}
+		
 	}
 
 	class ConfirmAction implements ActionListener {
@@ -282,7 +296,7 @@ public class Modify extends JPanel {
 						System.out.println(content);
 						}
 						else{
-							// update
+						//new DB(modified_schedule).addDaySchedule(modified_schedule);// update
 						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
