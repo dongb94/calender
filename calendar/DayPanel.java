@@ -7,6 +7,7 @@ import java.awt.event.*;
 
 public class DayPanel extends JPanel {
 	JLabel centerLabel = new JLabel();
+	Detail D;
 	String date;
 	
 	public DayPanel(){
@@ -14,7 +15,7 @@ public class DayPanel extends JPanel {
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				DayPanel DayPanel = (DayPanel)e.getSource();
-				
+				D.setScheduleList(DayPanel.date);
 			}
 		});
 		Font font = centerLabel.getFont();
@@ -55,5 +56,7 @@ public class DayPanel extends JPanel {
 	public void setDate(String date){
 		this.date = date;
 	}
-	
+	public void setDetailPane(Detail D){
+		this.D = D;
+	}
 }

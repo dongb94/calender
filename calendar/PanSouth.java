@@ -42,12 +42,12 @@ public class PanSouth extends JPanel{
         for(DayPanel day: dayBlock){
             day.setText("");
             day.setDate("");
+            day.setDetailPane(uP.getDetailPane());
         }
         Calendar firstDay = uP.getToday();
         firstDay.set(Calendar.DAY_OF_MONTH, firstDay.getActualMinimum(Calendar.DAY_OF_MONTH));
         int blockCount = firstDay.get(Calendar.DAY_OF_WEEK)-firstDay.getFirstDayOfWeek();
         Date d = new Date();
-        
         for(int i = 0; i< firstDay.getActualMaximum(Calendar.DAY_OF_MONTH); ++i) {
         	dayBlock[i + blockCount].setDate(Calendar.YEAR+"."+Calendar.MONTH+"."+(i+1));
             //Sunday
