@@ -13,7 +13,10 @@ package calendar;
  * 			해상도에 맞춰서 프레임 사이즈 조절, 프레임 사이즈 변경 불가능하도록 구현
  * 작성자		변동건
  * ****************************
- * 
+ * 수정일		2017.11.13 21:30
+ * 수정내용	프래임 배경 투명하게, 제목표시줄 제거
+ * 작성자		변동건
+ * ****************************
  */
 
 /**메인 프레임*/
@@ -34,6 +37,9 @@ public class Main extends JFrame{
 	}
 	
 	void makeGUI(){
+		//opaque
+		setUndecorated(true);
+		setBackground(new Color(0,0,0,122));
 
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 		width = res.width*0.8;
@@ -44,18 +50,19 @@ public class Main extends JFrame{
 		
 		//set calendar
 		CalendarPanel C = new CalendarPanel();
-		C.setSize((int)(width*0.7), (int)(height*0.97));
+		C.setSize((int)(width*0.7), (int)(height));
 		C.setLocation(0, 0);
 		//set today
 		Today T = new Today();
 		T.setSize((int)(width*0.3), (int)(height*0.18));
 		T.setLocation((int)(width*0.7),0);
+		T.setTimer();
 		Thread thread = new Thread(T);
 		thread.start();
 		//set detail
 		Detail D = new Detail();
-		D.setSize((int)(width*0.3), (int)(height*0.78));
-		D.setLocation((int)(width-(width*0.3)), (int)(height*0.18));
+		D.setSize((int)(width*0.3), (int)(height*0.82));
+		D.setLocation((int)(width*0.7), (int)(height*0.18));
 		
 		add(C);
 		add(T);
