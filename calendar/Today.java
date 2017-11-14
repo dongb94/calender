@@ -38,7 +38,7 @@ public class Today extends JPanel implements Runnable{
 		addMouseListener(new TodayListener());
 	}
 	public void paintComponent(Graphics g){
-		g.clearRect(0, getHeight()/3, getWidth(), (getHeight()*2)/5);
+		g.clearRect(0, (getHeight()*2)/5, getWidth(), (getHeight()*1)/3);
 	}
 	private void makeGUI(){
 		setBackground(new Color(0,0,0,0));
@@ -47,7 +47,15 @@ public class Today extends JPanel implements Runnable{
 		now = new JLabel();
 		now.setForeground(Color.white);
 		
-		JButton exitButton = new JButton("프로그램 종료");
+		ImageIcon exit_img = new ImageIcon("img/x.png");
+		Image image_exit = exit_img.getImage();
+		image_exit = image_exit.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
+		exit_img = new ImageIcon(image_exit);
+		
+		JButton exitButton = new JButton("프로그램 종료",exit_img);
+		exitButton.setHorizontalAlignment(SwingConstants.RIGHT);
+		exitButton.setBackground(Color.black);
+		exitButton.setForeground(Color.WHITE);
 		exitButton.setName("exit");
 		exitButton.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
