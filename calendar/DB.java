@@ -16,6 +16,9 @@ public class DB {
 	static Connection conn;
 	public static String result;
 
+	public DB() {
+		
+	}
 	public DB(Schedule sch) {
 		this.sch = sch;
 	}
@@ -46,8 +49,8 @@ public class DB {
 		PreparedStatement pst = conn.prepareStatement("select * from Calendar");
 		ResultSet rs = pst.executeQuery();
 		while (rs.next()) {
-			String date = rs.getString(1);
-			String title = rs.getString(2);
+			String title = rs.getString(1);
+			String date = rs.getString(2);
 			String contents = rs.getString(3);
 			sch_list.add(new Schedule(title, date, contents));
 		}
@@ -61,7 +64,7 @@ public class DB {
 		schedule = getDaySchedule();
 		for (int i = 0; i < schedule.size(); i++) {
 			if (schedule.get(i).getTitle().equals(sch.getTitle())) {
-				i = schedule.size() - 1;
+				
 				// update SMART_11 set id ='sunshine' where id ='sun';
 				PreparedStatement pst = conn.prepareStatement("update calendar set day =? where day =? ");
 				pst.setString(1, sch.getDate());
@@ -87,7 +90,7 @@ public class DB {
 		schedule = getDaySchedule();
 		for (int i = 0; i < schedule.size(); i++) {
 			if (schedule.get(i).getTitle().equals(sch.getTitle())) {
-				i = schedule.size() - 1;
+			
 				PreparedStatement pst = conn.prepareStatement("delete calendar where title=?");
 				pst.setString(1, sch.getTitle());
 
