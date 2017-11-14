@@ -1,11 +1,13 @@
 package calendar;
 
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.regex.*;
 
 public class PanNorth extends JPanel{
 	private CalendarPanel uP;
@@ -18,21 +20,21 @@ public class PanNorth extends JPanel{
 		this.uP = upperPanel;
 		this.today = uP.getToday();
 		Font font = uP.getDefaultFont();
-		setBackground(new Color(0,0,0,0));
+		this.setLayout(new FlowLayout());
+		Calendar goToday = Calendar.getInstance();
 
-
-		btnYearBefore = new JButton("â—€â—€");
-		btnMonthBefore = new JButton("â—€");
-		textYear = new JTextField(today.get(Calendar.YEAR)+"ë…„");
-		textYear.setEnabled(false);
-		textMonth = new JTextField(today.get(Calendar.MONTH)+1+"ì›”", 3);
-		textMonth.setEnabled(false);
-		btnMonthAfter = new JButton("â–¶");
-		btnYearAfter = new JButton("â–¶â–¶");
+		btnToday = new JButton("¿À´Ã·Î");
+		btnYearBefore = new JButton("¢¸¢¸");
+		btnMonthBefore = new JButton("¢¸");
+		textYear = new JTextField(today.get(Calendar.YEAR)+"³â");
+		textMonth = new JTextField(today.get(Calendar.MONTH)+1+"¿ù", 3);
+		btnMonthAfter = new JButton("¢º");
+		btnYearAfter = new JButton("¢º¢º");
 
 		textYear.setFont(font);
 		textMonth.setFont(font);
 
+		this.add(btnToday);
 		this.add(btnYearBefore);
 		this.add(btnMonthBefore);
 		this.add(textYear);
@@ -77,12 +79,23 @@ public class PanNorth extends JPanel{
 				uP.reload();
 			}
 		});
+		
+		btnToday.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					uP.setToday(goToday.getTime());
+					uP.reload();
+			}
+		});
 
 
 //		textYear.addCaretListener(new CaretListener() {
 //			@Override
 //			public void caretUpdate(CaretEvent e) {
 //				//regex + update
+//				textYear = (JTextField) e.getSource();
+//				String textYear = "^[0-9]+$";
+//				
 //			}
 //		});
 //		textMonth.addCaretListener(new CaretListener() {
@@ -94,7 +107,7 @@ public class PanNorth extends JPanel{
 	}
 	public void reload(){
 		this.today = uP.getToday();
-		textYear.setText(today.get(Calendar.YEAR)+"ë…„");
-		textMonth.setText(today.get(Calendar.MONTH)+1+"ì›”");
+		textYear.setText(today.get(Calendar.YEAR)+"³â");
+		textMonth.setText(today.get(Calendar.MONTH)+1+"¿ù");
 	}
 }

@@ -13,7 +13,6 @@ public class CalendarPanel extends JPanel {
 
     //Constructor #Entry Point
     public CalendarPanel(){
-		setBackground(new Color(0,0,0,122));
         today = Calendar.getInstance();
         defaultFont = new Font("Sherif", Font.BOLD, 20);
         this.setLayout(new BorderLayout());
@@ -37,7 +36,4 @@ public class CalendarPanel extends JPanel {
     public Font getDefaultFont() {
         return defaultFont;
     }
-	private void focusToday(){
-		
-	}
 }
