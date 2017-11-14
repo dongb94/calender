@@ -37,7 +37,5 @@ public class CalendarPanel extends JPanel {
     public Font getDefaultFont() {
         return defaultFont;
     }
-	private void focusToday(){
-		
-	}
+
 }
