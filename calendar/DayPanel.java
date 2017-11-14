@@ -13,7 +13,7 @@ public class DayPanel extends JPanel {
 		this.add(centerLabel, BorderLayout.CENTER);
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				JPanel DayPanel = (JPanel)e.getSource();
+				DayPanel DayPanel = (DayPanel)e.getSource();
 				
 			}
 		});
