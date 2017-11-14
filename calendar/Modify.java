@@ -112,6 +112,7 @@ public class Modify extends JPanel {
 		duration_end_minute.setSelectedIndex(Integer.parseInt(date_piece[8]));
 		
 		}
+		
 		// x y w h
 		confirm_button.setBounds((int) width * 200 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
 		la_title.setBounds((int) width / 30, (int) height / 16, (int) width / 10, (int) height * 30 / 800);
@@ -174,16 +175,19 @@ public class Modify extends JPanel {
 
 	}
 
-	public void modify_schedule() {
+	public void set_modify() {
 
 		this.type_flag = "mod";
 	}
 
-	public void create_schedule() {
+	public void set_create() {
 
 		this.type_flag = "cre";
 	}
-
+	public void set_schedule(Schedule schedule){
+		this.modified_schedule = schedule;
+		set_modify();
+	}
 
 	class ConfirmAction implements ActionListener {
 
@@ -268,7 +272,11 @@ public class Modify extends JPanel {
 					modified_schedule = new Schedule(title, date, content);
 					
 					try {
+						if(type_flag =="cre")
 						new DB(modified_schedule).ADDWEBDB(modified_schedule);
+						else
+							// update
+							;
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -303,8 +311,10 @@ public class Modify extends JPanel {
 			} // 기간 범위가 1년
 
 			d.change("scheduleList");
+			set_create();
 		}
 
 	}
 
 }
+
