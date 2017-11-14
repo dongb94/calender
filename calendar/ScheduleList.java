@@ -6,8 +6,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,7 +20,8 @@ import javax.swing.JScrollPane;
 public class ScheduleList extends JPanel{
 	
 	private Detail d;
-	private ArrayList<Schedule> list;
+	private ArrayList<Schedule> list= new ArrayList<>();
+	private ArrayList<Schedule> dayList= new ArrayList<>();
 	private Schedule schedule;
 	private DB db;
 	private String start_time, end_time;
@@ -28,6 +30,7 @@ public class ScheduleList extends JPanel{
 	private JPanel btn_panel, list_panel;
 	private JButton add, delete;
 	private JCheckBox[] c_list;
+	private JButton[] b_list;
 	private JLabel[] st_list, et_list;
 	private JPanel[] t_list, p_list;
 	private JScrollPane scrollPane;
@@ -46,56 +49,83 @@ public class ScheduleList extends JPanel{
 		btn_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		list_panel.setLayout(new BoxLayout(list_panel, BoxLayout.Y_AXIS));
 		
-		add.addActionListener(new MyActionListener());
-		delete.addActionListener(new MyActionListener());
+		add.addActionListener(new BtnActionListener());
+		delete.addActionListener(new BtnActionListener());
 		
 		btn_panel.setBackground(new Color(0,0,0,150));
 		btn_panel.add(add);
 		btn_panel.add(delete);
 		add(btn_panel, BorderLayout.NORTH);
 		
-		setDate();
+		SimpleDateFormat today = new SimpleDateFormat(); 
+	    today.applyPattern("yyyy.MM.dd"); 
+		setList(today.format(new Date()));
 	}
 	
-	public void setDate() {
-		setList();
-	}
-	
-	void setList() {
+	void setList(String date) {
 		try {
-			//list = db.getDaySchedule(선택된 날짜);
+			// 0:년  1:월  2:일  3:시작시간  4:시작분  5:끝난시간  6:끝난분
+			list = db.getDaySchedule();
+			System.out.println(date);
+			String[] arg_piece = date.split(".");
+			System.out.println(arg_piece[0]);
+			String date_piece[];
+			int i, j;
+			System.out.println(list.get(0).getDate());
+			for (int j2 = 0; j2 < list.size(); j2++) {
+				System.out.println(list.get(0).getDate().split(".")[j2]);
+				 
+			}
+		
+			for (i=0; i<list.size(); i++) {
+				
+				date_piece = list.get(i).getDate().split(".");
+				if (arg_piece[0].equals(date_piece[0])) {
+					if (arg_piece[1].equals(date_piece[1])) {
+						if (arg_piece[2].equals(date_piece[2])) {
+							dayList.add(list.get(i));
+						}
+					}
+				}
+			}
 			
-			c_list = new JCheckBox[30]; // list.size()만큼 생성
-			st_list = new JLabel[30];
-			et_list = new JLabel[30];
-			t_list = new JPanel[30];
-			p_list = new JPanel[30];
+			b_list = new JButton[i];
+			c_list = new JCheckBox[i];
+			st_list = new JLabel[i];
+			et_list = new JLabel[i];
+			t_list = new JPanel[i];
+			p_list = new JPanel[i];
 			
-			for (int i=0; i<30; i++) {
+			for (j=0; j<i; j++) {
+				date_piece = dayList.get(j).getDate().split(".");
 				
-				st_list[i] = new JLabel("start time"); // list.
-				et_list[i] = new JLabel("end time");
-				c_list[i] = new JCheckBox("schedule name");
-				t_list[i] = new JPanel();
-				p_list[i] = new JPanel();
+				st_list[j] = new JLabel(date_piece[3] + " : " + date_piece[4]);
+				et_list[j] = new JLabel(date_piece[5] + " : " + date_piece[6]);
+				b_list[j] = new JButton(dayList.get(j).getTitle());
+				c_list[j] = new JCheckBox();
+				t_list[j] = new JPanel();
+				p_list[j] = new JPanel();
 				
-				t_list[i].setLayout(new BoxLayout(t_list[i], BoxLayout.Y_AXIS));
-				p_list[i].setLayout(new FlowLayout());
+				b_list[j].addActionListener(new ModifyActionListener());
 				
-				st_list[i].setPreferredSize(new Dimension(50, 20));
-				et_list[i].setPreferredSize(new Dimension(50, 20));
-				c_list[i].setPreferredSize(new Dimension(170, 40));
+				t_list[j].setLayout(new BoxLayout(t_list[i], BoxLayout.Y_AXIS));
+				p_list[j].setLayout(new FlowLayout());
 				
-				c_list[i].setBackground(new Color(10,10,10));
-				t_list[i].setBackground(new Color(10,10,10));
-				p_list[i].setBackground(new Color(10,10,10));
+				st_list[j].setPreferredSize(new Dimension(50, 20));
+				et_list[j].setPreferredSize(new Dimension(50, 20));
+				b_list[j].setPreferredSize(new Dimension(170, 40));
+				
+				b_list[j].setBackground(new Color(10,10,10));
+				t_list[j].setBackground(new Color(10,10,10));
+				p_list[j].setBackground(new Color(10,10,10));
 			
-				t_list[i].add(st_list[i]);
-				t_list[i].add(et_list[i]);
-				p_list[i].add(t_list[i]);
-				p_list[i].add(c_list[i]);
+				t_list[j].add(st_list[j]);
+				t_list[j].add(et_list[j]);
+				p_list[j].add(t_list[j]);
+				p_list[j].add(b_list[j]);
+				p_list[j].add(c_list[j]);
 
-				list_panel.add(p_list[i]);
+				list_panel.add(p_list[j]);
 			}
 			scrollPane = new JScrollPane(list_panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			scrollPane.setBorder(null);
@@ -106,7 +136,7 @@ public class ScheduleList extends JPanel{
 		}		
 	}
 	
-	private class MyActionListener implements ActionListener {
+	private class BtnActionListener implements ActionListener {
 
 
 		@Override
@@ -122,6 +152,18 @@ public class ScheduleList extends JPanel{
 					}
 				}
 			}
+		}
+		
+	}
+	
+	private class ModifyActionListener implements ActionListener {
+
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			JButton btn = (JButton) e.getSource();
+			// Modify
 		}
 		
 	}
