@@ -57,45 +57,41 @@ public class DB {
 		return sch_list;
 
 	}
-
-	public static void updateSchedule(Schedule sch) throws Exception {
-		getInfo();
-		ArrayList<Schedule> schedule = new ArrayList<>();
-		schedule = getDaySchedule();
-		for (int i = 0; i < schedule.size(); i++) {
-			if (schedule.get(i).getTitle().equals(sch.getTitle())) {
-				
-				// update SMART_11 set id ='sunshine' where id ='sun';
-				PreparedStatement pst = conn.prepareStatement("update calendar set day =? where day =? ");
-				pst.setString(1, sch.getDate());
-				pst.setString(2, schedule.get(i).getDate());
-				PreparedStatement pst1 = conn.prepareStatement("update calendar set title =? where title =? ");
-				pst.setString(1, sch.getTitle());
-				pst.setString(2, schedule.get(i).getTitle());
-				PreparedStatement pst2 = conn
-						.prepareStatement("update calendar set contents =? where contents =?");
-				pst.setString(1, sch.getContents());
-				pst.setString(2, schedule.get(i).getContents());
-
-				int cnt = pst.executeUpdate();
-				pst1.executeUpdate();
-				pst2.executeUpdate();
-			}
-		}
-	}
-
 	public static void deleteSchedule(Schedule sch) throws Exception {
 		getInfo();
 		ArrayList<Schedule> schedule = new ArrayList<>();
 		schedule = getDaySchedule();
 		for (int i = 0; i < schedule.size(); i++) {
-			if (schedule.get(i).getTitle().equals(sch.getTitle())) {
+			if (schedule.get(i).getTitle().equals(sch.getTitle())&&schedule.get(i).getDate().equals(sch.getDate())&&schedule.get(i).getContents().equals(sch.getContents())) {
 			
-				PreparedStatement pst = conn.prepareStatement("delete calendar where title=?");
+				PreparedStatement pst = conn.prepareStatement("delete from calendar where title=?");
 				pst.setString(1, sch.getTitle());
-
+				pst.executeUpdate();
 			}
 		}
 	}
+/*
+	public static void updateSchedule(Schedule sch) throws Exception {
+		getInfo();
+		ArrayList<Schedule> schedule = new ArrayList<>();
+		schedule = getDaySchedule();
+		for (int i = 0; i < schedule.size(); i++) {
+			if (schedule.get(i).getTitle().equals(sch.getTitle())||schedule.get(i).getDate().equals(sch.getDate())||schedule.get(i).getContents().equals(sch.getContents())) {
+				
+				// update SMART_11 set id ='sunshine' where id ='sun';
+				PreparedStatement pst = conn.prepareStatement("update calendar set  title=?, day =?, contents=? where title =? and day=? and contents=?");
+				pst.setString(1, sch.getTitle());
+				pst.setString(2, sch.getDate());
+				pst.setString(3, sch.getContents());
+				pst.setString(4, schedule.get(i).getTitle());
+				pst.setString(5, schedule.get(i).getDate());
+				pst.setString(6, schedule.get(i).getContents());
+				int cnt = pst.executeUpdate();
+			
+			}
+		}
+	}
+*/
+
 
 }
