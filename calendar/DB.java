@@ -9,15 +9,11 @@ import java.util.ArrayList;
 
 public class DB {
 	Schedule sch;
-<<<<<<< HEAD
-
-=======
 	
 	public DB() {
 		
 	}
 	
->>>>>>> 653a93ea0f68d918ed718bc723135880dac46cdd
 	public DB(Schedule sch) {
 		this.sch = sch;
 	}
