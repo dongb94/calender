@@ -42,6 +42,11 @@ public class Detail extends JPanel implements ActionListener {
 		scheduleList.setBounds(0, 0, getWidth(), getHeight());
 	}
 	
+	public void setScheduleList(String date) {
+		scheduleList = new ScheduleList(this, date);
+		change("scheduleList");
+	}
+	
 	public void change(String panelName) {
 		if (panelName.equals("scheduleList")) {
 			this.removeAll();
