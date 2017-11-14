@@ -107,7 +107,7 @@ public class PanNorth extends JPanel{
 	}
 	public void reload(){
 		this.today = uP.getToday();
-		textYear.setText(today.get(Calendar.YEAR)+"��");
-		textMonth.setText(today.get(Calendar.MONTH)+1+"��");
+		textYear.setText(today.get(Calendar.YEAR)+"년");
+		textMonth.setText(today.get(Calendar.MONTH)+1+"월");
 	}
 }
