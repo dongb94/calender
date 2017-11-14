@@ -1,18 +1,16 @@
 package calendar;
 
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
-import java.util.regex.*;
 
 public class PanNorth extends JPanel{
 	private CalendarPanel uP;
 	private Calendar today;
-	private JButton btnMonthBefore, btnMonthAfter, btnYearBefore, btnYearAfter;
+	private JButton btnToday, btnMonthBefore, btnMonthAfter, btnYearBefore, btnYearAfter;
 	private JTextField textYear, textMonth;
 
 	//Constructor #Entry Point
@@ -20,13 +18,15 @@ public class PanNorth extends JPanel{
 		this.uP = upperPanel;
 		this.today = uP.getToday();
 		Font font = uP.getDefaultFont();
-		this.setLayout(new FlowLayout());
-		
+		setBackground(new Color(0,0,0,0));
+
 
 		btnYearBefore = new JButton("◀◀");
 		btnMonthBefore = new JButton("◀");
 		textYear = new JTextField(today.get(Calendar.YEAR)+"년");
+		textYear.setEnabled(false);
 		textMonth = new JTextField(today.get(Calendar.MONTH)+1+"월", 3);
+		textMonth.setEnabled(false);
 		btnMonthAfter = new JButton("▶");
 		btnYearAfter = new JButton("▶▶");
 
@@ -83,9 +83,6 @@ public class PanNorth extends JPanel{
 //			@Override
 //			public void caretUpdate(CaretEvent e) {
 //				//regex + update
-//				textYear = (JTextField) e.getSource();
-//				String textYear = "^[0-9]+$";
-//				
 //			}
 //		});
 //		textMonth.addCaretListener(new CaretListener() {
