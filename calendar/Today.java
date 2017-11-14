@@ -37,8 +37,8 @@ public class Today extends JPanel implements Runnable{
 		calendar = C;
 		addMouseListener(new TodayListener());
 	}
-	private void setText(){
-		
+	public void paintComponent(Graphics g){
+		g.clearRect(0, getHeight()/3, getWidth(), (getHeight()*2)/5);
 	}
 	private void makeGUI(){
 		setBackground(new Color(0,0,0,0));
