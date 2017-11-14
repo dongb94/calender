@@ -22,19 +22,19 @@ package calendar;
 
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.util.Calendar;
 import java.util.Date;
-
 import javax.swing.*;
-import javax.swing.event.*;
 
 public class Today extends JPanel implements Runnable{
 	private Date d;
 	private JLabel now;
-	Today(){
+	private CalendarPanel calendar;
+	Today(CalendarPanel C){
 		makeGUI();
 		updateText();
+		calendar = C;
 		addMouseListener(new TodayListener());
 	}
 	private void setText(){
@@ -49,7 +49,14 @@ public class Today extends JPanel implements Runnable{
 		
 		JButton exitButton = new JButton("프로그램 종료");
 		exitButton.setName("exit");
-		exitButton.addMouseListener(new TodayListener());
+		exitButton.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				JButton exit = (JButton)e.getSource();
+				if(exit.getName().equals("exit")){
+					System.exit(1);
+				}	
+			}
+		});
 		exitButton.setBorder(null);
 		
 		add(now,BorderLayout.CENTER);
@@ -92,16 +99,11 @@ public class Today extends JPanel implements Runnable{
 		}
 	}
 	
-	class TodayListener implements MouseListener{
+	class TodayListener extends MouseAdapter{
 		public void mouseClicked(MouseEvent e) {
-			JButton exit = (JButton)e.getSource();
-			if(exit.getName().equals("exit")){
-				System.exit(1);
-			}
+			Calendar goToday = Calendar.getInstance();
+			calendar.setToday(goToday.getTime());
+			calendar.reload();
 		}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseExited(MouseEvent e) {	}
-		public void mousePressed(MouseEvent e) {}
-		public void mouseReleased(MouseEvent e) {}
 	}
 }

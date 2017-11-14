@@ -53,7 +53,7 @@ public class Main extends JFrame{
 		C.setSize((int)(width*0.7), (int)(height));
 		C.setLocation(0, 0);
 		//set today
-		Today T = new Today();
+		Today T = new Today(C);
 		T.setSize((int)(width*0.3), (int)(height*0.19));
 		T.setLocation((int)(width*0.7),0);
 		T.setTimer();

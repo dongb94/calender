@@ -12,7 +12,7 @@ import java.util.regex.*;
 public class PanNorth extends JPanel{
 	private CalendarPanel uP;
 	private Calendar today;
-	private JButton btnToday, btnMonthBefore, btnMonthAfter, btnYearBefore, btnYearAfter;
+	private JButton btnMonthBefore, btnMonthAfter, btnYearBefore, btnYearAfter;
 	private JTextField textYear, textMonth;
 
 	//Constructor #Entry Point
@@ -21,9 +21,8 @@ public class PanNorth extends JPanel{
 		this.today = uP.getToday();
 		Font font = uP.getDefaultFont();
 		this.setLayout(new FlowLayout());
-		Calendar goToday = Calendar.getInstance();
+		
 
-		btnToday = new JButton("오늘로");
 		btnYearBefore = new JButton("◀◀");
 		btnMonthBefore = new JButton("◀");
 		textYear = new JTextField(today.get(Calendar.YEAR)+"년");
@@ -34,7 +33,6 @@ public class PanNorth extends JPanel{
 		textYear.setFont(font);
 		textMonth.setFont(font);
 
-		this.add(btnToday);
 		this.add(btnYearBefore);
 		this.add(btnMonthBefore);
 		this.add(textYear);
@@ -79,14 +77,6 @@ public class PanNorth extends JPanel{
 				uP.reload();
 			}
 		});
-		
-		btnToday.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-					uP.setToday(goToday.getTime());
-					uP.reload();
-			}
-		});
 
 
 //		textYear.addCaretListener(new CaretListener() {
@@ -107,7 +97,7 @@ public class PanNorth extends JPanel{
 	}
 	public void reload(){
 		this.today = uP.getToday();
-		textYear.setText(today.get(Calendar.YEAR)+"��");
-		textMonth.setText(today.get(Calendar.MONTH)+1+"��");
+		textYear.setText(today.get(Calendar.YEAR)+"년");
+		textMonth.setText(today.get(Calendar.MONTH)+1+"월");
 	}
 }
