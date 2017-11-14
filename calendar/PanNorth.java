@@ -23,13 +23,13 @@ public class PanNorth extends JPanel{
 		this.setLayout(new FlowLayout());
 		Calendar goToday = Calendar.getInstance();
 
-		btnToday = new JButton("¿À´Ã·Î");
-		btnYearBefore = new JButton("¢¸¢¸");
-		btnMonthBefore = new JButton("¢¸");
-		textYear = new JTextField(today.get(Calendar.YEAR)+"³â");
-		textMonth = new JTextField(today.get(Calendar.MONTH)+1+"¿ù", 3);
-		btnMonthAfter = new JButton("¢º");
-		btnYearAfter = new JButton("¢º¢º");
+		btnToday = new JButton("ì˜¤ëŠ˜ë¡œ");
+		btnYearBefore = new JButton("â—€â—€");
+		btnMonthBefore = new JButton("â—€");
+		textYear = new JTextField(today.get(Calendar.YEAR)+"ë…„");
+		textMonth = new JTextField(today.get(Calendar.MONTH)+1+"ì›”", 3);
+		btnMonthAfter = new JButton("â–¶");
+		btnYearAfter = new JButton("â–¶â–¶");
 
 		textYear.setFont(font);
 		textMonth.setFont(font);
@@ -107,7 +107,7 @@ public class PanNorth extends JPanel{
 	}
 	public void reload(){
 		this.today = uP.getToday();
-		textYear.setText(today.get(Calendar.YEAR)+"³â");
-		textMonth.setText(today.get(Calendar.MONTH)+1+"¿ù");
+		textYear.setText(today.get(Calendar.YEAR)+"ï¿½ï¿½");
+		textMonth.setText(today.get(Calendar.MONTH)+1+"ï¿½ï¿½");
 	}
 }

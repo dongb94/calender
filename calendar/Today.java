@@ -50,6 +50,7 @@ public class Today extends JPanel implements Runnable{
 		JButton exitButton = new JButton("프로그램 종료");
 		exitButton.setName("exit");
 		exitButton.addMouseListener(new TodayListener());
+		exitButton.setBorder(null);
 		
 		add(now,BorderLayout.CENTER);
 		add(exitButton,BorderLayout.NORTH);
