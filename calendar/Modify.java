@@ -40,8 +40,8 @@ public class Modify extends JPanel {
 
 	JTextArea schedule_content = new JTextArea();
 
-	JButton confirm_button = new JButton("확인");
-	JButton cancel_button = new JButton("취소");
+	JButton confirm_button;
+	JButton cancel_button;
 
 	String du_mon[] = new String[12];
 	String du_day[] = new String[31];
@@ -63,6 +63,11 @@ public class Modify extends JPanel {
 	String year = "2017";
 
 	int send_count;
+	
+	ImageIcon con_image = new ImageIcon("img/check.png");
+	ImageIcon can_image = new ImageIcon("img/x.png");
+	Image image_con = con_image.getImage();
+	Image image_can = can_image.getImage();
 
 	Modify(Detail d) {
 		
@@ -73,6 +78,28 @@ public class Modify extends JPanel {
 		height = res.height * 0.8;
 		width = width * 0.3;
 		height = height * 0.82;
+		
+		la_title.setForeground(Color.white);
+		la_duration.setForeground(Color.white);
+		la_content.setForeground(Color.white);
+		la_start1.setForeground(Color.white);
+		la_end1.setForeground(Color.white);
+		la_time.setForeground(Color.white);
+		la_start2.setForeground(Color.white);
+		la_end2.setForeground(Color.white);
+		
+		image_con = image_con.getScaledInstance((int) height / 13, (int) height / 13, java.awt.Image.SCALE_SMOOTH);
+		image_can = image_can.getScaledInstance((int) height / 13, (int) height / 13, java.awt.Image.SCALE_SMOOTH);
+		con_image = new ImageIcon(image_con);
+		can_image = new ImageIcon(image_can);
+		
+		confirm_button = new JButton(con_image);
+		cancel_button = new JButton(can_image);
+		confirm_button.setBackground(new Color(0,0,0,0));
+		cancel_button.setBackground(new Color(0,0,0,0));
+		confirm_button.setBorder(null);
+		cancel_button.setBorder(null);
+		
 
 		this.d = d;
 		setLayout(null);
@@ -100,8 +127,8 @@ public class Modify extends JPanel {
 		if(type_flag == "mod")if_mod();
 		
 		// x y w h
-		cancel_button.setBounds((int) width * 100 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
-		confirm_button.setBounds((int) width * 200 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
+		cancel_button.setBounds((int) width * 29 / 30 - 2 *(int) height / 13, (int) height / 80, (int) height / 13, (int) height / 13);
+		confirm_button.setBounds((int) width * 29 / 30 -  (int) height / 13, (int) height / 80, (int) height / 13, (int) height / 13);
 		la_title.setBounds((int) width / 30, (int) height / 16, (int) width / 10, (int) height * 30 / 800);
 		schedule_title.setBounds((int) width / 30, (int) height / 10, (int) width * 28 / 30, (int) height * 30 / 800);
 		la_duration.setBounds((int) width * 10 / 300, (int) height * 110 / 800, (int) width * 30 / 300,
