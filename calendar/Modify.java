@@ -97,7 +97,7 @@ public class Modify extends JPanel {
 		duration_start_minute = new JComboBox(du_minute);
 		duration_end_minute = new JComboBox(du_minute);
 		
-		set_init();
+		if(type_flag == "mod")if_mod();
 		
 		// x y w h
 		cancel_button.setBounds((int) width * 100 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
@@ -176,7 +176,7 @@ public class Modify extends JPanel {
 		this.modified_schedule = schedule;
 		set_modify();
 	}
-	public void set_init(){
+	public void if_mod(){
 		title = modified_schedule.getTitle();
 		String date_string = modified_schedule.getDate();
 		
@@ -185,15 +185,19 @@ public class Modify extends JPanel {
 		
 		schedule_content.setText(content);
 		schedule_title.setText(title);
-		duration_start_month.setSelectedIndex(Integer.parseInt(st.nextToken()));
-		duration_start_date.setSelectedIndex(Integer.parseInt(st.nextToken()));
-		
-		if(type_flag == "mod"){
+		duration_start_month.setSelectedIndex(Integer.parseInt(st.nextToken())-1);
+		duration_start_date.setSelectedIndex(Integer.parseInt(st.nextToken())-1);
 		duration_start_time.setSelectedIndex(Integer.parseInt(st.nextToken()));
 		duration_start_minute.setSelectedIndex(Integer.parseInt(st.nextToken()));
 		duration_end_time.setSelectedIndex(Integer.parseInt(st.nextToken()));
 		duration_end_minute.setSelectedIndex(Integer.parseInt(st.nextToken()));
-		}
+	}
+	public void if_cre(String year, String mon, String day){
+		this.year = year;
+		start_mon = mon;
+		start_day = day;
+		duration_start_month.setSelectedIndex(Integer.parseInt(start_mon));
+		duration_start_date.setSelectedIndex(Integer.parseInt(start_day));
 	}
 	class CancelAction implements ActionListener {
 
@@ -297,6 +301,7 @@ public class Modify extends JPanel {
 						}
 						else{
 						//new DB(modified_schedule).addDaySchedule(modified_schedule);// update
+						//new DB(modified_schedule).deleteSchedule(will_delete_schedule);// delete
 						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
