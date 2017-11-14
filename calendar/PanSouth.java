@@ -26,6 +26,7 @@ public class PanSouth extends JPanel{
         this.uP = upperPanel;
         this.setLayout(new GridLayout(7,7,3,3));
         gridInit();
+        dayInit();
     }
     //Initializing dayNamePart(Sun~Sat) and dayBlocks, called only once
     public void gridInit(){
