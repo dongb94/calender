@@ -44,6 +44,7 @@ public class ScheduleList extends JPanel{
 		btn_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
 		add.addActionListener(new MyActionListener());
+		delete.addActionListener(new MyActionListener());
 		
 		btn_panel.setBackground(new Color(0,0,0,150));
 		btn_panel.add(add);
@@ -101,7 +102,7 @@ public class ScheduleList extends JPanel{
 			if (btn.getText().equals("추가")) {
 				d.change("modify");
 			} else if (btn.getText().equals("삭제")) {
-				for (int i=0; i<list.size(); i++) {
+				for (int i=0; i<30; i++) { // list.size()만큼 해야함
 					if (c_list[i].isSelected()) {
 						// db.deleteSchedule(list[i])
 					}
