@@ -2,16 +2,10 @@ package calendar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Calendar;
+import java.awt.event.*;
 
 public class DayPanel extends JPanel {
 	JLabel centerLabel = new JLabel();
-	private PanSouth sPan;
 	String date;
 	// ScheduleList schedulelist = new ScheduleList();
 	
@@ -19,6 +13,7 @@ public class DayPanel extends JPanel {
 		this.add(centerLabel, BorderLayout.CENTER);
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
+				JPanel DayPanel = (JPanel)e.getSource();
 				// schedulelist.setDate();
 			}
 		});

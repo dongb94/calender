@@ -12,7 +12,7 @@ public class Modify extends JPanel {
 	DB sender;
 	Detail d;
 
-	String type_flag;
+	String type_flag="cre";
 
 	private double width;
 	private double height;
@@ -40,6 +40,7 @@ public class Modify extends JPanel {
 	JTextArea schedule_content = new JTextArea();
 
 	JButton confirm_button = new JButton("확인");
+	JButton cancel_button = new JButton("취소");
 
 	String du_mon[] = new String[12];
 	String du_day[] = new String[31];
@@ -114,7 +115,8 @@ public class Modify extends JPanel {
 		}
 		
 		// x y w h
-		confirm_button.setBounds((int) width * 200 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
+		confirm_button.setBounds((int) width * 100 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
+		cancel_button.setBounds((int) width * 200 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
 		la_title.setBounds((int) width / 30, (int) height / 16, (int) width / 10, (int) height * 30 / 800);
 		schedule_title.setBounds((int) width / 30, (int) height / 10, (int) width * 28 / 30, (int) height * 30 / 800);
 		la_duration.setBounds((int) width * 10 / 300, (int) height * 110 / 800, (int) width * 30 / 300,
@@ -150,7 +152,8 @@ public class Modify extends JPanel {
 		schedule_content.setBounds((int) width * 10 / 300, (int) height * 270 / 800, (int) width * 280 / 300,
 				(int) height * 500 / 800);
 		// 300 * 800
-
+		
+		add(cancel_button);
 		add(confirm_button);
 		add(la_title);
 		add(schedule_title);
@@ -250,9 +253,9 @@ public class Modify extends JPanel {
 							send_count = send_count + start_day_int;
 							start_day_int = 0;
 						}
+						send_count = send_count + end_day_int;
 					}
-					send_count = send_count + end_day_int;
-
+					System.out.println(send_count);
 				}
 				start_day_int = temp_start_day;
 				start_mon_int = temp_mon;
@@ -267,41 +270,44 @@ public class Modify extends JPanel {
 
 				while (send_count > 0) {
 
-					date = year + "." + start_mon.toString() + "." + start_day.toString() + "." +end_mon.toString() + "."+ end_day.toString()
-					+ "." +start_time + "." + start_minute + "." + end_time + "." + end_minute;
+					date = year + "." + Integer.toString(start_mon_int) + "." + Integer.toString(start_day_int) + "."
+					+start_time + "." + start_minute + "." + end_time + "." + end_minute;
 					modified_schedule = new Schedule(title, date, content);
 					
 					try {
-						if(type_flag =="cre")
-						new DB(modified_schedule).ADDWEBDB(modified_schedule);
-						else
+						if(type_flag =="cre"){
+						//new DB(modified_schedule).addDaySchedule(modified_schedule);
+						System.out.println(title);
+						System.out.println(date);
+						System.out.println(content);
+						}
+						else{
 							// update
-							;
+						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
 
-					start_day_int++;
 					if (year_int % 4 == 0 && year_int % 100 != 0 || year_int % 400 == 0) {
 						if (start_mon_int == 2 && start_day_int == 29) {
-							start_day_int = 1;
+							start_day_int = 0;
 							start_mon_int++;
 						}
 					} else {
 						if (start_mon_int == 2 && start_day_int == 28) {
-							start_day_int = 1;
+							start_day_int = 0;
 							start_mon_int++;
 						}
 					}
 					if ((start_mon_int == 4 || start_mon_int == 6 || start_mon_int == 9 || start_mon_int == 11)
 							&& start_day_int == 30) {
-						start_day_int = 1;
+						start_day_int = 0;
 						start_mon_int++;
 					}
 					if ((start_mon_int == 1 || start_mon_int == 3 || start_mon_int == 5 || start_mon_int == 7
 							|| start_mon_int == 8 || start_mon_int == 10 || start_mon_int == 12)
 							&& start_day_int == 31) {
-						start_day_int = 1;
+						start_day_int = 0;
 						start_mon_int++;
 					}
 					start_day_int++;
