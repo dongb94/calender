@@ -11,7 +11,9 @@ public class Modify extends JPanel {
 	Schedule modified_schedule;
 	DB sender;
 	Detail d;
-	
+
+	String type_flag;
+
 	private double width;
 	private double height;
 
@@ -61,16 +63,17 @@ public class Modify extends JPanel {
 	int send_count;
 
 	Modify(Detail d) {
+
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
-		width = res.width*0.8;
-		height = res.height*0.8;
-		width = width*0.3;
-		height = height*0.82;
-		
+		width = res.width * 0.8;
+		height = res.height * 0.8;
+		width = width * 0.3;
+		height = height * 0.82;
+
 		this.d = d;
 		setLayout(null);
-		
-		this.setBackground(new Color(0,0,0,150));
+
+		this.setBackground(new Color(0, 0, 0, 150));
 
 		for (int i = 1; i < 13; i++)
 			du_mon[i - 1] = Integer.toString(i) + "월";
@@ -90,26 +93,61 @@ public class Modify extends JPanel {
 		duration_start_minute = new JComboBox(du_minute);
 		duration_end_minute = new JComboBox(du_minute);
 		
-		//x y w h
-		confirm_button.setBounds((int)width*200/300, (int)height/80, (int)width*90/300, (int)height/13);
-		la_title.setBounds((int)width/30, (int)height/16, (int)width/10, (int)height*30/800);
-		schedule_title.setBounds((int)width/30, (int)height/10, (int)width*28/30, (int)height*30/800);
-		la_duration.setBounds((int)width*10/300, (int)height*110/800, (int)width*30/300, (int)height*30/800);
-		la_start1.setBounds((int)width*10/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
-		duration_start_month.setBounds((int)width*40/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
-		duration_start_date.setBounds((int)width*100/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
-		la_end1.setBounds((int)width*150/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
-		duration_end_month.setBounds((int)width*180/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
-		duration_end_date.setBounds((int)width*240/300, (int)height*140/800, (int)width*50/300, (int)height*30/800);
-		la_time.setBounds((int)width*10/300, (int)height*170/800, (int)width*50/300, (int)height*30/800);
-		la_start2.setBounds((int)width*10/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
-		duration_start_time.setBounds((int)width*40/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
-		duration_start_minute.setBounds((int)width*100/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
-		la_end2.setBounds((int)width*150/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
-		duration_end_time.setBounds((int)width*180/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
-		duration_end_minute.setBounds((int)width*240/300, (int)height*200/800, (int)width*50/300, (int)height*30/800);
-		la_content.setBounds((int)width*10/300, (int)height*230/800, (int)width*50/300, (int)height*30/800);
-		schedule_content.setBounds((int)width*10/300, (int)height*270/800, (int)width*280/300, (int)height*500/800);
+		if(type_flag == "mod"){
+		
+		title = modified_schedule.getTitle();
+		String date_string = modified_schedule.getDate();
+		String date_piece[] = date_string.split(".");
+		content = modified_schedule.getContents();
+		
+		schedule_content.setText(content);
+		schedule_title.setText(title);
+		duration_start_month.setSelectedIndex(Integer.parseInt(date_piece[1])-1);
+		duration_start_date.setSelectedIndex(Integer.parseInt(date_piece[2])-1);
+		duration_end_month.setSelectedIndex(Integer.parseInt(date_piece[3])-1);
+		duration_end_date.setSelectedIndex(Integer.parseInt(date_piece[4])-1);
+		duration_start_time.setSelectedIndex(Integer.parseInt(date_piece[5]));
+		duration_start_minute.setSelectedIndex(Integer.parseInt(date_piece[6]));
+		duration_end_time.setSelectedIndex(Integer.parseInt(date_piece[7]));
+		duration_end_minute.setSelectedIndex(Integer.parseInt(date_piece[8]));
+		
+		}
+		// x y w h
+		confirm_button.setBounds((int) width * 200 / 300, (int) height / 80, (int) width * 90 / 300, (int) height / 13);
+		la_title.setBounds((int) width / 30, (int) height / 16, (int) width / 10, (int) height * 30 / 800);
+		schedule_title.setBounds((int) width / 30, (int) height / 10, (int) width * 28 / 30, (int) height * 30 / 800);
+		la_duration.setBounds((int) width * 10 / 300, (int) height * 110 / 800, (int) width * 30 / 300,
+				(int) height * 30 / 800);
+		la_start1.setBounds((int) width * 10 / 300, (int) height * 140 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		duration_start_month.setBounds((int) width * 40 / 300, (int) height * 140 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		duration_start_date.setBounds((int) width * 100 / 300, (int) height * 140 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		la_end1.setBounds((int) width * 150 / 300, (int) height * 140 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		duration_end_month.setBounds((int) width * 180 / 300, (int) height * 140 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		duration_end_date.setBounds((int) width * 240 / 300, (int) height * 140 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		la_time.setBounds((int) width * 10 / 300, (int) height * 170 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		la_start2.setBounds((int) width * 10 / 300, (int) height * 200 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		duration_start_time.setBounds((int) width * 40 / 300, (int) height * 200 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		duration_start_minute.setBounds((int) width * 100 / 300, (int) height * 200 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		la_end2.setBounds((int) width * 150 / 300, (int) height * 200 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		duration_end_time.setBounds((int) width * 180 / 300, (int) height * 200 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		duration_end_minute.setBounds((int) width * 240 / 300, (int) height * 200 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		la_content.setBounds((int) width * 10 / 300, (int) height * 230 / 800, (int) width * 50 / 300,
+				(int) height * 30 / 800);
+		schedule_content.setBounds((int) width * 10 / 300, (int) height * 270 / 800, (int) width * 280 / 300,
+				(int) height * 500 / 800);
 		// 300 * 800
 
 		add(confirm_button);
@@ -136,15 +174,16 @@ public class Modify extends JPanel {
 
 	}
 
-	public Schedule modify_schedule() {
+	public void modify_schedule() {
 
-		return modified_schedule;
+		this.type_flag = "mod";
 	}
 
-	public Schedule create_schedule() {
+	public void create_schedule() {
 
-		return modified_schedule;
+		this.type_flag = "cre";
 	}
+
 
 	class ConfirmAction implements ActionListener {
 
@@ -213,23 +252,23 @@ public class Modify extends JPanel {
 				}
 				start_day_int = temp_start_day;
 				start_mon_int = temp_mon;
-				if(Integer.parseInt(start_time) < 10)
-					start_time = "0"+start_time;
-				if(Integer.parseInt(start_minute) < 10)
-					start_minute = "0"+start_minute;
-				if(Integer.parseInt(end_time) < 10)
-					end_time = "0"+end_time;
-				if(Integer.parseInt(end_minute) < 10)
-					end_minute = "0"+end_minute;
-				
-				while (send_count > 0) {
-					
-					date = year + "." + start_mon.toString() + "." + start_day.toString() + "." + start_time + ";"
-							+ start_minute + "." + end_time + ":" + end_minute;
-					modified_schedule = new Schedule(title, date, content);
+				if (Integer.parseInt(start_time) < 10)
+					start_time = "0" + start_time;
+				if (Integer.parseInt(start_minute) < 10)
+					start_minute = "0" + start_minute;
+				if (Integer.parseInt(end_time) < 10)
+					end_time = "0" + end_time;
+				if (Integer.parseInt(end_minute) < 10)
+					end_minute = "0" + end_minute;
 
+				while (send_count > 0) {
+
+					date = year + "." + start_mon.toString() + "." + start_day.toString() + "." +end_mon.toString() + "."+ end_day.toString()
+					+ "." +start_time + "." + start_minute + "." + end_time + "." + end_minute;
+					modified_schedule = new Schedule(title, date, content);
+					
 					try {
-						new DB(modified_schedule).addDaySchedule(modified_schedule);
+						new DB(modified_schedule).ADDWEBDB(modified_schedule);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -260,9 +299,9 @@ public class Modify extends JPanel {
 					start_day_int++;
 					send_count--;
 				}
-				
+
 			} // 기간 범위가 1년
-			
+
 			d.change("scheduleList");
 		}
 
