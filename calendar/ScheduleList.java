@@ -215,9 +215,9 @@ public class ScheduleList extends JPanel{
 				detail.setCreate();
 				detail.ifCre(arg_piece[0],arg_piece[1],arg_piece[2]);
 			} else if (btn.getName().equals("delete")) {
-				for (int i=0; i<list.size(); i++) { // list.size()만큼 해야함
-					if (c_list[i].isSelected()) {
-						new DeleteThread(i).start();
+				for (int i=0; i<c_list.length; i++) { // list.size()만큼 해야함
+					if (c_list[i].isSelected()){
+						new DeleteThread(dayList.get(i)).start();
 						detail.setScheduleList(date);
 					}
 				}
@@ -251,13 +251,13 @@ public class ScheduleList extends JPanel{
 		return list;
 	}
 	class DeleteThread extends Thread {
-		int i;
-		DeleteThread(int i){
-			this.i=i;
+		Schedule s;
+		DeleteThread(Schedule s){
+			this.s=s;
 		}
 		public void run(){
 			try {
-				db.deleteSchedule(list.get(i));
+				db.deleteSchedule(s);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
