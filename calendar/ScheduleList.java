@@ -84,7 +84,9 @@ public class ScheduleList extends JPanel{
 			int i, j, k;
 			list = db.getDaySchedule();
 			this.date = date;
-
+			
+			System.out.println(date);
+			
 			k=0;
 			while (argst.hasMoreElements()) {
 				arg_piece[k] = new String(argst.nextToken("."));

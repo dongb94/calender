@@ -7,16 +7,21 @@ import java.awt.event.*;
 import java.util.Date;
 
 public class DayPanel extends JPanel {
+
 	private JLabel centerLabel = new JLabel();
 	private String date;
 	private JLabel title = new JLabel();
+
+	Detail D;
+
+
 	public DayPanel(){
 		this.add(centerLabel, BorderLayout.CENTER);
 		this.add(title, BorderLayout.SOUTH);
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				DayPanel DayPanel = (DayPanel)e.getSource();
-				
+				D.setScheduleList(DayPanel.date);
 			}
 		});
 		Font font = centerLabel.getFont();
@@ -64,7 +69,12 @@ public class DayPanel extends JPanel {
 	public void setDate(String date){
 		this.date = date;
 	}
+
 	public String getDate(){
 		return this.date;
+  }
+	public void setDetailPane(Detail D){
+		this.D = D;
+
 	}
 }

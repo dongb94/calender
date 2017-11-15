@@ -48,12 +48,17 @@ public class PanSouth extends JPanel{
     public void dayInit(){
         for(DayPanel day: dayBlock){
             day.setText("");
+
             day.setTitle("");
+
+            day.setDetailPane(uP.getDetailPane());
+
         }
         Calendar firstDay = uP.getToday();
         firstDay.set(Calendar.DAY_OF_MONTH, firstDay.getActualMinimum(Calendar.DAY_OF_MONTH));
         int blockCount = firstDay.get(Calendar.DAY_OF_WEEK)-firstDay.getFirstDayOfWeek();
         Date d = new Date();
+
 
         // 1.get Titles only for this month
         HashMap<String, Schedule> scheduleList = new HashMap<String, Schedule>();

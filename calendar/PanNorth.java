@@ -115,19 +115,35 @@ public class PanNorth extends JPanel{
 		});
 
 
-//		textYear.addCaretListener(new CaretListener() {
-//			@Override
-//			public void caretUpdate(CaretEvent e) {
-//				//regex + update
-//			}
-//		});
-//		textMonth.addCaretListener(new CaretListener() {
-//			@Override
-//			public void caretUpdate(CaretEvent e) {
-//				//regex + update
-//			}
-//		});
+		textYear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JTextField textField = (JTextField) e.getSource();
+				String textStr = textField.getText();
+				String textNum = textStr.replaceAll("[^0-9]", "");
+
+				today.set(Calendar.YEAR, Integer.parseInt(textNum));
+				uP.setToday(today.getTime());
+				uP.reload();
+			}
+		});
+		textMonth.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JTextField textField = (JTextField) e.getSource();
+				String textStr = textField.getText();
+				String textNum = textStr.replaceAll("[^0-9]", "");
+
+				today.set(Calendar.MONTH, Integer.parseInt(textNum)-1);
+				uP.setToday(today.getTime());
+				uP.reload();
+			}
+		});
 	}
+
+
 	public void reload(){
 		this.today = uP.getToday();
 		textYear.setText(today.get(Calendar.YEAR)+"년");

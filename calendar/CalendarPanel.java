@@ -10,9 +10,11 @@ public class CalendarPanel extends JPanel {
     private Font defaultFont;
     private PanNorth nPan;
     private PanSouth sPan;
+    private Detail D;
 
     //Constructor #Entry Point
-    public CalendarPanel(){
+    public CalendarPanel(Detail D){
+    	this.D = D;
 		setBackground(new Color(0,0,0,50));
         today = Calendar.getInstance();
         defaultFont = new Font("Sherif", Font.BOLD, 20);
@@ -27,7 +29,9 @@ public class CalendarPanel extends JPanel {
         nPan.reload();
         sPan.reload();
     }
-
+    public Detail getDetailPane(){
+    	return D;
+    }
     public Calendar getToday() {
         return (Calendar)today.clone();
     }

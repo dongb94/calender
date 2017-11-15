@@ -55,8 +55,13 @@ public class Main extends JFrame{
 		setLocation((int)(width*0.1), (int)(height*0.1));
 		setLayout(null);
 		
+		//set detail
+		Detail D = new Detail();
+		D.setSize((int)(width*0.3), (int)(height*0.81));
+		D.setLocation((int)(width*0.7), (int)(height*0.19));
+		D.setPanel();
 		//set calendar
-		CalendarPanel C = new CalendarPanel();
+		CalendarPanel C = new CalendarPanel(D);
 		C.setSize((int)(width*0.7), (int)(height));
 		C.setLocation(0, 0);
 		//set today
@@ -66,11 +71,6 @@ public class Main extends JFrame{
 		T.setTimer();
 		Thread thread = new Thread(T);
 		thread.start();
-		//set detail
-		Detail D = new Detail();
-		D.setSize((int)(width*0.3), (int)(height*0.81));
-		D.setLocation((int)(width*0.7), (int)(height*0.19));
-		D.setPanel();
 		
 		add(C);
 		add(T);
