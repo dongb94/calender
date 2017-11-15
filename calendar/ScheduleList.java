@@ -10,11 +10,12 @@ import javax.swing.*;
 public class ScheduleList extends JPanel{
 	
 	private Detail detail;
-	private ArrayList<Schedule> list= new ArrayList<>();
+	private static ArrayList<Schedule> list= new ArrayList<>();
 	private ArrayList<Schedule> dayList= new ArrayList<>();
 	private Schedule schedule;
 	private DB db;
-	private String start_time, end_time, date;
+	private String start_time, end_time;
+	private static String date;
 	private JLabel blank;
 	private JScrollPane scroll;
 	private JPanel btn_panel, list_panel;
@@ -26,6 +27,7 @@ public class ScheduleList extends JPanel{
 	private JScrollPane scrollPane;
 	private String arg_piece[]= new String[3];
 	private String date_piece[] = new String[7];
+	private String dates;
 	private int j;
 	
 	private double width, height;
@@ -101,7 +103,6 @@ public class ScheduleList extends JPanel{
 	ScheduleList(Detail detail, String date) {
 		this();
 		this.detail = detail;
-		
 		setList(date);
 	}
 	public void setList(String date) {
@@ -216,13 +217,8 @@ public class ScheduleList extends JPanel{
 			} else if (btn.getName().equals("delete")) {
 				for (int i=0; i<list.size(); i++) { // list.size()만큼 해야함
 					if (c_list[i].isSelected()) {
-						try {
-							db.deleteSchedule(list.get(i));
-							detail.setScheduleList(date);
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+						new DeleteThread(i).start();
+						detail.setScheduleList(date);
 					}
 				}
 			}
@@ -240,19 +236,33 @@ public class ScheduleList extends JPanel{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			JButton btn = (JButton) e.getSource();
 			detail.setModify();
 			detail.set_schedule(mod_schedule);
 			detail.ifMod();
-			//detail.set_schedule(throw_schedule);
-			detail.setScheduleList(date);
 			detail.change("modify");
 		}
 		
 	}
-	public String get_date(){
-		return this.date;
+	public static String get_date(){
+		return date;
+	}
+	public static ArrayList<Schedule> get_list(){
+		return list;
+	}
+	class DeleteThread extends Thread {
+		int i;
+		DeleteThread(int i){
+			this.i=i;
+		}
+		public void run(){
+			try {
+				db.deleteSchedule(list.get(i));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }

@@ -249,6 +249,9 @@ public class Modify extends JPanel {
 		duration_end_time.setSelectedIndex(d.getHours());
 		duration_end_minute.setSelectedIndex(d.getMinutes());
 	}
+	public void set_count(){
+		this.send_count = 1;
+	}
 	class CancelAction implements ActionListener {
 
 		@Override
@@ -283,8 +286,6 @@ public class Modify extends JPanel {
 			end_minute = (String) duration_end_minute.getSelectedItem();
 			end_minute = end_minute.replace("분", "");
 
-			int start_date = Integer.parseInt(start_mon + start_day);
-			int end_date = Integer.parseInt(end_mon + end_day);
 			int start_mon_int = Integer.parseInt(start_mon);
 			int end_mon_int = Integer.parseInt(end_mon);
 			int start_day_int = Integer.parseInt(start_day);
@@ -337,19 +338,17 @@ public class Modify extends JPanel {
 					end_minute = "0" + end_minute;
 
 				while (send_count > 0) {
-
+			
 					date = year + "." + Integer.toString(start_mon_int) + "." + Integer.toString(start_day_int) + "."
 					+start_time + "." + start_minute + "." + end_time + "." + end_minute;
-					modified_schedule = new Schedule(title, date, content);
 					
 					try {
 						if(type_flag =="cre"){
-						new DB().addDaySchedule(modified_schedule);
+							new SenderThread(new Schedule(title, date, content)).start();
 						}
 						else{
 							will_delete_schedule = modified_schedule;
-						new DB(modified_schedule).addDaySchedule(modified_schedule);// update
-						new DB(modified_schedule).deleteSchedule(will_delete_schedule);// delete
+							new ModifyThread(new Schedule(title, date, content)).start();
 						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -390,5 +389,32 @@ public class Modify extends JPanel {
 
 	}
 
+	class SenderThread extends Thread {
+		Schedule s;
+		SenderThread(Schedule s){
+			this.s=s;
+		}
+		public void run(){
+			try {
+				new DB().addDaySchedule(s);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	class ModifyThread extends Thread {
+		Schedule s;
+		ModifyThread(Schedule s){
+			this.s=s;
+		}
+		public void run(){
+			try {				
+				new DB().deleteSchedule(will_delete_schedule);// delete
+				new DB(s).addDaySchedule(s);// update
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
 

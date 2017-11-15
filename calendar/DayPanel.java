@@ -23,6 +23,7 @@ public class DayPanel extends JPanel {
 
 	public DayPanel(PanSouth uP){
 		setLayout(new GridLayout(4,1));
+		setBackground(Color.black);
 		this.uP = uP;
 		Font font = centerLabel.getFont();
 		font = new Font(font.getFamily(),font.getStyle(),30);
@@ -33,25 +34,20 @@ public class DayPanel extends JPanel {
 			label.setForeground(Color.white);
 			this.add(label);
 		}
-
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
 				DayPanel DayPanel = (DayPanel)e.getSource();
 				D.setScheduleList(DayPanel.date);
 			}
 		});
-
-		//ImageIcon img = new ImageIcon("image/day.png");
-		//Image image = img.getImage(); // transform it 
-		//Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		//img = new ImageIcon(newimg);  // transform it back
-		//centerLabel.setIcon(img);
+		
 	}
 	public DayPanel(PanSouth uP, String text){
 		this(uP);
 		centerLabel.setText(text);
 		this.setForeground(new Color(255,255,255));
 		this.setBackground(new Color(0,0,0,150));
+
 	}
 	public DayPanel(PanSouth uP, String text,Color color){
 		this(uP);
@@ -68,7 +64,7 @@ public class DayPanel extends JPanel {
 			 if(titleCount < 3) {
 				 if (tempStr.length() > 10)
 					 tempStr = tempStr.substring(0, 10) + "...";
-				 titles[titleCount].setText("* " + tempStr);
+				 titles[titleCount].setText(" * " + tempStr);
 				 titleCount++;
 			 }
 		 }
@@ -80,7 +76,6 @@ public class DayPanel extends JPanel {
 	}
 	public void setText(String text){
 		centerLabel.setText(text);
-		this.setBackground(new Color(0,0,0));
 	}
 	// Allow only 3 texts
 	public void addText(String text){

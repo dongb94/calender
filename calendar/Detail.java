@@ -60,6 +60,7 @@ public class Detail extends JPanel implements ActionListener {
 
 	public void setModify() {
 		modify.set_modify();
+		modify.set_count();
 	}
 	public void setCreate() {
 		modify.set_create();

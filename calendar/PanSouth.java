@@ -19,20 +19,17 @@ public class PanSouth extends JPanel{
     };
     // day 1 ~ 28/29(Feb) 30/31 + blanks
     private DayPanel[] dayBlock = new DayPanel[42];
-    // Lists
-    private ArrayList<Schedule> totalScheduleList;
     // Constructor #Entry Point
     public PanSouth(CalendarPanel upperPanel) {
-        try {
-            totalScheduleList = DB.getDaySchedule();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         this.setBackground(new Color(0,0,0,0));
         this.uP = upperPanel;
         this.setLayout(new GridLayout(7,7,3,3));
         gridInit();
         dayInit();
+        reload r = new reload();
+        Thread t = new Thread(r);
+        t.setName("init");
+        t.start();
     }
     // Initializing dayNamePart(Sun~Sat) and dayBlocks, called only once
     public void gridInit(){
@@ -60,6 +57,7 @@ public class PanSouth extends JPanel{
 
         // 1. set Titles and Dates for this month
         Date d = new Date();
+        String selectedDate=ScheduleList.get_date().substring(8,10);
         for(int i = 0; i< firstDay.getActualMaximum(Calendar.DAY_OF_MONTH); ++i) {
         	dayBlock[i + blockCount].setDate((d.getYear()+1900)+"."+(d.getMonth()+1)+"."+(i+1));
         	dayBlock[i + blockCount].setDay(String.valueOf(firstDay.get(Calendar.YEAR)+"/"+(firstDay.get(Calendar.MONTH)+1)+"/"+firstDay.get(Calendar.DATE)));        	
@@ -71,6 +69,11 @@ public class PanSouth extends JPanel{
             else if((i+blockCount)%7 == 6) dayBlock[i + blockCount].setForeground(new Color(0,0,255));
                 //other
             else dayBlock[i + blockCount].setForeground(new Color(255,255,255));
+            if(Integer.parseInt(selectedDate)==(i+1)){
+            	dayBlock[i+blockCount].setBackground(Color.gray);
+            }else{
+            	dayBlock[i+blockCount].setBackground(Color.black);
+            }
             dayBlock[i + blockCount].setText(String.valueOf(i + 1));
             dayBlock[i + blockCount].setTitles();
         }
@@ -83,7 +86,7 @@ public class PanSouth extends JPanel{
         }catch(Exception e){}
 
         ArrayList<String> strList = new ArrayList<String>();
-        Iterator it = totalScheduleList.iterator();
+        Iterator it = ScheduleList.get_list().iterator();
         Schedule tempSchedule;
         Calendar calTemp = Calendar.getInstance();
         while(it.hasNext()){
@@ -99,7 +102,21 @@ public class PanSouth extends JPanel{
     }
     // Reloads GUI
     public void reload(){
-    	
-        dayInit();
+    	dayInit();
     }
+    
+    class reload extends Thread{
+		public void run(){
+			while(true){
+			    dayInit();
+			    try{
+			    	Thread.sleep(1000);
+			    }catch(InterruptedException e){
+			    	
+			    }
+			}
+		}
+    }
+    
+   
 }
