@@ -1,4 +1,4 @@
-﻿package calendar;
+package calendar;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,7 +33,7 @@ public class DB {
 		pst.setString(2, sch.getDate());
 		pst.setString(3, sch.getContents());
 		int cnt = pst.executeUpdate();
-		return cnt;// 리턴값 int인 이유는 추가 되었을떄 cnt>0 이상일경우에 디비에 추가가 성공됨을 알 수 있다.
+		return cnt;// 리턴값 int인 이유는 추가 되었을? cnt>0 이상일경우에 디비에 추가가 성공됨을 알 수 있다.
 	}
 
 	// 2017.11.14:8.28
