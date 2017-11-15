@@ -39,6 +39,8 @@ public class Today extends JPanel implements Runnable{
 	}
 	public void paintComponent(Graphics g){
 		g.clearRect(0, (getHeight()*2)/5, getWidth(), (getHeight()*1)/3);
+		//g.setColor(new Color(0,0,0,0));
+		g.fillRect(0, (getHeight()*2)/5, getWidth(), (getHeight()*1)/3);
 	}
 	private void makeGUI(){
 		setBackground(new Color(0,0,0,0));
