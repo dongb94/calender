@@ -22,12 +22,19 @@ package calendar;
 /**메인 프레임*/
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 
 public class Main extends JFrame{
+	private Main main;
+	private Point initPoint;
 
 	private double width;
 	private double height;
 	Main(){
+		main = this;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		makeGUI();
@@ -68,6 +75,20 @@ public class Main extends JFrame{
 		add(C);
 		add(T);
 		add(D);
+
+		// Panel Moving Methods
+		this.addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent e) {
+				main.initPoint = e.getPoint();
+			}
+		});
+		this.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				main.setLocation(
+						main.getX()+(int)(e.getX()-initPoint.getX()),
+						main.getY()+(int)(e.getY()-initPoint.getY()));
+			}
+		});
 	}
 	
 	public static void main(String[] args) {
