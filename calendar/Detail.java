@@ -80,6 +80,11 @@ public class Detail extends JPanel implements ActionListener {
 	public void ifCre(String year, String mon, String day) {
 		modify.if_cre(year, mon, day);
 	}
-
+	public void set_schedule(Schedule schedule){
+		modify.set_schedule(schedule);
+	}
+	public void set_list(){
+		setScheduleList(scheduleList.get_date());
+	}
 
 }

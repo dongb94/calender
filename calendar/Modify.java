@@ -71,7 +71,6 @@ public class Modify extends JPanel {
 
 	Modify(Detail d) {
 		
-		will_delete_schedule = modified_schedule;
 		
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 		width = res.width * 0.8;
@@ -127,8 +126,8 @@ public class Modify extends JPanel {
 		if(type_flag == "mod")if_mod();
 		
 		// x y w h
-		cancel_button.setBounds((int) width * 29 / 30 - 2 *(int) height / 13, (int) height / 80, (int) height / 13, (int) height / 13);
-		confirm_button.setBounds((int) width * 29 / 30 -  (int) height / 13, (int) height / 80, (int) height / 13, (int) height / 13);
+		cancel_button.setBounds((int) width * 29 / 30 - 2 *(int) height / 13, (int) height / 80, 50, 50);
+		confirm_button.setBounds((int) width * 29 / 30 -  (int) height / 13, (int) height / 80, 50, 50);
 		la_title.setBounds((int) width / 30, (int) height / 16, (int) width / 10, (int) height * 30 / 800);
 		schedule_title.setBounds((int) width / 30, (int) height / 10, (int) width * 28 / 30, (int) height * 30 / 800);
 		la_duration.setBounds((int) width * 10 / 300, (int) height * 110 / 800, (int) width * 30 / 300,
@@ -212,6 +211,7 @@ public class Modify extends JPanel {
 		
 		schedule_content.setText(content);
 		schedule_title.setText(title);
+		st.nextToken();
 		duration_start_month.setSelectedIndex(Integer.parseInt(st.nextToken())-1);
 		duration_start_date.setSelectedIndex(Integer.parseInt(st.nextToken())-1);
 		duration_start_time.setSelectedIndex(Integer.parseInt(st.nextToken()));
@@ -322,14 +322,13 @@ public class Modify extends JPanel {
 					
 					try {
 						if(type_flag =="cre"){
-						//new DB(modified_schedule).addDaySchedule(modified_schedule);
-						System.out.println(title);
-						System.out.println(date);
-						System.out.println(content);
+						new DB().addDaySchedule(modified_schedule);
+						System.out.println("I created db");
 						}
 						else{
-						//new DB(modified_schedule).addDaySchedule(modified_schedule);// update
-						//new DB(modified_schedule).deleteSchedule(will_delete_schedule);// delete
+							will_delete_schedule = modified_schedule;
+						new DB(modified_schedule).addDaySchedule(modified_schedule);// update
+						new DB(modified_schedule).deleteSchedule(will_delete_schedule);// delete
 						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
@@ -365,6 +364,7 @@ public class Modify extends JPanel {
 
 			d.change("scheduleList");
 			set_create();
+			d.set_list();
 		}
 
 	}
