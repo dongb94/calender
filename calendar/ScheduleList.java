@@ -152,6 +152,10 @@ public class ScheduleList extends JPanel{
 					b_list[j].setBackground(new Color(10,10,10));
 					t_list[j].setBackground(new Color(10,10,10));
 					p_list[j].setBackground(new Color(10,10,10));
+					
+					st_list[j].setForeground(Color.WHITE);
+					et_list[j].setForeground(Color.WHITE);
+					b_list[j].setForeground(Color.WHITE);
 				
 					t_list[j].add(st_list[j]);
 					t_list[j].add(et_list[j]);
