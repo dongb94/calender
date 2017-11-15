@@ -1,17 +1,11 @@
 package calendar;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 
 public class Detail extends JPanel implements ActionListener {
 
@@ -43,9 +37,8 @@ public class Detail extends JPanel implements ActionListener {
 	}
 	
 	public void setScheduleList(String date) {
-		scheduleList = new ScheduleList(this, date);
-		change("scheduleList");
-		setVisible(true);
+		Thread t = new Thread(new reloadScheduleList(this, date));
+		t.start();
 	}
 	
 	public void change(String panelName) {
@@ -86,5 +79,19 @@ public class Detail extends JPanel implements ActionListener {
 	public void set_list(){
 		setScheduleList(scheduleList.get_date());
 	}
-
+	
+	class reloadScheduleList extends Thread {
+		Detail d;
+		String date;
+		reloadScheduleList(Detail d,String date){
+			this.d = d;
+			this.date = date;
+		}
+		public void run(){
+			scheduleList = new ScheduleList(d , date);
+			change("scheduleList");
+		}
+	}
 }
+
+
