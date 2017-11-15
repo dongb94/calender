@@ -48,8 +48,9 @@ public class PanSouth extends JPanel{
     public void dayInit(){
         for(DayPanel day: dayBlock){
             day.setText("");
-            day.setDate("");
+
             day.resetTitle();
+
             day.setDetailPane(uP.getDetailPane());
         }
         Calendar firstDay = uP.getToday();
@@ -58,34 +59,11 @@ public class PanSouth extends JPanel{
         
        
 
-
-        // 1.get Titles only for this month
-        HashMap<String, Schedule> scheduleList = new HashMap<String, Schedule>();
-        Iterator it = totalScheduleList.iterator();
-        Schedule tempSchedule;
-        Calendar calTemp = Calendar.getInstance();
-        while(it.hasNext()){
-            try {
-                calTemp.setTime(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SS")
-                        .parse((tempSchedule = (Schedule) it.next()).getDate()));
-                if (calTemp.get(Calendar.YEAR) == firstDay.get(Calendar.YEAR)) {
-                    if (calTemp.get(Calendar.MONTH) == firstDay.get(Calendar.MONTH)) {
-                        scheduleList.put(
-                                String.valueOf(calTemp.get(Calendar.YEAR)+"/"+calTemp.get(Calendar.MONTH)+"/"+calTemp.get(Calendar.DATE)),
-                                        tempSchedule);
-                    } else if (calTemp.get(Calendar.MONTH) >= firstDay.get(Calendar.MONTH))
-                        break;
-                }
-            } catch(Exception e){}
-        }
-        // 2. set Titles and Dates for this month
-        calTemp = (Calendar)firstDay.clone();
-        Date ym = firstDay.getTime();
+        // 1. set Titles and Dates for this month
         for(int i = 0; i< firstDay.getActualMaximum(Calendar.DAY_OF_MONTH); ++i) {
-        	dayBlock[i + blockCount].setDate((ym.getYear()+1900)+"."+(ym.getMonth()+1)+"."+(i+1));
-        
-        	calTemp.add(Calendar.DATE, 1);
-        	firstDay.add(Calendar.DATE, 1);
+            dayBlock[i + blockCount].setDate(String.valueOf(firstDay.get(Calendar.YEAR)+"/"+(firstDay.get(Calendar.MONTH)+1)+"/"+firstDay.get(Calendar.DATE)));
+            firstDay.add(Calendar.DATE, 1);
+
             //Sunday
             if((i+blockCount)%7 == 0) dayBlock[i + blockCount].setForeground(new Color(255,0,0));
                 //Saturday
