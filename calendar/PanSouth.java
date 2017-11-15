@@ -10,13 +10,13 @@ public class PanSouth extends JPanel{
     private CalendarPanel uP;
     //Sunday ~ Saturday
     private DayPanel[] dayNames = {
-            new DayPanel("일",new Color(255,0,0,150)),
-            new DayPanel("월"),
-            new DayPanel("화"),
-            new DayPanel("수"),
-            new DayPanel("목"),
-            new DayPanel("금"),
-            new DayPanel("토",new Color(0,0,255,150))
+            new DayPanel(this,"일",new Color(255,0,0,150)),
+            new DayPanel(this,"월"),
+            new DayPanel(this,"화"),
+            new DayPanel(this,"수"),
+            new DayPanel(this,"목"),
+            new DayPanel(this,"금"),
+            new DayPanel(this,"토",new Color(0,0,255,150))
     };
     // day 1 ~ 28/29(Feb) 30/31 + blanks
     private DayPanel[] dayBlock = new DayPanel[42];
@@ -40,7 +40,7 @@ public class PanSouth extends JPanel{
         for(DayPanel day: dayNames)
             this.add(day);
         for(int i=0; i<dayBlock.length; ++i) {
-            dayBlock[i] = new DayPanel();
+            dayBlock[i] = new DayPanel(this);
             this.add(dayBlock[i]);
         }
     }
@@ -48,11 +48,14 @@ public class PanSouth extends JPanel{
     public void dayInit(){
         for(DayPanel day: dayBlock){
             day.setText("");
+<<<<<<< HEAD
             day.setDate("");
             day.setTitle("");
 
+=======
+            day.resetTitle();
+>>>>>>> 5359439c9006dd19785c72abbe5481d39bbd5b8d
             day.setDetailPane(uP.getDetailPane());
-
         }
         Calendar firstDay = uP.getToday();
         firstDay.set(Calendar.DAY_OF_MONTH, firstDay.getActualMinimum(Calendar.DAY_OF_MONTH));
@@ -60,6 +63,7 @@ public class PanSouth extends JPanel{
         
        
 
+<<<<<<< HEAD
 
         // 1.get Titles only for this month
         HashMap<String, Schedule> scheduleList = new HashMap<String, Schedule>();
@@ -87,20 +91,12 @@ public class PanSouth extends JPanel{
         	dayBlock[i + blockCount].setDate((ym.getYear()+1900)+"."+(ym.getMonth()+1)+"."+(i+1));
         
         	calTemp.add(Calendar.DATE, 1);
-            //Sunday
-            if((i+blockCount)%7 == 0) dayBlock[i + blockCount].setForeground(new Color(255,0,0));
-                //Saturday
-            else if((i+blockCount)%7 == 6) dayBlock[i + blockCount].setForeground(new Color(0,0,255));
-                //other
-            else dayBlock[i + blockCount].setForeground(new Color(255,255,255));
-            dayBlock[i + blockCount].setText(String.valueOf(i + 1));
-            if(scheduleList.get(dayBlock[i + blockCount].getDate()) != null)
-                dayBlock[i + blockCount].setTitle(scheduleList.get(dayBlock[i + blockCount].getDate()).getTitle());
-        }
-        /*
-        // 1.set Date(1~31) for each panel
+=======
+        // 1. set Titles and Dates for this month
         for(int i = 0; i< firstDay.getActualMaximum(Calendar.DAY_OF_MONTH); ++i) {
-            dayBlock[i + blockCount].setDate(Calendar.YEAR+"."+Calendar.MONTH+"."+(i+1));
+            dayBlock[i + blockCount].setDate(String.valueOf(firstDay.get(Calendar.YEAR)+"/"+(firstDay.get(Calendar.MONTH)+1)+"/"+firstDay.get(Calendar.DATE)));
+            firstDay.add(Calendar.DATE, 1);
+>>>>>>> 5359439c9006dd19785c72abbe5481d39bbd5b8d
             //Sunday
             if((i+blockCount)%7 == 0) dayBlock[i + blockCount].setForeground(new Color(255,0,0));
                 //Saturday
@@ -108,8 +104,30 @@ public class PanSouth extends JPanel{
                 //other
             else dayBlock[i + blockCount].setForeground(new Color(255,255,255));
             dayBlock[i + blockCount].setText(String.valueOf(i + 1));
+            dayBlock[i + blockCount].setTitles();
         }
-        */
+    }
+    // Callback Function for DayPanel
+    public ArrayList<String> getTitlesFromList(String date){
+        Calendar receivedDay =Calendar.getInstance();
+        try {
+            receivedDay.setTime((new SimpleDateFormat("yyyy/MM/dd")).parse(date));
+        }catch(Exception e){}
+
+        ArrayList<String> strList = new ArrayList<String>();
+        Iterator it = totalScheduleList.iterator();
+        Schedule tempSchedule;
+        Calendar calTemp = Calendar.getInstance();
+        while(it.hasNext()){
+            try {
+                calTemp.setTime(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SS")
+                        .parse((tempSchedule = (Schedule) it.next()).getDate()));
+                if (calTemp.get(Calendar.YEAR) == receivedDay.get(Calendar.YEAR) &&
+                        calTemp.get(Calendar.DAY_OF_YEAR) == receivedDay.get(Calendar.DAY_OF_YEAR))
+                            strList.add(tempSchedule.title);
+            } catch(Exception e){}
+        }
+        return strList;
     }
     // Reloads GUI
     public void reload(){
