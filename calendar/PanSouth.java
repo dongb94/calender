@@ -2,7 +2,6 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -60,10 +59,12 @@ public class PanSouth extends JPanel{
        
 
         // 1. set Titles and Dates for this month
+        Date d = new Date();
         for(int i = 0; i< firstDay.getActualMaximum(Calendar.DAY_OF_MONTH); ++i) {
-            dayBlock[i + blockCount].setDate(String.valueOf(firstDay.get(Calendar.YEAR)+"/"+(firstDay.get(Calendar.MONTH)+1)+"/"+firstDay.get(Calendar.DATE)));
-            firstDay.add(Calendar.DATE, 1);
-
+        	dayBlock[i + blockCount].setDate((d.getYear()+1900)+"."+(d.getMonth()+1)+"."+(i+1));
+        	dayBlock[i + blockCount].setDay(String.valueOf(firstDay.get(Calendar.YEAR)+"/"+(firstDay.get(Calendar.MONTH)+1)+"/"+firstDay.get(Calendar.DATE)));        	
+        	firstDay.add(Calendar.DATE, 1);
+        	
             //Sunday
             if((i+blockCount)%7 == 0) dayBlock[i + blockCount].setForeground(new Color(255,0,0));
                 //Saturday

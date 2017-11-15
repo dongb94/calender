@@ -2,7 +2,6 @@ package calendar;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.event.*;
 import java.awt.event.*;
 import java.util.*;
 
@@ -221,8 +220,12 @@ public class Modify extends JPanel {
 		schedule_content.setText(content);
 		schedule_title.setText(title);
 		st.nextToken();
-		duration_start_month.setSelectedIndex(Integer.parseInt(st.nextToken())-1);
-		duration_start_date.setSelectedIndex(Integer.parseInt(st.nextToken())-1);
+		int mon = Integer.parseInt(st.nextToken())-1;
+		int day = Integer.parseInt(st.nextToken())-1;
+		duration_start_month.setSelectedIndex(mon);
+		duration_start_date.setSelectedIndex(day);
+		duration_end_month.setSelectedIndex(mon);
+		duration_end_date.setSelectedIndex(day);
 		duration_start_time.setSelectedIndex(Integer.parseInt(st.nextToken()));
 		duration_start_minute.setSelectedIndex(Integer.parseInt(st.nextToken()));
 		duration_end_time.setSelectedIndex(Integer.parseInt(st.nextToken()));
@@ -232,9 +235,19 @@ public class Modify extends JPanel {
 		this.year = year;
 		start_mon = mon;
 		start_day = day;
-		System.out.println("this called"+year+"/"+mon+"/"+day);
+		Date d = new Date();
+
+		
+		schedule_title.setText(null);
+		schedule_content.setText(null);
 		duration_start_month.setSelectedIndex(Integer.parseInt(start_mon)-1);
 		duration_start_date.setSelectedIndex(Integer.parseInt(start_day)-1);
+		duration_end_month.setSelectedIndex(Integer.parseInt(start_mon)-1);
+		duration_end_date.setSelectedIndex(Integer.parseInt(start_day)-1);
+		duration_start_time.setSelectedIndex(d.getHours());
+		duration_start_minute.setSelectedIndex(d.getMinutes());
+		duration_end_time.setSelectedIndex(d.getHours());
+		duration_end_minute.setSelectedIndex(d.getMinutes());
 	}
 	class CancelAction implements ActionListener {
 
@@ -310,7 +323,7 @@ public class Modify extends JPanel {
 						}
 						send_count = send_count + end_day_int;
 					}
-					System.out.println(send_count);
+
 				}
 				start_day_int = temp_start_day;
 				start_mon_int = temp_mon;
@@ -332,7 +345,6 @@ public class Modify extends JPanel {
 					try {
 						if(type_flag =="cre"){
 						new DB().addDaySchedule(modified_schedule);
-						System.out.println("I created db");
 						}
 						else{
 							will_delete_schedule = modified_schedule;

@@ -1,26 +1,11 @@
 package calendar;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.StringTokenizer;
+import java.util.*;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 public class ScheduleList extends JPanel{
 	
@@ -57,7 +42,7 @@ public class ScheduleList extends JPanel{
 	Image image_delete = delete_image.getImage();
 	
 	ScheduleList() {
-		this.setBackground(new Color(0,0,0,150));
+		this.setBackground(new Color(0,0,0));
 		db = new DB();
 		btn_panel = new JPanel();
 		list_panel = new JPanel();
@@ -91,7 +76,7 @@ public class ScheduleList extends JPanel{
 		
 		setLayout(null);
 		list_panel.setLayout(new BoxLayout(list_panel, BoxLayout.Y_AXIS));
-		list_panel.setBackground(Color.green);
+		list_panel.setBackground(Color.black);
 		list_panel.setBounds((int) width * 10 / 300, (int) height / 80+60, (int) width * 280 / 300, (int)height*4/5);
 		
 		scrollPane = new JScrollPane(list_panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -128,8 +113,6 @@ public class ScheduleList extends JPanel{
 			list = db.getDaySchedule();
 			this.date = date;
 			
-			System.out.println(date);
-			
 			k=0;
 			while (argst.hasMoreElements()) {
 				arg_piece[k] = new String(argst.nextToken("."));
@@ -154,6 +137,7 @@ public class ScheduleList extends JPanel{
 			
 			if (dayList.size() == 0) {
 				JLabel notice = new JLabel("일정이 없습니다. 추가해주세요.");
+				notice.setFont(f);
 				list_panel.add(notice);
 				add(list_panel);
 				return;
@@ -170,7 +154,7 @@ public class ScheduleList extends JPanel{
 				if (dayList.isEmpty() == false) {
 					datest = new StringTokenizer(dayList.get(j).getDate());
 					k=0;
-					while (argst.hasMoreElements()) {
+					while (datest.hasMoreTokens()) {
 						date_piece[k] = new String(datest.nextToken("."));
 						k++;
 					}
@@ -225,11 +209,9 @@ public class ScheduleList extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			JButton btn = (JButton) e.getSource();
-			System.out.println(btn.getName());
 			if (btn.getName().equals("add")) {
 				detail.change("modify");
 				detail.setCreate();
-				System.out.println("this called 추가 : "+arg_piece[0]+arg_piece[1]+arg_piece[2]);
 				detail.ifCre(arg_piece[0],arg_piece[1],arg_piece[2]);
 			} else if (btn.getName().equals("delete")) {
 				for (int i=0; i<list.size(); i++) { // list.size()만큼 해야함
