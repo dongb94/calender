@@ -48,7 +48,7 @@ public class PanSouth extends JPanel{
     public void dayInit(){
         for(DayPanel day: dayBlock){
             day.setText("");
-
+            day.setDate("");
             day.setTitle("");
 
             day.setDetailPane(uP.getDetailPane());
