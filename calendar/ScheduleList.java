@@ -40,6 +40,7 @@ public class ScheduleList extends JPanel{
 	private String date_piece[] = new String[7];
 	
 	private Modify m;
+	
 	ScheduleList() {
 		this.setBackground(new Color(0,0,0,150));
 		this.sc = this;
@@ -182,18 +183,13 @@ public class ScheduleList extends JPanel{
 				detail.setCreate();
 				System.out.println("this called 추가 : "+arg_piece[0]+arg_piece[1]+arg_piece[2]);
 				detail.ifCre(arg_piece[0],arg_piece[1],arg_piece[2]);
-				 //년, 월, 일 인자 던져야함
-				sc.removeAll();
-				sc.setList(date);
-				sc.repaint();
-				//d.change("scheduleList");
+				detail.setScheduleList(date);
 			} else if (btn.getText().equals("삭제")) {
 				for (int i=0; i<30; i++) { // list.size()만큼 해야함
 					if (c_list[i].isSelected()) {
 						try {
 							db.deleteSchedule(list.get(i));
-							//setList(date);
-							//d.change("scheduleList");
+							detail.setScheduleList(date);
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -215,6 +211,7 @@ public class ScheduleList extends JPanel{
 			detail.change("modify");
 			detail.setModify();
 			detail.ifMod();
+			detail.setScheduleList(date);
 		}
 		
 	}
