@@ -10,7 +10,7 @@ import java.util.Calendar;
 public class PanNorth extends JPanel{
 	private CalendarPanel uP;
 	private Calendar today;
-	private JButton btnToday, btnMonthBefore, btnMonthAfter, btnYearBefore, btnYearAfter;
+	private JButton btnMonthBefore, btnMonthAfter, btnYearBefore, btnYearAfter;
 	private JTextField textYear, textMonth;
 	
 	ImageIcon left_image = new ImageIcon("img/left.png");
@@ -51,9 +51,7 @@ public class PanNorth extends JPanel{
 		btnYearBefore = new JButton(left_image);
 		btnMonthBefore = new JButton(left_image_s);
 		textYear = new JTextField(today.get(Calendar.YEAR)+"년");
-		textYear.setEnabled(false);
 		textMonth = new JTextField(today.get(Calendar.MONTH)+1+"월", 3);
-		textMonth.setEnabled(false);
 		btnMonthAfter = new JButton(right_image_s);
 		btnYearAfter = new JButton(right_image);
 		
@@ -69,6 +67,8 @@ public class PanNorth extends JPanel{
 		textYear.setFont(font);
 		textMonth.setFont(font);
 
+		textYear.setBorder(null);
+		textMonth.setBorder(null);
 		this.add(btnYearBefore);
 		this.add(btnMonthBefore);
 		this.add(textYear);

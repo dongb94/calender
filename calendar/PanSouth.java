@@ -48,13 +48,8 @@ public class PanSouth extends JPanel{
     public void dayInit(){
         for(DayPanel day: dayBlock){
             day.setText("");
-<<<<<<< HEAD
             day.setDate("");
-            day.setTitle("");
-
-=======
             day.resetTitle();
->>>>>>> 5359439c9006dd19785c72abbe5481d39bbd5b8d
             day.setDetailPane(uP.getDetailPane());
         }
         Calendar firstDay = uP.getToday();
@@ -63,7 +58,6 @@ public class PanSouth extends JPanel{
         
        
 
-<<<<<<< HEAD
 
         // 1.get Titles only for this month
         HashMap<String, Schedule> scheduleList = new HashMap<String, Schedule>();
@@ -91,12 +85,7 @@ public class PanSouth extends JPanel{
         	dayBlock[i + blockCount].setDate((ym.getYear()+1900)+"."+(ym.getMonth()+1)+"."+(i+1));
         
         	calTemp.add(Calendar.DATE, 1);
-=======
-        // 1. set Titles and Dates for this month
-        for(int i = 0; i< firstDay.getActualMaximum(Calendar.DAY_OF_MONTH); ++i) {
-            dayBlock[i + blockCount].setDate(String.valueOf(firstDay.get(Calendar.YEAR)+"/"+(firstDay.get(Calendar.MONTH)+1)+"/"+firstDay.get(Calendar.DATE)));
-            firstDay.add(Calendar.DATE, 1);
->>>>>>> 5359439c9006dd19785c72abbe5481d39bbd5b8d
+        	firstDay.add(Calendar.DATE, 1);
             //Sunday
             if((i+blockCount)%7 == 0) dayBlock[i + blockCount].setForeground(new Color(255,0,0));
                 //Saturday
