@@ -3,15 +3,12 @@ package calendar;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class Detail extends JPanel implements ActionListener {
 
 	public ScheduleList scheduleList = null;
 	public Modify modify = null;
-	private JButton add, delete;
 	Dimension size;
 
 	String name;

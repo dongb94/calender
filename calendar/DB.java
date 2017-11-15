@@ -65,28 +65,6 @@ public class DB {
 			}
 		}
 	}
-/*
-	public static void updateSchedule(Schedule sch) throws Exception {
-		getInfo();
-		ArrayList<Schedule> schedule = new ArrayList<>();
-		schedule = getDaySchedule();
-		for (int i = 0; i < schedule.size(); i++) {
-			if (schedule.get(i).getTitle().equals(sch.getTitle())||schedule.get(i).getDate().equals(sch.getDate())||schedule.get(i).getContents().equals(sch.getContents())) {
-				
-				// update SMART_11 set id ='sunshine' where id ='sun';
-				PreparedStatement pst = conn.prepareStatement("update calendar set  title=?, day =?, contents=? where title =? and day=? and contents=?");
-				pst.setString(1, sch.getTitle());
-				pst.setString(2, sch.getDate());
-				pst.setString(3, sch.getContents());
-				pst.setString(4, schedule.get(i).getTitle());
-				pst.setString(5, schedule.get(i).getDate());
-				pst.setString(6, schedule.get(i).getContents());
-				int cnt = pst.executeUpdate();
-			
-			}
-		}
-	}
-*/
 
 
 }

@@ -1,23 +1,11 @@
 package calendar;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.StringTokenizer;
+import java.util.*;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 public class ScheduleList extends JPanel{
 	
@@ -46,13 +34,18 @@ public class ScheduleList extends JPanel{
 	
 	private Modify m;
 	
+	Font f = new Font("휴먼매직체", Font.BOLD, 20);
+	
+	ImageIcon plus_image = new ImageIcon("img/plus.png");
+	ImageIcon delete_image = new ImageIcon("img/delete.png");
+	Image image_plus = plus_image.getImage();
+	Image image_delete = delete_image.getImage();
+	
 	ScheduleList() {
-		this.setBackground(new Color(0,0,0,150));
+		this.setBackground(new Color(0,0,0));
 		db = new DB();
 		btn_panel = new JPanel();
 		list_panel = new JPanel();
-		add = new JButton("추가");
-		delete = new JButton("삭제");
 		
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 		width = res.width * 0.8;
@@ -60,16 +53,31 @@ public class ScheduleList extends JPanel{
 		width = width * 0.3;
 		height = height * 0.82;
 		
+		image_plus = image_plus.getScaledInstance((int) height / 13, (int) height / 13, java.awt.Image.SCALE_SMOOTH);
+		image_delete = image_delete.getScaledInstance((int) height / 15, (int) height / 15, java.awt.Image.SCALE_SMOOTH);
+		plus_image = new ImageIcon(image_plus);
+		delete_image = new ImageIcon(image_delete);
+		
+		add = new JButton(plus_image);
+		delete = new JButton(delete_image);
+		
 		delete.setBounds((int) width  / 30, (int) height / 80, 50, 50);
 		add.setBounds((int) width  / 30+ 50 , (int) height / 80, 50, 50);
+		
+		add.setBackground(new Color(0,0,0,0));
+		delete.setBackground(new Color(0,0,0,0));
+		add.setBorder(null);
+		delete.setBorder(null);
+		add.setName("add");
+		delete.setName("delete");
 		
 		add(add);
 		add(delete);
 		
 		setLayout(null);
 		list_panel.setLayout(new BoxLayout(list_panel, BoxLayout.Y_AXIS));
-		list_panel.setBackground(Color.green);
-		list_panel.setBounds((int) width * 10 / 300, (int) height / 80+50, (int) width * 280 / 300, (int)height - 2*(int) height / 80+50);
+		list_panel.setBackground(Color.black);
+		list_panel.setBounds((int) width * 10 / 300, (int) height / 80+60, (int) width * 280 / 300, (int)height*4/5);
 		
 		scrollPane = new JScrollPane(list_panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBorder(null);
@@ -105,8 +113,6 @@ public class ScheduleList extends JPanel{
 			list = db.getDaySchedule();
 			this.date = date;
 			
-			System.out.println(date);
-			
 			k=0;
 			while (argst.hasMoreElements()) {
 				arg_piece[k] = new String(argst.nextToken("."));
@@ -131,6 +137,7 @@ public class ScheduleList extends JPanel{
 			
 			if (dayList.size() == 0) {
 				JLabel notice = new JLabel("일정이 없습니다. 추가해주세요.");
+				notice.setFont(f);
 				list_panel.add(notice);
 				add(list_panel);
 				return;
@@ -147,7 +154,7 @@ public class ScheduleList extends JPanel{
 				if (dayList.isEmpty() == false) {
 					datest = new StringTokenizer(dayList.get(j).getDate());
 					k=0;
-					while (argst.hasMoreElements()) {
+					while (datest.hasMoreTokens()) {
 						date_piece[k] = new String(datest.nextToken("."));
 						k++;
 					}
@@ -155,6 +162,12 @@ public class ScheduleList extends JPanel{
 					st_list[j] = new JLabel(date_piece[3] + " : " + date_piece[4]); //date_piece[3] + " : " + date_piece[4]
 					et_list[j] = new JLabel(date_piece[5] + " : " + date_piece[6]); //date_piece[5] + " : " + date_piece[6]
 					b_list[j] = new JButton(dayList.get(j).getTitle()); //dayList.get(j).getTitle()
+					st_list[j].setFont(f);
+					st_list[j].setForeground(Color.white);
+					et_list[j].setFont(f);
+					et_list[j].setForeground(Color.white);
+					b_list[j].setFont(f);
+					b_list[j].setForeground(Color.white);
 					c_list[j] = new JCheckBox();
 					t_list[j] = new JPanel();
 					p_list[j] = new JPanel();
@@ -164,8 +177,8 @@ public class ScheduleList extends JPanel{
 					t_list[j].setLayout(new BoxLayout(t_list[j], BoxLayout.Y_AXIS));
 					p_list[j].setLayout(new FlowLayout());
 					
-					st_list[j].setPreferredSize(new Dimension(50, 20));
-					et_list[j].setPreferredSize(new Dimension(50, 20));
+					st_list[j].setPreferredSize(new Dimension(80, 20));
+					et_list[j].setPreferredSize(new Dimension(80, 20));
 					b_list[j].setPreferredSize(new Dimension(170, 40));
 					
 					
@@ -196,12 +209,11 @@ public class ScheduleList extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			JButton btn = (JButton) e.getSource();
-			if (btn.getText().equals("추가")) {
+			if (btn.getName().equals("add")) {
 				detail.change("modify");
 				detail.setCreate();
-				System.out.println("this called 추가 : "+arg_piece[0]+arg_piece[1]+arg_piece[2]);
 				detail.ifCre(arg_piece[0],arg_piece[1],arg_piece[2]);
-			} else if (btn.getText().equals("삭제")) {
+			} else if (btn.getName().equals("delete")) {
 				for (int i=0; i<list.size(); i++) { // list.size()만큼 해야함
 					if (c_list[i].isSelected()) {
 						try {
