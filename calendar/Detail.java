@@ -45,6 +45,7 @@ public class Detail extends JPanel implements ActionListener {
 	public void setScheduleList(String date) {
 		scheduleList = new ScheduleList(this, date);
 		change("scheduleList");
+		setVisible(true);
 	}
 	
 	public void change(String panelName) {
