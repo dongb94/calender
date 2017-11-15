@@ -12,7 +12,12 @@ public class DayPanel extends JPanel {
 
 	private JLabel centerLabel = new JLabel();
 	private String date;
-	private ArrayList<JLabel> titles = new ArrayList<JLabel>();
+	private JLabel[] titles = {
+			new JLabel(),
+			new JLabel(),
+			new JLabel()
+	};
+	private int titleCount = 0;
 	private PanSouth uP;
 
 	Detail D;
@@ -24,7 +29,7 @@ public class DayPanel extends JPanel {
 		centerLabel.setFont(new Font(font.getFamily(),font.getStyle(),30));
 		this.add(centerLabel, BorderLayout.CENTER);
 		for(JLabel label: titles) {
-			label.setFont(new Font(font.getFamily(), font.getStyle(), 24));
+			label.setFont(new Font(font.getFamily(), font.getStyle(), 14));
 			this.add(label, BorderLayout.SOUTH);
 		}
 
@@ -56,12 +61,21 @@ public class DayPanel extends JPanel {
 	//get Title data from PanSouth
 	public void setTitles(){
 		 Iterator it = uP.getTitlesFromList(date).iterator();
-		 while(it.hasNext())
-			 addText((String)it.next());
+		 String tempStr;
+		 while(it.hasNext()){
+			 tempStr = (String)it.next();
+			 if(titleCount < 3) {
+				 if (tempStr.length() > 10)
+					 tempStr = tempStr.substring(0, 10) + "...";
+				 titles[titleCount].setText("* " + tempStr);
+				 titleCount++;
+			 }
+		 }
 	}
 	public void resetTitle(){
 		for(JLabel labels: titles)
-			this.remove(labels);
+			labels.setText("");
+		titleCount = 0;
 	}
 	public void setText(String text){
 		centerLabel.setText(text);
@@ -69,12 +83,7 @@ public class DayPanel extends JPanel {
 	}
 	// Allow only 3 texts
 	public void addText(String text){
-		if(titles.size() < 3) {
-			if (text.length() > 13)
-				text = text.substring(0, 13) + "...";
-			titles.add(new JLabel("* " + text));
-			this.add(titles.get(titles.size()-1), BorderLayout.SOUTH);
-		}
+		this.add(new JLabel("* "+text), BorderLayout.SOUTH);
 	}
 	@Override
 	public void setForeground(Color fg) {
