@@ -47,9 +47,9 @@ public class PanSouth extends JPanel{
         Calendar firstDay = uP.getToday();
         firstDay.set(Calendar.DAY_OF_MONTH, firstDay.getActualMinimum(Calendar.DAY_OF_MONTH));
         int blockCount = firstDay.get(Calendar.DAY_OF_WEEK)-firstDay.getFirstDayOfWeek();
-        Date d = new Date();
+        Date ym = firstDay.getTime();
         for(int i = 0; i< firstDay.getActualMaximum(Calendar.DAY_OF_MONTH); ++i) {
-        	dayBlock[i + blockCount].setDate(Calendar.YEAR+"."+Calendar.MONTH+"."+(i+1));
+        	dayBlock[i + blockCount].setDate((ym.getYear()+1900)+"."+(ym.getMonth()+1)+"."+(i+1));
             //Sunday
             if((i+blockCount)%7 == 0) dayBlock[i + blockCount].setForeground(new Color(255,0,0));
             //Saturday
