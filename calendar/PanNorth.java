@@ -1,4 +1,4 @@
-package calendar;
+﻿package calendar;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -30,7 +30,7 @@ public class PanNorth extends JPanel{
 		this.uP = upperPanel;
 		this.today = uP.getToday();
 		Font font = uP.getDefaultFont();
-		setBackground(new Color(0,0,0,0));
+		setBackground(new Color(0,0,0));
 		
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 		width = res.width * 0.8;
@@ -49,8 +49,9 @@ public class PanNorth extends JPanel{
 		right_image_s = new ImageIcon(image_right_s);
 
 		btnYearBefore = new JButton(left_image);
+	
 		btnMonthBefore = new JButton(left_image_s);
-		textYear = new JTextField(today.get(Calendar.YEAR)+"년");
+		textYear = new JTextField(today.get(Calendar.YEAR)+"년",5);
 		textMonth = new JTextField(today.get(Calendar.MONTH)+1+"월", 3);
 		btnMonthAfter = new JButton(right_image_s);
 		btnYearAfter = new JButton(right_image);
@@ -80,6 +81,7 @@ public class PanNorth extends JPanel{
 		btnMonthBefore.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				btnMonthBefore.setOpaque(false);
 				today.add(Calendar.MONTH, -1);
 				uP.setToday(today.getTime());
 				uP.reload();
@@ -89,6 +91,7 @@ public class PanNorth extends JPanel{
 		btnMonthAfter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				btnMonthAfter.setOpaque(false);
 				today.add(Calendar.MONTH, 1);
 				uP.setToday(today.getTime());
 				uP.reload();
@@ -99,6 +102,7 @@ public class PanNorth extends JPanel{
 		btnYearBefore.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				btnYearBefore.setOpaque(false);
 				today.add(Calendar.YEAR, -1);
 				uP.setToday(today.getTime());
 				uP.reload();
@@ -108,6 +112,7 @@ public class PanNorth extends JPanel{
 		btnYearAfter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				btnYearAfter.setOpaque(false);
 				today.add(Calendar.YEAR, 1);
 				uP.setToday(today.getTime());
 				uP.reload();
