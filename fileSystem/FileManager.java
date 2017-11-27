@@ -78,7 +78,9 @@ public class FileManager {
         if (ftpfiles != null) {
             for (int i = 0; i < ftpfiles.length; i++) {
                 FTPFile file = ftpfiles[i];
-                System.out.println(file.getName());
+                if(file.isDirectory())
+                	System.out.print("d");
+                System.out.println("\t"+file.getName());
                 //System.out.println(file.toString());
             }
         }
@@ -154,14 +156,19 @@ public class FileManager {
 			OutputStream outputStream = null;
 			for(int i=0; i<path.length; i++){
 				
+				FTPFile[] files = ftpClient.listFiles(path[i]);
 				
-				
-				if(false){
-					FTPFile[] files = ftpClient.listFiles(path[i]);
-					for(int j=0; j<files.length; j++){
-						FTPFile f = files[j];
-						FTPDownload(download_Folder+"/"+get_file.getName(),path[i]+"/"+files[j].getName());
+				if(ftpClient.changeWorkingDirectory("./"+path[i])){
+					if(files.length==0){
+						get_file = new File(download_Folder+"/"+path[i]);
+						get_file.mkdir();
+					}else{
+						for(int j=0; j<files.length; j++){
+							FTPFile f = files[j];
+							FTPDownload(download_Folder+"/"+path[i],files[j].getName());
+						}
 					}
+					ftpClient.changeWorkingDirectory("../");
 				}else{
 					get_file = new File(download_Folder+"/"+path[i]);
 				    outputStream = new FileOutputStream(get_file);
@@ -176,7 +183,8 @@ public class FileManager {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			return 0;		}
+			return 0;		
+		}
 	   
 		return 1;
 	}
@@ -184,22 +192,9 @@ public class FileManager {
 		//단위 테스트용 main클래스
 		FileManager fm = new FileManager();
 		
-		FTPFile[] files;
-		try {
-			files = fm.ftpClient.listFiles("/makedir7");
-			for(int j=0; j<files.length; j++){
-				FTPFile f = files[j];
-				System.out.println(f.getName());
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-//		fm.FTPUpdate();
+		fm.FTPUpdate();
 //		fm.FTPUpload("/a", "C:/Users/BDG/AppData/Local/file_client_download_root");
-//		fm.FTPDownload("C:/Users/BDG/Desktop/새폴더", "a");
+		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더", "a"));
 //		fm.FTPMkdir("/testDir2/subdir");
 		fm.FTPDisconnect();
 	}
