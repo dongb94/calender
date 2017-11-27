@@ -16,7 +16,7 @@ import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-public class FileManager {
+public class FTPManager {
 		
 	FTPClient ftpClient = new FTPClient();
 	//dir reference
@@ -26,7 +26,7 @@ public class FileManager {
 	String ID = "superuser";
 	String Password = "team1";
 	
-	FileManager(){
+	FTPManager(){
 		try {
 			
 			FTPClientConfig config = new FTPClientConfig();  
@@ -43,7 +43,9 @@ public class FileManager {
 				ftpClient.disconnect();
 				System.out.println("FTP서버 연결 실패. 서버에서 연결을 거부함");
 			} else {
-				System.out.print(ftpClient.getReplyString());
+				String replyString[] = ftpClient.getReplyString().split("\n");
+				for(int i=0; i<replyString.length; i++)
+					System.out.print(replyString[i].substring(4));
 				
 				ftpClient.setSoTimeout(5000);
 				ftpClient.login(ID, Password);
@@ -67,23 +69,28 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
-	/**FTP서버와의 연결을 새로고침*/
-	public void FTPUpdate(){
+	/**FTP서버의 파일 목록을 가져옴
+	 * FTPGetFileList(가져올 파일 path)
+	 * @return FTPFile[]*/
+	public FTPFile[] FTPGetFileList(String path){
 		FTPFile[] ftpfiles = null;
 		try {
-			ftpfiles = ftpClient.listFiles("/");
+			ftpfiles = ftpClient.listFiles(path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}  // public 폴더의 모든 파일을 list 합니다
         if (ftpfiles != null) {
+            System.out.println("\tFile Size\tFile Name");
             for (int i = 0; i < ftpfiles.length; i++) {
                 FTPFile file = ftpfiles[i];
                 if(file.isDirectory())
-                	System.out.print("d");
-                System.out.println("\t"+file.getName());
-                //System.out.println(file.toString());
+                	System.out.print("dir");
+                System.out.print("\t"+file.getSize());
+                System.out.println("\t\t"+file.getName());
+                
             }
         }
+        return ftpfiles;
 	}
 	/**FTP 작업 디렉토리 변경
 	 * FTPCd(작업 경로)
@@ -190,11 +197,11 @@ public class FileManager {
 	}
 	public static void main(String[] args) {
 		//단위 테스트용 main클래스
-		FileManager fm = new FileManager();
+		FTPManager fm = new FTPManager();
 		
-		fm.FTPUpdate();
+		fm.FTPGetFileList("");
 //		fm.FTPUpload("/a", "C:/Users/BDG/AppData/Local/file_client_download_root");
-		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더", "a"));
+//		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더", "a"));
 //		fm.FTPMkdir("/testDir2/subdir");
 		fm.FTPDisconnect();
 	}
