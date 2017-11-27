@@ -20,7 +20,7 @@ public class DataBase {
 	public static String ExtensionDetermination (String fileName){
 
 		String extension = fileName.substring(fileName.lastIndexOf(".")+1);
-		extension.toUpperCase();
+		extension = extension.toUpperCase();
 		switch(extension){
 		case "BMP":
 		case "RLE":
