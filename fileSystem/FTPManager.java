@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -111,10 +115,21 @@ public class FTPManager {
 	public int FTPMkdir(String path){
 		try {
 			ftpClient.makeDirectory(path);
+			
+			PreparedStatement pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?)");
+		    pst.setString(1, "");
+			pst.setString(2, path);
+			pst.setInt(3, 0);
+			pst.setInt(4, -1);
+			pst.setTimestamp(5, new Timestamp(new Date().getTime()));
+			pst.setString(6, "dir");
+			pst.executeUpdate();
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return 1;
 	}
@@ -139,14 +154,30 @@ public class FTPManager {
 					inputStream = new FileInputStream(put_file);
 					bis = new BufferedInputStream(inputStream);
 				    boolean result = ftpClient.storeFile(upload_Folder+FileName, bis);
-
 				    inputStream.close();
 				    bis.close();
+				    
+				    String extension = DataBase.ExtensionDetermination(FileName);//파일 분류
+				    
+				    PreparedStatement pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?)");
+				    pst.setString(1, FileName);
+					pst.setString(2, upload_Folder);
+					pst.setInt(3, 0);
+					if(extension.equals("img")) 
+						pst.setInt(4, 0);
+					else 
+						pst.setInt(4, -1);
+					pst.setTimestamp(5, new Timestamp(new Date().getTime()));
+					pst.setString(6, extension);
+					pst.executeUpdate();
 				}
 	    	}
 		} catch (IOException e) {
 			e.printStackTrace();
 			return 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println("DB업로드 실패");
 		}
 		
 		return 1;
@@ -195,14 +226,16 @@ public class FTPManager {
 	   
 		return 1;
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		//단위 테스트용 main클래스
+		new DataBase();
 		FTPManager fm = new FTPManager();
 		
-		fm.FTPGetFileList("");
+//		fm.FTPGetFileList("/");
 //		fm.FTPUpload("/a", "C:/Users/BDG/AppData/Local/file_client_download_root");
 //		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더", "a"));
-//		fm.FTPMkdir("/testDir2/subdir");
+		fm.FTPMkdir("/testDir2/subdir");
 		fm.FTPDisconnect();
+		
 	}
 }
