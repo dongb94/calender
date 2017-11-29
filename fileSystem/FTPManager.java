@@ -50,6 +50,7 @@ public class FTPManager {
 				String replyString[] = ftpClient.getReplyString().split("\n");
 				for(int i=0; i<replyString.length; i++)
 					System.out.print(replyString[i].substring(4));
+				System.out.println();
 				
 				ftpClient.setSoTimeout(5000);
 				ftpClient.login(ID, Password);
@@ -79,6 +80,7 @@ public class FTPManager {
 	public FTPFile[] FTPGetFileList(String path){
 		FTPFile[] ftpfiles = null;
 		try {
+			path = workPath+DataBase.Directory_Path_Arrangment(path);
 			ftpfiles = ftpClient.listFiles(path);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -97,11 +99,14 @@ public class FTPManager {
         return ftpfiles;
 	}
 	/**FTP 작업 디렉토리 변경
-	 * FTPCd(작업 경로)
+	 * FTPCd(작업 절대 경로)
 	 *  성공 1 실패 0*/
 	public int FTPCd(String path){
 		try {
+			path = DataBase.Directory_Path_Arrangment(path);
+			workPath = path;
 			ftpClient.changeWorkingDirectory(path);
+	    	ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,6 +119,10 @@ public class FTPManager {
 	 *  성공 1 실패 0*/
 	public int FTPMkdir(String path){
 		try {
+			path = DataBase.Directory_Path_Arrangment(path);
+			if(!workPath.equals("/"))
+				path = workPath + path;
+			
 			ftpClient.makeDirectory(path);
 			
 			PreparedStatement pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?)");
@@ -129,7 +138,7 @@ public class FTPManager {
 			e.printStackTrace();
 			return 0;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("이미 있는 디렉토리 "+path);
 		}
 		return 1;
 	}
@@ -138,6 +147,7 @@ public class FTPManager {
 	 * 성공 1 실패 0*/
 	public int FTPUpload(String upload_Folder, String... path){
 	    try {
+	    	
 	    	FTPMkdir(upload_Folder);
 	    	
 	    	BufferedInputStream bis = null;
@@ -153,62 +163,74 @@ public class FTPManager {
 					String FileName = path[i].substring(path[i].lastIndexOf("/"));
 					inputStream = new FileInputStream(put_file);
 					bis = new BufferedInputStream(inputStream);
-				    boolean result = ftpClient.storeFile(upload_Folder+FileName, bis);
+				    boolean result = ftpClient.storeFile("./"+upload_Folder+FileName, bis);
 				    inputStream.close();
 				    bis.close();
 				    
 				    String extension = DataBase.ExtensionDetermination(FileName);//파일 분류
 				    
-				    PreparedStatement pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?)");
-				    pst.setString(1, FileName);
-					pst.setString(2, upload_Folder);
-					pst.setInt(3, 0);
-					if(extension.equals("img")) 
-						pst.setInt(4, 0);
-					else 
-						pst.setInt(4, -1);
-					pst.setTimestamp(5, new Timestamp(new Date().getTime()));
-					pst.setString(6, extension);
-					pst.executeUpdate();
+				    PreparedStatement pst;
+				    String FilePath = DataBase.Directory_Path_Arrangment(workPath+upload_Folder);
+					try {
+						pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?)");
+						pst.setString(1, FileName);
+						pst.setString(2, FilePath);
+						pst.setInt(3, 0);
+						if(extension.equals("img")) 
+							pst.setInt(4, 0);
+						else 
+							pst.setInt(4, -1);
+						pst.setTimestamp(5, new Timestamp(new Date().getTime()));
+						pst.setString(6, extension);
+						pst.executeUpdate();
+					} catch (SQLException e) {
+						System.err.println("이미 있는 파일 "+FileName);
+					}
+				    
 				}
 	    	}
 		} catch (IOException e) {
 			e.printStackTrace();
 			return 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("DB업로드 실패");
 		}
 		
 		return 1;
 	}
 	/**FTP서버에서 파일 다운로드 
-	 * FTPDownload(다운로드path, 받을파일1, 받을파일2, ...) 
+	 * FTPDownload(로컬 다운로드path, 받을파일1, 받을파일2, ...) 
+	 * 다운로드 path가 null 일시 기본 디렉토리에 다운로드
 	 *  성공 1 실패 0*/
 	public int FTPDownload(String download_Folder, String... path){
 		try {
+			if(download_Folder==null){
+				download_Folder = System.getProperty("user.home")+"/AppData/Local/file_downloads";
+			}
+			
 			File get_file = new File(download_Folder);
-			get_file.mkdirs();
 			
 			BufferedOutputStream bos = null;
 			OutputStream outputStream = null;
 			for(int i=0; i<path.length; i++){
-				
+				path[i] = DataBase.Directory_Path_Arrangment(path[i]);
+
 				FTPFile[] files = ftpClient.listFiles(path[i]);
 				
-				if(ftpClient.changeWorkingDirectory("./"+path[i])){
+				if(ftpClient.changeWorkingDirectory("."+path[i])){
 					if(files.length==0){
-						get_file = new File(download_Folder+"/"+path[i]);
+						get_file = new File(download_Folder+path[i]);
 						get_file.mkdir();
 					}else{
 						for(int j=0; j<files.length; j++){
 							FTPFile f = files[j];
-							FTPDownload(download_Folder+"/"+path[i],files[j].getName());
+							FTPDownload(download_Folder+path[i],files[j].getName());
 						}
 					}
 					ftpClient.changeWorkingDirectory("../");
 				}else{
-					get_file = new File(download_Folder+"/"+path[i]);
+					String Filepath = path[i].substring(0,path[i].lastIndexOf("/"));
+					get_file = new File(DataBase.Directory_Path_Arrangment(download_Folder)+Filepath);
+					get_file.mkdirs();
+					get_file = new File(DataBase.Directory_Path_Arrangment(download_Folder)+path[i]);
 				    outputStream = new FileOutputStream(get_file);
 				    bos = new BufferedOutputStream(outputStream);
 				    boolean result = ftpClient.retrieveFile(path[i], bos);
@@ -226,15 +248,76 @@ public class FTPManager {
 	   
 		return 1;
 	}
+	/**FTP서버에서 파일 삭제 
+	 * FTPDelete(지울파일1, 지울파일2, ...) 
+	 *  성공 1 실패 0*/
+	public int FTPDelete(String... path){
+		try {
+			
+			for(int i=0; i<path.length; i++){
+				path[i] = DataBase.Directory_Path_Arrangment(path[i]);
+				//FTP삭제
+				if(ftpClient.changeWorkingDirectory("."+path[i])){
+					FTPFile[] files = ftpClient.listFiles(path[i]);
+
+					if(files.length!=0){
+						for(int j=0; j<files.length; j++){
+							FTPFile f = files[j];
+							FTPDelete(files[j].getName());
+						}
+					}
+					ftpClient.changeWorkingDirectory("../");
+					ftpClient.removeDirectory(path[i]);
+					
+					//DB삭제
+					PreparedStatement pst;
+					String FilePath = workPath + path[i];
+					FilePath = DataBase.Directory_Path_Arrangment(FilePath);
+					String extension = "dir";//파일 분류
+					try {					
+						pst = DataBase.conn.prepareStatement("delete from file where name=''&& path='"+FilePath+"'&& type='"+extension+"'");
+						pst.executeUpdate();
+					} catch (SQLException e) {
+						System.err.println("삭제 오류 dir");
+					}
+				}else{
+					ftpClient.deleteFile(path[i]);
+					
+					//DB삭제
+					PreparedStatement pst;
+					String FilePath = workPath + path[i].substring(0, path[i].lastIndexOf("/"));
+					String FileName = path[i].substring(path[i].lastIndexOf("/"));
+					FilePath = DataBase.Directory_Path_Arrangment(FilePath);
+					String extension = DataBase.ExtensionDetermination(FileName);//파일 분류
+					try {					
+						pst = DataBase.conn.prepareStatement("delete from file where name='"+FileName+"'&& path='"+FilePath+"'&& type='"+extension+"'");
+						pst.executeUpdate();
+					} catch (SQLException e) {
+						System.err.println("삭제 오류 "+ FileName);
+					}
+				}
+
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;		
+		}
+	   
+		return 1;
+	}
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		//단위 테스트용 main클래스
 		new DataBase();
 		FTPManager fm = new FTPManager();
-		
+//		fm.FTPCd("a");
 //		fm.FTPGetFileList("/");
-//		fm.FTPUpload("/a", "C:/Users/BDG/AppData/Local/file_client_download_root");
-//		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더", "a"));
-		fm.FTPMkdir("/testDir2/subdir");
+//		fm.FTPUpload("/", "C:/Users/BDG/Desktop/새폴더/main");
+//		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더/main", "/"));
+//		fm.FTPDownload(null, "file_client_download_root/0123.jpg");
+//		fm.FTPMkdir("/c");
+		fm.FTPDelete("main/nonon");
+		
 		fm.FTPDisconnect();
 		
 	}

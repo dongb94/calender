@@ -55,4 +55,19 @@ public class DataBase {
 		}
 	}
 	
+	/**경로명을 정리해주는 함수 (/a/b/c.jpg)
+	 * Directory_Path_Arrangment(path)
+	 * @return String 정리된 경로명*/
+	public static String Directory_Path_Arrangment (String path){
+		if(path.startsWith("/")){
+			while(path.startsWith("/")) path = path.substring(1);
+		}
+		path = "/"+path;
+		
+		if(path.endsWith("/"))
+			path = path.substring(0, path.length()-1);
+		
+		return path;
+		
+	}
 }
