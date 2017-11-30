@@ -35,8 +35,6 @@ public class FTPManager {
 			
 			FTPClientConfig config = new FTPClientConfig();  
 			config.setServerLanguageCode("ko");
-			config.setDefaultDateFormatStr("MM월 d일 HH:mm");
-			config.setRecentDateFormatStr("MM월 d일 HH:mm");
 			ftpClient.configure(config);
 			
 			ftpClient.connect(hostName);
@@ -100,8 +98,8 @@ public class FTPManager {
 	}
 	/**FTP 작업 디렉토리 변경
 	 * FTPCd(작업 절대 경로)
-	 *  성공 1 실패 0*/
-	public int FTPCd(String path){
+	 * @return 작업path*/
+	public String FTPCd(String path){
 		try {
 			path = DataBase.Directory_Path_Arrangment(path);
 			workPath = path;
@@ -110,9 +108,8 @@ public class FTPManager {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return 0;
 		}
-		return 1;
+		return path;
 	}
 	/**FTP서버에 디렉토리 생성 
 	 * FTPMkdir(생성할 디렉토리 경로) 
