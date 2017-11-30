@@ -37,17 +37,14 @@ public class DataBase {
 		case "WMV":
 		case "ASF":
 		case "ASX"://목록파일
-		case "FLV"://플래시 비디오(유투브 등  사용)
 			// 그 외 RM,MOV,DAT 등
 			return "vid";
 		case "WAV":
 		case "MP3":
 		case "M4A":
 		case "WMA":
-		case "OGG":
 		case "AU":
 		case "AAC":
-		case "MPC":
 			// 그 외 등등
 			return "msc";
 		default ://문서 파일
