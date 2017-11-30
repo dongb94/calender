@@ -2,7 +2,7 @@ package fileSystem;
 
 public class MusicPlayer {
 	public void playMusicAndVideo(String path) throws Exception {
-			String[] strarr;
+		String[] strarr;
 		String newPath = "";
 		strarr = path.split("/");
 		for (int i = 0; i < strarr.length; i++) {
@@ -10,7 +10,7 @@ public class MusicPlayer {
 		}
 		newPath=newPath.substring(0, newPath.length()-2);
 		if (newPath == null) {
-			System.out.println("°æ·Î¸íÀÌ ¸íÈ®ÇÏÁö ¾Ê½À´Ï´Ù(in MusicPlayer");
+			System.out.println("ê²½ë¡œëª…ì´ ëª…í™•í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤(in MusicPlayer");
 		} else {
 			Runtime run = Runtime.getRuntime();
 			String ss = String.format("C:\\Program Files\\Windows Media Player\\wmplayer.exe  %s", newPath);
