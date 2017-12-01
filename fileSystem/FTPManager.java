@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.imageio.*;
-import javax.imageio.stream.ImageInputStream;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -77,6 +76,13 @@ public class FTPManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	/**FTP서버의 파일 목록을 가져옴
+	 * FTPGetFileList(가져올 파일 path)
+	 * @return FTPFile[]*/
+	public FileDatas[] FTPGetFileData(String path){
+		
+		return null;
 	}
 	/**FTP서버의 파일 목록을 가져옴
 	 * FTPGetFileList(가져올 파일 path)
@@ -334,17 +340,27 @@ public class FTPManager {
 	   
 		return 1;
 	}
+	
+	/**FTP서버 파일 이름 변경
+	 * FTPRename(해당파일 포함 파일 path, 변경할이름) 
+	 *  성공 1 실패 0*/
+	public int FTPRename(String file_path, String rename){
+//		ftpClient.rename(, )
+		return 0;
+		
+	}
+	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		//단위 테스트용 main클래스
 		new DataBase();
 		FTPManager fm = new FTPManager();
 //		fm.FTPCd("a");
 //		fm.FTPGetFileList("/");
-//		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/test.m4a");
+		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/main/20160722_053051.jpg");
 //		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더/main", "/"));
 //		fm.FTPDownload(null, "file_client_download_root/0123.jpg");
 //		fm.FTPMkdir("/c");
-		fm.FTPDelete("test");
+//		fm.FTPDelete("main/20160722_053051.jpg");
 		
 		fm.FTPDisconnect();
 		
