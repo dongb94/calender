@@ -15,12 +15,18 @@ public class Main extends JFrame{
 	Viewer v;
 	
 	Main(){
+		try {
+			new DataBase();
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setTitle("클라우드");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		makeGUI();
 		
-		setResizable(false);
+		setResizable(true);
 		setVisible(true);
 		
 	}
@@ -37,11 +43,11 @@ public class Main extends JFrame{
 		
 		fm = new FTPManager();
 		mi = new MenuItem(fm);
-		v = new Viewer();
+		v = new Viewer(fm);
 		add(v);
 		add(mi);
-		mi.setBounds(0, 0, (int)width, (int)(height*0.1));
-		v.setBounds(0,(int)(height*0.1),(int)width ,(int)(height*0.9));
+		mi.setBounds(0, 0, (int)(width*0.99), (int)(height*0.1));
+		v.setBounds(0,(int)(height*0.1),(int)(width*0.99) ,(int)(height*0.85));
 	}
 	
 	public static void main(String[] args0){
