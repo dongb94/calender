@@ -119,6 +119,10 @@ public class FileDatas{
 		}
 	}
 	
+	FileData[] getFileDatas(){
+		return file;
+	}
+	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		//단위 테스트용 main클래스
 		new DataBase();
