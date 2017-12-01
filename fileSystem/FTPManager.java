@@ -1,7 +1,11 @@
 package fileSystem;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,6 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import javax.imageio.*;
+import javax.imageio.stream.ImageInputStream;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -122,13 +128,14 @@ public class FTPManager {
 			
 			ftpClient.makeDirectory(path);
 			
-			PreparedStatement pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?)");
+			PreparedStatement pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?,?)");
 		    pst.setString(1, "");
 			pst.setString(2, path);
 			pst.setInt(3, 0);
 			pst.setInt(4, -1);
 			pst.setTimestamp(5, new Timestamp(new Date().getTime()));
 			pst.setString(6, "dir");
+			pst.setString(7, null);
 			pst.executeUpdate();
 			
 		} catch (IOException e) {
@@ -169,7 +176,7 @@ public class FTPManager {
 				    PreparedStatement pst;
 				    String FilePath = DataBase.Directory_Path_Arrangment(workPath+upload_Folder);
 					try {
-						pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?)");
+						pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?,?)");
 						pst.setString(1, FileName);
 						pst.setString(2, FilePath);
 						pst.setInt(3, 0);
@@ -179,6 +186,30 @@ public class FTPManager {
 							pst.setInt(4, -1);
 						pst.setTimestamp(5, new Timestamp(new Date().getTime()));
 						pst.setString(6, extension);
+						if(extension.equals("img")){
+						    	
+					            //썸네일 가로사이즈
+					            int thumbnail_width = 100;
+					            //썸네일 세로사이즈
+					            int thumbnail_height = 100;
+					            //원본이미지파일의 경로+파일명
+					 
+					            BufferedImage buffer_original_image = ImageIO.read(put_file);
+					            BufferedImage buffer_thumbnail_image = new BufferedImage(thumbnail_width, thumbnail_height, BufferedImage.TYPE_3BYTE_BGR);
+					            Graphics2D graphic = buffer_thumbnail_image.createGraphics();
+					            graphic.drawImage(buffer_original_image, 0, 0, thumbnail_width, thumbnail_height, null);
+					            ByteArrayOutputStream image_output = new ByteArrayOutputStream();
+					            ImageIO.write(buffer_thumbnail_image, "jpg", image_output);
+					            
+					            byte[] buffer = image_output.toByteArray(); 
+					            InputStream thumnail = new ByteArrayInputStream(buffer);
+					            
+					            System.out.println("썸네일 생성완료");
+					            
+					            pst.setBinaryStream(7, thumnail);
+						}else
+							pst.setString(7, null);
+						
 						pst.executeUpdate();
 					} catch (SQLException e) {
 						System.err.println("이미 있는 파일 "+FileName);
@@ -254,19 +285,19 @@ public class FTPManager {
 			for(int i=0; i<path.length; i++){
 				path[i] = DataBase.Directory_Path_Arrangment(path[i]);
 				//FTP삭제
+				FTPFile[] files = ftpClient.listFiles(path[i]);
+				
 				if(ftpClient.changeWorkingDirectory("."+path[i])){
-					FTPFile[] files = ftpClient.listFiles(path[i]);
-
+					ftpClient.changeWorkingDirectory("../");
 					if(files.length!=0){
 						for(int j=0; j<files.length; j++){
 							FTPFile f = files[j];
-							FTPDelete(files[j].getName());
+							FTPDelete(path[i]+"/"+files[j].getName());
 						}
 					}
-					ftpClient.changeWorkingDirectory("../");
 					ftpClient.removeDirectory(path[i]);
 					
-					//DB삭제
+					//dir DB삭제
 					PreparedStatement pst;
 					String FilePath = workPath + path[i];
 					FilePath = DataBase.Directory_Path_Arrangment(FilePath);
@@ -278,9 +309,9 @@ public class FTPManager {
 						System.err.println("삭제 오류 dir");
 					}
 				}else{
-					ftpClient.deleteFile(path[i]);
+					ftpClient.deleteFile(workPath + path[i]);
 					
-					//DB삭제
+					//file DB삭제
 					PreparedStatement pst;
 					String FilePath = workPath + path[i].substring(0, path[i].lastIndexOf("/"));
 					String FileName = path[i].substring(path[i].lastIndexOf("/"));
@@ -309,11 +340,11 @@ public class FTPManager {
 		FTPManager fm = new FTPManager();
 //		fm.FTPCd("a");
 //		fm.FTPGetFileList("/");
-//		fm.FTPUpload("/", "C:/Users/BDG/Desktop/새폴더/main");
+//		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/test.m4a");
 //		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더/main", "/"));
 //		fm.FTPDownload(null, "file_client_download_root/0123.jpg");
 //		fm.FTPMkdir("/c");
-		fm.FTPDelete("main/nonon");
+		fm.FTPDelete("test");
 		
 		fm.FTPDisconnect();
 		
