@@ -356,11 +356,11 @@ public class FTPManager {
 		FTPManager fm = new FTPManager();
 //		fm.FTPCd("a");
 //		fm.FTPGetFileList("/");
-		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/main/20160722_053051.jpg");
+//		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/main/20160722_053051.jpg");
 //		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더/main", "/"));
 //		fm.FTPDownload(null, "file_client_download_root/0123.jpg");
 //		fm.FTPMkdir("/c");
-//		fm.FTPDelete("main/20160722_053051.jpg");
+		fm.FTPDelete("main/a/01234.jpg");
 		
 		fm.FTPDisconnect();
 		
