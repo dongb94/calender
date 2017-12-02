@@ -207,6 +207,8 @@ class FileData{
 		switch(type){
 		case "dir":
 			dir=true;
+			name = path.substring(path.lastIndexOf("/"));
+			path = path.substring(0, path.lastIndexOf("/"));
 			break;
 		case "vid":
 			vid=true;
@@ -237,6 +239,8 @@ class FileData{
 				switch(type){
 				case "dir":
 					dir=true;
+					name = path.substring(path.lastIndexOf("/"));
+					path = path.substring(0, path.lastIndexOf("/"));
 					break;
 				case "vid":
 					vid=true;
