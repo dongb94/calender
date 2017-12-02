@@ -168,12 +168,12 @@ public class FileDatas{
 		FileDatas favor = new FileDatas();
 		favor.getFavoriteFiles();
 		
-		System.out.println("name = " + favor.file[0].name);
-		System.out.println("path = " + favor.file[0].path);
+		System.out.println("name = " + favor.file[1].name);
+		System.out.println("path = " + favor.file[1].path);
 		System.out.println("date = " + favor.file[0].date);
 		System.out.println("favor = " + favor.file[0].favor);
 		System.out.println("img = " + favor.file[0].img);
-		System.out.println("dir = " + favor.file[0].dir);
+		System.out.println("dir = " + favor.file[1].dir);
 		System.out.println("vid = " + favor.file[0].vid);
 		System.out.println("------------------------------");
 	}
@@ -207,8 +207,9 @@ class FileData{
 		switch(type){
 		case "dir":
 			dir=true;
-			name = path.substring(path.lastIndexOf("/"));
-			path = path.substring(0, path.lastIndexOf("/"));
+			if(path.equals("")) break;
+			this.name = path.substring(path.lastIndexOf("/"));
+			this.path = path.substring(0, path.lastIndexOf("/"));
 			break;
 		case "vid":
 			vid=true;
@@ -239,8 +240,9 @@ class FileData{
 				switch(type){
 				case "dir":
 					dir=true;
-					name = path.substring(path.lastIndexOf("/"));
-					path = path.substring(0, path.lastIndexOf("/"));
+					if(path.equals("")) break;
+					this.name = path.substring(path.lastIndexOf("/"));
+					this.path = path.substring(0, path.lastIndexOf("/"));
 					break;
 				case "vid":
 					vid=true;
