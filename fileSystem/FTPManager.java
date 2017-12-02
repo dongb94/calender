@@ -114,6 +114,7 @@ public class FTPManager {
 	public String FTPCd(String path){
 		try {
 			path = DataBase.Directory_Path_Arrangment(path);
+			if(path.equals("")) path = "/";
 			workPath = path;
 			ftpClient.changeWorkingDirectory(path);
 	    	ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
@@ -121,7 +122,7 @@ public class FTPManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return path;
+		return workPath;
 	}
 	/**FTP서버에 디렉토리 생성 
 	 * FTPMkdir(생성할 디렉토리 경로) 
@@ -138,6 +139,8 @@ public class FTPManager {
 			if(!path.equals("")) {
 				name = path.substring(path.lastIndexOf("/"));
 				path = path.substring(0, path.lastIndexOf("/"));
+			} else {
+				return 1;
 			}
 			
 			PreparedStatement pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?,?)");
