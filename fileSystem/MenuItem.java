@@ -17,6 +17,7 @@ public class MenuItem extends JPanel {
 	private JButton search;
 	private JTextField search_name;
 	private JButton plus;
+	private static JLabel show_path;
 
 	private static String current_path = "/";
 	private String file_name = "file";
@@ -36,12 +37,17 @@ public class MenuItem extends JPanel {
 
 		btn_size = (int) (height * 0.9);
 		this.setBackground(Color.yellow);
+		
+		Font f = new Font("휴먼매직체", Font.BOLD, 20);
 
 		search_name = new JTextField();
 		search = new JButton("찾기");
 		upload = new JButton("업");
 		download = new JButton("다운");
 		delete = new JButton("삭제");
+		
+		show_path = new JLabel("current path : " +current_path);
+		show_path.setFont(f);
 
 		ImageIcon plus_icon = new ImageIcon("img/nfolder.png");
 		Image plus_img = plus_icon.getImage();
@@ -79,6 +85,7 @@ public class MenuItem extends JPanel {
 		add(download);
 		add(delete);
 		add(plus);
+		add(show_path);
 
 		search.setToolTipText("파일 이름을 검색합니다.");
 		upload.setToolTipText("사용자의 컴퓨터에서 파일을 업로드 합니다.");
@@ -86,6 +93,7 @@ public class MenuItem extends JPanel {
 		delete.setToolTipText("선택한 파일을 삭제합니다.");
 		plus.setToolTipText("현재 위치에 폴더를 추가합니다.");
 
+		show_path.setBounds((int)(width*0.01), (int)(height * 0.05), (int)(width*2/5), btn_size);
 		delete.setBounds((int) (width - height * 1.20), (int) (height * 0.05), btn_size, btn_size);
 		download.setBounds((int) (width - height * 2.20), (int) (height * 0.05), btn_size, btn_size);
 		upload.setBounds((int) (width - height * 3.20), (int) (height * 0.05), btn_size, btn_size);
@@ -148,5 +156,6 @@ public class MenuItem extends JPanel {
 
 	public static void set_path(String path) {
 		current_path = path;
+		show_path.setText("current path : "+path);
 	}
 }

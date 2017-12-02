@@ -24,6 +24,10 @@ public class Main extends JFrame{
 		setTitle("클라우드");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		fm = new FTPManager();
+		mi = new MenuItem(fm);
+		v = new Viewer(fm);
+		
 		makeGUI();
 		
 		setResizable(true);
@@ -41,9 +45,6 @@ public class Main extends JFrame{
 		setLocation((int)(width*0.1), (int)(height*0.1));
 		setLayout(null);
 		
-		fm = new FTPManager();
-		mi = new MenuItem(fm);
-		v = new Viewer(fm);
 		add(v);
 		add(mi);
 		mi.setBounds(0, 0, (int)(width*0.99), (int)(height*0.1));
