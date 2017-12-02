@@ -15,6 +15,7 @@ public class MenuItem extends JPanel {
 	private JButton download;
 	private JButton delete;
 	private JButton search;
+	private JButton star;
 	private JTextField search_name;
 	private JButton plus;
 	private static JLabel show_path;
@@ -24,6 +25,9 @@ public class MenuItem extends JPanel {
 	private String folder_name = "folder";
 
 	private int btn_size;
+	private static ArrayList<String> file_name_list;
+	
+	private static InnerPane ip;
 
 	FTPManager fm;
 
@@ -54,6 +58,12 @@ public class MenuItem extends JPanel {
 		plus_img = plus_img.getScaledInstance(btn_size, btn_size, java.awt.Image.SCALE_SMOOTH);
 		plus_icon = new ImageIcon(plus_img);
 		plus = new JButton(plus_icon);
+		
+		ImageIcon star_icon = new ImageIcon("img/star.png");
+		Image star_img = star_icon.getImage();
+		star_img = star_img.getScaledInstance(btn_size, btn_size, java.awt.Image.SCALE_SMOOTH);
+		star_icon = new ImageIcon(star_img);
+		star = new JButton(star_icon);
 		
 		ImageIcon sch_icon = new ImageIcon("img/sch.png");
 		Image sch_img = sch_icon.getImage();
@@ -86,18 +96,22 @@ public class MenuItem extends JPanel {
 		add(delete);
 		add(plus);
 		add(show_path);
-
+		add(star);
+		
+		star.setToolTipText("즐겨찾기에 등록합니다.");
 		search.setToolTipText("파일 이름을 검색합니다.");
 		upload.setToolTipText("사용자의 컴퓨터에서 파일을 업로드 합니다.");
 		download.setToolTipText("선택한 파일을 사용자의 컴퓨터 저장소로 다운로드합니다.");
 		delete.setToolTipText("선택한 파일을 삭제합니다.");
 		plus.setToolTipText("현재 위치에 폴더를 추가합니다.");
-
+		
+		
 		show_path.setBounds((int)(width*0.01), (int)(height * 0.05), (int)(width*2/5), btn_size);
 		delete.setBounds((int) (width - height * 1.20), (int) (height * 0.05), btn_size, btn_size);
 		download.setBounds((int) (width - height * 2.20), (int) (height * 0.05), btn_size, btn_size);
 		upload.setBounds((int) (width - height * 3.20), (int) (height * 0.05), btn_size, btn_size);
 		search.setBounds((int) (width - height * 4.20), (int) (height * 0.05), btn_size, btn_size);
+		star.setBounds((int) (width - height * 10.60), (int) (height * 0.05), btn_size, btn_size);
 		search_name.setBounds((int) (width - height * 8.40), (int) (height * 0.3), (int) (height * 4),
 				(int) (height * 0.40));
 		plus.setBounds((int) (width - height * 9.60), (int) (height * 0.05), btn_size, btn_size);
@@ -109,8 +123,10 @@ public class MenuItem extends JPanel {
 				int ret = chooser.showOpenDialog(null);
 				if (ret != JFileChooser.APPROVE_OPTION)
 					return;
-				String filePath = chooser.getSelectedFile().getPath();
+				String filePath = chooser.getSelectedFile().getAbsolutePath();
+				System.out.println(filePath);
 				fm.FTPUpload(current_path, filePath);
+				ip.reload();
 			}
 		});
 
@@ -121,8 +137,13 @@ public class MenuItem extends JPanel {
 				int ret = chooser.showSaveDialog(null);
 				if (ret != JFileChooser.APPROVE_OPTION)
 					return;
-				String filePath = chooser.getSelectedFile().getPath();
-				fm.FTPDownload(filePath, current_path + "/" + file_name);
+				String filePath = chooser.getSelectedFile().getAbsolutePath();
+				while(!file_name_list.isEmpty()) {
+					int i= 0;
+					fm.FTPDownload(filePath, file_name_list.get(i));
+					file_name_list.remove(i++);
+				}
+				
 
 			}
 
@@ -130,7 +151,16 @@ public class MenuItem extends JPanel {
 		delete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				fm.FTPDelete(file_name);
+				while(!file_name_list.isEmpty()) {
+					int i= 0;
+					if(current_path=="/")
+					System.out.println(fm.FTPDelete(current_path + file_name_list.get(i)));
+					else
+					System.out.println(fm.FTPDelete(current_path + "/" + file_name_list.get(i)));
+					System.out.println(file_name_list.get(i));
+					file_name_list.remove(i++);
+				}
+				ip.reload();
 			}
 		});
 		plus.addActionListener(new ActionListener() {
@@ -138,12 +168,23 @@ public class MenuItem extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				folder_name = JOptionPane.showInputDialog("추가할 폴더 이름을 입력하세요");
 				fm.FTPMkdir(folder_name);
+				ip.reload();
 			}
 
 		});
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				search_name.setText("");
+			}
+		});
+		star.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				while(!file_name_list.isEmpty()) {
+					int i = 0;
+					file_name_list.get(i);
+					i++;
+				}
+				ip.reload();
 			}
 		});
 
@@ -157,5 +198,11 @@ public class MenuItem extends JPanel {
 	public static void set_path(String path) {
 		current_path = path;
 		show_path.setText("current path : "+path);
+	}
+	public static void set_file_list(ArrayList<String> list) {
+		file_name_list = list;
+	}
+	public static void set_ip(InnerPane inp) {
+		ip = inp;
 	}
 }

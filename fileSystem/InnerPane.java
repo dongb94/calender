@@ -1,15 +1,22 @@
 package fileSystem;
 
 import java.awt.*;
+import java.awt.datatransfer.*;
+import java.awt.dnd.*;
+
 import javax.swing.*;
 import java.util.*;
 import java.awt.event.*;
+import java.io.*;
+
 import javax.swing.event.*;
 
 public class InnerPane extends JScrollPane {
 	/*
 	 * 0 = whole 1 = picture 2 = video 3 = music 4 = word 5 = bookmark
 	 */
+
+	private InnerPane self;
 	private int type_flag;
 	private JButton to_higher = new JButton("이전");
 	private FlowLayout fl = new FlowLayout(FlowLayout.LEFT);
@@ -21,20 +28,27 @@ public class InnerPane extends JScrollPane {
 	private int icon_size;
 	private String current_path;
 	private Viewer v;
+	private JPanel jp = new JPanel();
 
 	FTPManager fm;
 	private FileDatas fds;
 	private FileData[] fd;
 	private Font f = new Font("휴먼매직체", Font.BOLD, 20);
-	
-	public static ArrayList<String> name_list = new ArrayList<String>();
+
+	public ArrayList<String> name_list = new ArrayList<String>();
+	public DropTarget dt;
 
 	InnerPane(int flag, Viewer v, FTPManager fm) {
 		this.fm = fm;
+		self = this;
 		res = Toolkit.getDefaultToolkit().getScreenSize();
 		width = res.width * 0.8 * 0.99;
 		height = res.height * 0.8 * 0.85;
+		
 
+		dt = new DropTarget(this,DnDConstants.ACTION_COPY_OR_MOVE, new DropListener(),true,null);
+
+		
 		fl.setVgap((int) (width * 0.02));
 		fl.setHgap((int) (width * 0.02));
 
@@ -66,13 +80,18 @@ public class InnerPane extends JScrollPane {
 	}
 
 	public void makeGUI() {
-		
-		JPanel jp = new JPanel();
+
+		jp.removeAll();
+		this.remove(jp);
+		MenuItem.set_ip(self);
+
+		jp = new JPanel();
+		jp.setPreferredSize(new Dimension((int) (width * 0.8), (int) height));
 		this.setViewportView(jp);
 		jp.setLayout(fl);
 		fds = new FileDatas(current_path);
 		fd = fds.getFileDatas();
-		
+
 		if (type_flag == 0 || type_flag == 1 || type_flag == 2 || type_flag == 3 || type_flag == 4) {
 			jp.add(to_higher);
 			to_higher.setPreferredSize(new Dimension(icon_size, icon_size));
@@ -86,31 +105,35 @@ public class InnerPane extends JScrollPane {
 				file_icon = fd[i].thumnail;
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
+				file_list[i].addItemListener(new BoxListener());
 
 				if (type_flag == 0 || type_flag == 1)
-					add_box(file_list[i], jp);
-
-			} else if (fd[i].dcm) {
-				file_icon = new ImageIcon("img/doc.png");
-				file_icon = set_icon(file_icon);
-				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
-
-				if (type_flag == 0 || type_flag == 4)
 					add_box(file_list[i], jp);
 
 			} else if (fd[i].dir) {
 				file_icon = new ImageIcon("img/folder.png");
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
-				file_list[i].addItemListener(new FolderListener());
+				file_list[i].addItemListener(new BoxListener());
+				file_list[i].addMouseListener(new FdListener());
 
 				if (type_flag != 5)
+					add_box(file_list[i], jp);
+
+			} else if (fd[i].dcm) {
+				file_icon = new ImageIcon("img/doc.png");
+				file_icon = set_icon(file_icon);
+				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
+				file_list[i].addItemListener(new BoxListener());
+
+				if (type_flag == 0 || type_flag == 4)
 					add_box(file_list[i], jp);
 
 			} else if (fd[i].msc) {
 				file_icon = new ImageIcon("img/music.png");
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
+				file_list[i].addItemListener(new BoxListener());
 
 				if (type_flag == 0 || type_flag == 3)
 					add_box(file_list[i], jp);
@@ -119,6 +142,7 @@ public class InnerPane extends JScrollPane {
 				file_icon = new ImageIcon("img/video.png");
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
+				file_list[i].addItemListener(new BoxListener());
 
 				if (type_flag == 0 || type_flag == 2)
 					add_box(file_list[i], jp);
@@ -152,46 +176,55 @@ public class InnerPane extends JScrollPane {
 		return icon;
 	}
 
-	public class FolderListener implements ItemListener {
-		@Override
-		public void itemStateChanged(ItemEvent e) {
-			JCheckBox box = (JCheckBox) e.getSource();
-			if(box.isSelected()) {
-				if(current_path != "/")
-					current_path = current_path +"/"+ box.getText() ;
+	public void reload() {
+		makeGUI();
+		System.out.println("reload");
+	}
+
+	public class FdListener extends MouseAdapter {
+		public void mouseClicked(MouseEvent e) {
+			JCheckBox jb = (JCheckBox) e.getSource();
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				if (current_path != "/")
+					current_path = current_path + "/" + jb.getText();
 				else
-					current_path = current_path + box.getText();
-					fm.FTPCd(current_path);
-					MenuItem.set_path(current_path);
-					v.set_path();
-					makeGUI();
+					current_path = current_path + jb.getText();
+				name_list.clear();
+				fm.FTPCd(current_path);
+				MenuItem.set_path(current_path);
+				v.set_path();
+				makeGUI();
+				jb.removeMouseListener(this);
 			}
-			System.out.println(box.getItemListeners().length);
-			box.removeItemListener(this);
 		}
 	}
-	
+
 	public class BoxListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			JCheckBox box = (JCheckBox) e.getSource();
-			if(box.isSelected())
+			if (box.isSelected())
 				name_list.add(box.getText());
 			else
 				name_list.remove(box.getText());
+			MenuItem.set_file_list(name_list);
+			MenuItem.set_ip(self);
+			System.out.println(name_list.size());
 		}
-		
+
 	}
+
 	public class BackListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (current_path != "/") {
 				String go_to = current_path.substring(0, current_path.lastIndexOf("/"));
-				if(go_to.equals(""))
-					go_to="/";
+				if (go_to.equals(""))
+					go_to = "/";
 				fm.FTPCd(go_to);
 				current_path = go_to;
 				MenuItem.set_path(go_to);
 				v.set_path();
+				name_list.clear();
 				makeGUI();
 			} else {
 				JLabel la = new JLabel("여기가 최상위 디렉토리 이므로 더 이상 진행할 수 없습니다.");
@@ -200,8 +233,28 @@ public class InnerPane extends JScrollPane {
 			}
 		}
 	}
-	public static ArrayList get_list() {
-		return name_list;
-	}
 
+	public class DropListener extends DropTargetAdapter {
+
+		@Override
+		public void drop(DropTargetDropEvent dtde) {
+
+			if ((dtde.getDropAction() &
+					DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
+					dtde.acceptDrop(dtde.getDropAction());
+					Transferable tr = dtde.getTransferable();
+				try {
+					java.util.List list = (java.util.List)
+					tr.getTransferData(DataFlavor.javaFileListFlavor);
+					for(int i=0; i< list.size(); i++){
+						File file = (File) list.get(i);
+						System.out.println(file.getAbsolutePath());
+						fm.FTPUpload(current_path, file.getAbsolutePath());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }
