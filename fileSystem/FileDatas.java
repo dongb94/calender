@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -18,7 +20,8 @@ public class FileDatas{
 	String path;
 	Connection conn = DataBase.conn;
 	
-	/**공백으로 초기화*/
+	/**공백으로 초기화
+	 * 엘범, 즐겨찾기 등 이용*/
 	FileDatas(){}
 	
 	/**파일 경로로 초기화*/
@@ -119,6 +122,63 @@ public class FileDatas{
 		}
 	}
 	
+	/**엘범 명 및 썸네일 가져오기*/
+	void getAlbums(){
+		try {
+			PreparedStatement pst = conn.prepareStatement("select count(*) from album");
+			ResultSet rs = pst.executeQuery();
+			if(rs.next()){
+				int count = rs.getInt(1);
+				file = new FileData[count];
+			}
+
+			pst = conn.prepareStatement("select * from album");
+			rs = pst.executeQuery();
+
+			int i = 0;
+			String name = null;
+			int album_num = 0;
+			while(rs.next()){
+				album_num = rs.getInt(1);
+				name = rs.getString(2);
+
+				if(album_num>0){
+					PreparedStatement pstt = conn.prepareStatement("select thumnail from file where album='"+album_num+"'");
+					ResultSet rst = pstt.executeQuery();
+					ImageIcon thumnail=null;
+					if(rst.next()) {
+						thumnail = new ImageIcon(rst.getBytes("thumnail"));
+					}
+
+					file[i++]=new FileData(name, album_num, thumnail);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**엘범 추가
+	 * addAlbum(엘범 이름)*/
+	void addAlbum(String name){
+		try {
+			PreparedStatement pst = DataBase.conn.prepareStatement("insert into album values(?,?)");
+			pst.setString(1, null);
+			pst.setString(2, name);
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("추가 실패 : 이미 존재하는 엘범");
+		}
+	}
+	
+	/**엘범 변경(default에서의 변경 포함)*/
+	void changeAlbum(String name){
+	}
+	/**즐겨찾기 추가*/
+	/**즐겨찾기 삭제*/
+	
+	
+	/**getFileData*/
 	FileData[] getFileDatas(){
 		return file;
 	}
@@ -134,48 +194,56 @@ public class FileDatas{
 //		System.out.println("dir = " + fd.dir);
 //		System.out.println("vid = " + fd.vid);
 		
+		
+		
+		FileDatas fda= new FileDatas();
+		fda.addAlbum("test");
+		
+//		fda.getAlbums();
+//		
+//		
 //		JFrame frame = new JFrame();
 //		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 //		frame.setSize(200, 200);
-//		JLabel l = new JLabel(fd.thumnail);
+//		JLabel l = new JLabel(fda.file[0].thumnail);
 //		frame.add(l);
 //		frame.setVisible(true);
 		
-		System.out.println("------------------------------");
-		FileDatas fds = new FileDatas("");
-
-		System.out.println("name = " + fds.file[0].name);
-		System.out.println("path = " + fds.file[0].path);
-		System.out.println("date = " + fds.file[0].date);
-		System.out.println("favor = " + fds.file[0].favor);
-		System.out.println("img = " + fds.file[0].img);
-		System.out.println("dir = " + fds.file[0].dir);
-		System.out.println("vid = " + fds.file[0].vid);
-		System.out.println("------------------------------");
-
-		FileDatas album = new FileDatas();
-		album.getAlbumFiles("dog");
-		
-		System.out.println("name = " + album.file[1].name);
-		System.out.println("path = " + album.file[1].path);
-		System.out.println("date = " + album.file[0].date);
-		System.out.println("favor = " + album.file[0].favor);
-		System.out.println("img = " + album.file[0].img);
-		System.out.println("dir = " + album.file[0].dir);
-		System.out.println("vid = " + album.file[0].vid);
-		System.out.println("------------------------------");
-		
-		FileDatas favor = new FileDatas();
-		favor.getFavoriteFiles();
-		
-		System.out.println("name = " + favor.file[1].name);
-		System.out.println("path = " + favor.file[1].path);
-		System.out.println("date = " + favor.file[0].date);
-		System.out.println("favor = " + favor.file[0].favor);
-		System.out.println("img = " + favor.file[0].img);
-		System.out.println("dir = " + favor.file[1].dir);
-		System.out.println("vid = " + favor.file[0].vid);
-		System.out.println("------------------------------");
+//		System.out.println("------------------------------");
+//		FileDatas fds = new FileDatas("");
+//
+//		System.out.println("name = " + fds.file[0].name);
+//		System.out.println("path = " + fds.file[0].path);
+//		System.out.println("date = " + fds.file[0].date);
+//		System.out.println("favor = " + fds.file[0].favor);
+//		System.out.println("img = " + fds.file[0].img);
+//		System.out.println("dir = " + fds.file[0].dir);
+//		System.out.println("vid = " + fds.file[0].vid);
+//		System.out.println("------------------------------");
+//
+//		FileDatas album = new FileDatas();
+//		album.getAlbumFiles("dog");
+//		
+//		System.out.println("name = " + album.file[1].name);
+//		System.out.println("path = " + album.file[1].path);
+//		System.out.println("date = " + album.file[0].date);
+//		System.out.println("favor = " + album.file[0].favor);
+//		System.out.println("img = " + album.file[0].img);
+//		System.out.println("dir = " + album.file[0].dir);
+//		System.out.println("vid = " + album.file[0].vid);
+//		System.out.println("------------------------------");
+//		
+//		FileDatas favor = new FileDatas();
+//		favor.getFavoriteFiles();
+//		
+//		System.out.println("name = " + favor.file[1].name);
+//		System.out.println("path = " + favor.file[1].path);
+//		System.out.println("date = " + favor.file[0].date);
+//		System.out.println("favor = " + favor.file[0].favor);
+//		System.out.println("img = " + favor.file[0].img);
+//		System.out.println("dir = " + favor.file[1].dir);
+//		System.out.println("vid = " + favor.file[0].vid);
+//		System.out.println("------------------------------");
 	}
 }
 
@@ -196,6 +264,12 @@ class FileData{
 		this.path = path;
 		this.name = name;
 		checkFile();
+	}
+	/**엘범으로 초기화*/
+	FileData(String name, int album_num,ImageIcon thumnail){
+		this.name =name;
+		this.img=album_num;
+		this.thumnail=thumnail;
 	}
 	FileData(String path,String name, int favor, String type, int album, long date, ImageIcon thumnail){
 		this.path = path;
