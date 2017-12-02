@@ -134,8 +134,14 @@ public class FTPManager {
 			
 			ftpClient.makeDirectory(path);
 			
+			String name = "";
+			if(!path.equals("")) {
+				name = path.substring(path.lastIndexOf("/"));
+				path = path.substring(0, path.lastIndexOf("/"));
+			}
+			
 			PreparedStatement pst = DataBase.conn.prepareStatement("insert into file values(?,?,?,?,?,?,?)");
-		    pst.setString(1, "");
+		    pst.setString(1, name);
 			pst.setString(2, path);
 			pst.setInt(3, 0);
 			pst.setInt(4, -1);
@@ -359,8 +365,8 @@ public class FTPManager {
 //		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/main/20160722_053051.jpg");
 //		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더/main", "/"));
 //		fm.FTPDownload(null, "file_client_download_root/0123.jpg");
-//		fm.FTPMkdir("/c");
-		fm.FTPDelete("main/a/01234.jpg");
+		fm.FTPMkdir("/c");
+//		fm.FTPDelete("main/a/01234.jpg");
 		
 		fm.FTPDisconnect();
 		
