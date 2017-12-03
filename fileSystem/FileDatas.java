@@ -372,6 +372,8 @@ class FileData{
 			pst = conn.prepareStatement("update file set album='"+album_num+"' where name='"+this.name+"'&& path='"+this.path+"'&& type='img'");
 			pst.executeUpdate();
 			
+			img = album_num;
+			
 		} catch (SQLException e) {
 			System.err.println("실패 : 존재하지 않는 엘범명이거나 이미 엘범에 포함돼 있습니다.");
 		}
