@@ -170,7 +170,37 @@ public class FileDatas{
 			System.err.println("추가 실패 : 이미 존재하는 엘범");
 		}
 	}
-	/**검색기능*/
+	/**검색기능
+	 * find(검색할 문자열)*/
+	void find(String s){
+		s = DataBase.Directory_Path_Arrangment(s);
+		try {
+			PreparedStatement pst = conn.prepareStatement("select count(*) from file where name='%"+s+"%'");
+			ResultSet rs = pst.executeQuery();
+			if(rs.next()){
+				int count = rs.getInt(1);
+				file = new FileData[count];
+			}
+			
+			pst = conn.prepareStatement("select name,favor,type,album,date,thumnail from file where name='%"+s+"%' ORDER BY date DESC");
+			rs = pst.executeQuery();
+			
+			int i = 0;
+			while (rs.next()) {
+				String name = rs.getString(1);
+				int fv = rs.getInt(2);
+				String type = rs.getString(3);
+				int img = rs.getInt(4);
+				long date = rs.getTimestamp(5).getTime();
+				ImageIcon thumnail=null;
+				if(type.equals("img")) thumnail = new ImageIcon(rs.getBytes(6));
+				file[i++]=new FileData(path, name, fv, type, img, date, thumnail);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**getFileData*/
 	FileData[] getFileDatas(){
@@ -357,7 +387,6 @@ class FileData{
 			System.err.println("실패 : 이미 즐겨찾기에 포함돼 있습니다.");
 		}
 	}
-	
 	/**즐겨찾기 삭제*/
 	void deleteFavor(){
 		try {
