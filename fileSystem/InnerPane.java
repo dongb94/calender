@@ -202,12 +202,23 @@ public class InnerPane extends JScrollPane {
 			JCheckBox jb = (JCheckBox)e.getSource();
 			if(e.getButton() == MouseEvent.BUTTON3)
 			if(fd.msc) {
-				fm.FTPDownload(temp_down, fd.path);
-				try {
-					new MusicPlayer().playMusicAndVideo(temp_down+"\\"+fd.name);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if(current_path.equals("/")) {
+					fm.FTPDownload(temp_down, current_path+"/"+fd.name.substring(1));
+					try {
+						new MusicPlayer().playMusicAndVideo(temp_down+"\\"+fd.name.substring(1));
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				else {
+					fm.FTPDownload(temp_down, current_path+fd.name);
+					try {
+						new MusicPlayer().playMusicAndVideo(temp_down+"\\"+current_path+fd.name);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 			
@@ -227,7 +238,7 @@ public class InnerPane extends JScrollPane {
 						new PhotoPreview(temp_down+"\\"+fd.name.substring(1));
 					}
 					else {
-						fm.FTPDownload(temp_down, current_path+fd.name.substring(1));
+						fm.FTPDownload(temp_down, current_path+fd.name);
 					new PhotoPreview(temp_down+"\\"+current_path+fd.name);
 					}
 				}
