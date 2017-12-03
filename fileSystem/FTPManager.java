@@ -165,13 +165,13 @@ public class FTPManager {
 	 * 성공 1 실패 0*/
 	public int FTPUpload(String upload_Folder, String... path){
 	    try {
-	    	
+	    	upload_Folder = DataBase.Directory_Path_Arrangment(upload_Folder);
 	    	FTPMkdir(upload_Folder);
 	    	
 	    	BufferedInputStream bis = null;
 	    	InputStream inputStream = null;
 	    	for(int i=0; i<path.length; i++){
-	    		
+	    		path[i] = DataBase.Directory_Path_Arrangment(path[i]);
 				File put_file = new File(path[i]);
 				if(put_file.isDirectory()){
 					String[] s =put_file.list();
@@ -228,7 +228,6 @@ public class FTPManager {
 					} catch (SQLException e) {
 						System.err.println("이미 있는 파일 "+FileName);
 					}
-				    
 				}
 	    	}
 		} catch (IOException e) {
@@ -345,8 +344,7 @@ public class FTPManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return 0;		
-		}
-	   
+		}	   
 		return 1;
 	}
 	
@@ -361,6 +359,9 @@ public class FTPManager {
 			String file_name = file_path.substring(file_path.lastIndexOf("/"));
 			file_path = file_path.substring(0,file_path.lastIndexOf("/"));
 		
+			String change_name = change_path.substring(change_path.lastIndexOf("/"));
+			change_path = change_path.substring(0,change_path.lastIndexOf("/"));
+			
 			PreparedStatement pst;
 			pst = DataBase.conn.prepareStatement("update file set name,path where name='"+file_name+"'&& path='"+file_path+"'");
 			pst.executeUpdate();
@@ -370,20 +371,22 @@ public class FTPManager {
 			e1.printStackTrace();
 		}
 		return 0;
-		
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		//단위 테스트용 main클래스
 		new DataBase();
 		FTPManager fm = new FTPManager();
-//		fm.FTPCd("a");
+		fm.FTPMkdir("uploadtest");
+		fm.FTPCd("uploadtest");
 //		fm.FTPGetFileList("/");
-//		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/main/20160722_053051.jpg");
+		fm.FTPUpload("test", "C:/Users/BDG/Desktop/새폴더/1.jpg");
+		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/2.jpg/");
+		fm.FTPUpload("test/", "C:/Users/BDG/Desktop/새폴더/3.jpg");
+		fm.FTPUpload("/test/", "C:/Users/BDG/Desktop/새폴더/4.jpg/");
 //		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더/main", "/"));
 //		fm.FTPDownload(null, "file_client_download_root/0123.jpg");
-		fm.FTPMkdir("/fdfd");
-		fm.FTPDelete("fdfd");
+//		fm.FTPDelete("fdfd");
 		
 		fm.FTPDisconnect();
 		
