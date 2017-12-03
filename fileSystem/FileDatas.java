@@ -384,6 +384,7 @@ class FileData{
 			pst = conn.prepareStatement("update file set favor='1' where name='"+this.name+"'&& path='"+this.path+"'");
 			pst.executeUpdate();
 			
+			favor = true;
 		} catch (SQLException e) {
 			System.err.println("실패 : 이미 즐겨찾기에 포함돼 있습니다.");
 		}
@@ -394,6 +395,8 @@ class FileData{
 			PreparedStatement pst;
 			pst = conn.prepareStatement("update file set favor='0' where name='"+this.name+"'&& path='"+this.path+"'");
 			pst.executeUpdate();
+			
+			favor = false;
 		} catch (SQLException e) {
 			System.err.println("실패 : .");
 		}
