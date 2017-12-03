@@ -314,11 +314,12 @@ public class FTPManager {
 					
 					//dir DB삭제
 					PreparedStatement pst;
-					String FilePath = workPath + path[i];
+					String FilePath = workPath + path[i].substring(0, path[i].lastIndexOf("/"));
+					String FileName = path[i].substring(path[i].lastIndexOf("/"));
 					FilePath = DataBase.Directory_Path_Arrangment(FilePath);
 					String extension = "dir";//파일 분류
 					try {					
-						pst = DataBase.conn.prepareStatement("delete from file where name=''&& path='"+FilePath+"'&& type='"+extension+"'");
+						pst = DataBase.conn.prepareStatement("delete from file where name='"+FileName+"'&& path='"+FilePath+"'&& type='"+extension+"'");
 						pst.executeUpdate();
 					} catch (SQLException e) {
 						System.err.println("삭제 오류 dir");
@@ -368,8 +369,8 @@ public class FTPManager {
 //		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/main/20160722_053051.jpg");
 //		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더/main", "/"));
 //		fm.FTPDownload(null, "file_client_download_root/0123.jpg");
-		fm.FTPMkdir("/c");
-//		fm.FTPDelete("main/a/01234.jpg");
+		fm.FTPMkdir("/fdfd");
+		fm.FTPDelete("fdfd");
 		
 		fm.FTPDisconnect();
 		

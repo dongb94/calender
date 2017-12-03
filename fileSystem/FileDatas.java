@@ -171,12 +171,10 @@ public class FileDatas{
 		}
 	}
 	
-	/**엘범 변경(default에서의 변경 포함)*/
-	void changeAlbum(String name){
-	}
+	
 	/**즐겨찾기 추가*/
 	/**즐겨찾기 삭제*/
-	
+	/**검색기능*/
 	
 	/**getFileData*/
 	FileData[] getFileDatas(){
@@ -187,17 +185,16 @@ public class FileDatas{
 		//단위 테스트용 main클래스
 		new DataBase();
 		
-//		FileData fd = new FileData("/test", "/20160722_053051.jpg");
+		FileData fd = new FileData("/test", "/20160722_053051.jpg");
+		fd.changeAlbum(null);
 //		System.out.println("date = " + fd.date);
 //		System.out.println("favor = " + fd.favor);
 //		System.out.println("img = " + fd.img);
 //		System.out.println("dir = " + fd.dir);
 //		System.out.println("vid = " + fd.vid);
 		
-		
-		
-		FileDatas fda= new FileDatas();
-		fda.addAlbum("test");
+//		FileDatas fda= new FileDatas();
+//		fda.addAlbum("test");
 		
 //		fda.getAlbums();
 //		
@@ -330,5 +327,27 @@ class FileData{
 		}
 	}
 	
+	
+	/**엘범 변경(default에서의 변경 포함)
+	 * changeAlbum(변경할 엘범 명)
+	 * default로 변경시에는 null로 함*/
+	void changeAlbum(String name){
+		try {
+			int album_num = 0;
+			PreparedStatement pst;
+			ResultSet rs;
+			if(name!=null){
+				pst = conn.prepareStatement("select sid from album where name='"+name+"'");
+				rs = pst.executeQuery();
+				rs.next();
+				album_num = rs.getInt(1);
+			}
+			pst = conn.prepareStatement("update file set album='"+album_num+"' where name='"+this.name+"'&& path='"+this.path+"'&& type='img'");
+			pst.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.err.println("실패 : 존재하지 않는 엘범명이거나 이미 엘범에 포함돼 있습니다.");
+		}
+	}
 	
 }
