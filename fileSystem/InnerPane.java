@@ -187,6 +187,35 @@ public class InnerPane extends JScrollPane {
 		this.fd = fd;
 		makeGUI();
 	}
+	protected class MusicListener extends MouseAdapter {
+		
+		private FileData fd;
+		MusicListener(FileData fd){
+			this.fd = fd;
+		}
+		
+		public void mouseClicked(MouseEvent e) {
+			JCheckBox jb = (JCheckBox)e.getSource();
+			if(e.getButton() == MouseEvent.BUTTON3)
+			if(fd.msc) {
+				;
+			}
+			
+		}
+	}
+	protected class ImageListener extends MouseAdapter {
+		private FileData fd;
+		ImageListener(FileData fd){
+			this.fd = fd;
+		}
+		public void mouseClicked(MouseEvent e) {
+			JCheckBox jb = (JCheckBox)e.getSource();
+			if(e.getButton() == MouseEvent.BUTTON3)
+				if(fd.img!=-1) {
+					;
+				}
+		}
+	}
 
 	protected class FdListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
