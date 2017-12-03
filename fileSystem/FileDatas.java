@@ -170,10 +170,6 @@ public class FileDatas{
 			System.err.println("추가 실패 : 이미 존재하는 엘범");
 		}
 	}
-	
-	
-	/**즐겨찾기 추가*/
-	/**즐겨찾기 삭제*/
 	/**검색기능*/
 	
 	/**getFileData*/
@@ -186,7 +182,7 @@ public class FileDatas{
 		new DataBase();
 		
 		FileData fd = new FileData("/test", "/20160722_053051.jpg");
-		fd.changeAlbum(null);
+		fd.deleteFavor();
 //		System.out.println("date = " + fd.date);
 //		System.out.println("favor = " + fd.favor);
 //		System.out.println("img = " + fd.img);
@@ -350,4 +346,26 @@ class FileData{
 		}
 	}
 	
+	/**즐겨찾기 추가*/
+	void addFavor(){
+		try {
+			PreparedStatement pst;
+			pst = conn.prepareStatement("update file set favor='1' where name='"+this.name+"'&& path='"+this.path+"'");
+			pst.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.err.println("실패 : 이미 즐겨찾기에 포함돼 있습니다.");
+		}
+	}
+	
+	/**즐겨찾기 삭제*/
+	void deleteFavor(){
+		try {
+			PreparedStatement pst;
+			pst = conn.prepareStatement("update file set favor='0' where name='"+this.name+"'&& path='"+this.path+"'");
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("실패 : .");
+		}
+	}
 }
