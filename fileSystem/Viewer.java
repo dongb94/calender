@@ -19,6 +19,8 @@ public class Viewer extends JTabbedPane {
 	private double width;
 	private double height;
 	
+	private JButton album_on;
+	
 	FTPManager fm;
 	
 	Viewer(FTPManager fm){
@@ -32,7 +34,7 @@ public class Viewer extends JTabbedPane {
 		video_p = new InnerPane(2, this, fm);
 		music_p = new InnerPane(3, this, fm);
 		word_p = new InnerPane(4, this, fm);
-		book_p = new Bookmark(5, this, fm);
+		book_p = new InnerPane(5, this, fm);
 		
 		ImageIcon home_icon = new ImageIcon("img/home.png");
 		ImageIcon picture_icon = new ImageIcon("img/picture.png");
@@ -40,7 +42,6 @@ public class Viewer extends JTabbedPane {
 		ImageIcon music_icon = new ImageIcon("img/music.png");
 		ImageIcon doc_icon = new ImageIcon("img/doc.png");
 		ImageIcon star_icon = new ImageIcon("img/star.png");
-		ImageIcon album_icon = new ImageIcon("img/album.png");
 		
 		Image picture_img = picture_icon.getImage();
 		Image home_img = home_icon.getImage();
@@ -48,7 +49,6 @@ public class Viewer extends JTabbedPane {
 		Image music_img = music_icon.getImage();
 		Image doc_img = doc_icon.getImage();
 		Image star_img = star_icon.getImage();
-		Image album_img = album_icon.getImage();
 		
 		picture_img = picture_img.getScaledInstance((int) height / 15, (int) height / 15, java.awt.Image.SCALE_SMOOTH);
 		home_img = home_img.getScaledInstance((int) height / 15, (int) height / 15, java.awt.Image.SCALE_SMOOTH);
@@ -56,7 +56,6 @@ public class Viewer extends JTabbedPane {
 		music_img = music_img.getScaledInstance((int) height / 15, (int) height / 15, java.awt.Image.SCALE_SMOOTH);
 		doc_img = doc_img.getScaledInstance((int) height / 15, (int) height / 15, java.awt.Image.SCALE_SMOOTH);
 		star_img = star_img.getScaledInstance((int) height / 15, (int) height / 15, java.awt.Image.SCALE_SMOOTH);
-		album_img = album_img.getScaledInstance((int) height / 15, (int) height / 15, java.awt.Image.SCALE_SMOOTH);
 		
 		picture_icon = new ImageIcon(picture_img);
 		home_icon = new ImageIcon(home_img);
@@ -64,7 +63,6 @@ public class Viewer extends JTabbedPane {
 		music_icon = new ImageIcon(music_img);
 		doc_icon = new ImageIcon(doc_img);
 		star_icon = new ImageIcon(star_img);
-		album_icon = new ImageIcon(album_img);
 		
 		Font f = new Font("휴먼매직체", Font.BOLD, 20);
 		this.setFont(f);
@@ -75,7 +73,6 @@ public class Viewer extends JTabbedPane {
 		addTab("음악",music_icon, music_p);
 		addTab("문서",doc_icon, word_p);
 		addTab("즐겨찾기",star_icon, book_p);
-		addTab("앨범",album_icon, new JPanel());
 		
 	}
 	public FTPManager get_fm() {
