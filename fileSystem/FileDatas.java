@@ -174,12 +174,10 @@ public class FileDatas{
 	 * deleteAlbum(엘범 이름)*/
 	void deleteAlbum(String name){
 		try {
-			PreparedStatement pst = DataBase.conn.prepareStatement("delete into album values(?,?)");
-			pst.setString(1, null);
-			pst.setString(2, name);
+			PreparedStatement pst = DataBase.conn.prepareStatement("delete from album where name ='"+name+"'");
 			pst.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println("추가 실패 : 이미 존재하는 엘범");
+			System.err.println("삭제 실패");
 		}
 	}
 	
@@ -226,10 +224,12 @@ public class FileDatas{
 		
 //		FileData fd = new FileData("/test", "/20160722_053051.jpg");
 		FileDatas fds = new FileDatas();
-		fds.find("a");
-		System.out.println(fds.file.length);
-		System.out.println(fds.file[2].name);
-		System.out.println(fds.file[2].path);
+//		fds.find("a");
+//		System.out.println(fds.file.length);
+//		System.out.println(fds.file[2].name);
+//		System.out.println(fds.file[2].path);
+		
+		fds.deleteAlbum("hahaha");
 	}
 }
 
