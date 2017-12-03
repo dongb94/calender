@@ -80,6 +80,13 @@ public class FTPManager {
 	/**FTP서버의 파일 목록을 가져옴
 	 * FTPGetFileList(가져올 파일 path)
 	 * @return FTPFile[]*/
+	public FileDatas[] FTPGetFileData(String path){
+		
+		return null;
+	}
+	/**FTP서버의 파일 목록을 가져옴
+	 * FTPGetFileList(가져올 파일 path)
+	 * @return FTPFile[]*/
 	public FTPFile[] FTPGetFileList(String path){
 		FTPFile[] ftpfiles = null;
 		try {
@@ -154,62 +161,24 @@ public class FTPManager {
 		return 1;
 	}
 	/**FTP서버에 파일 업로드
-	 * FTPUpload(업로드 상대경로, 업로드 파일 path1, path2, ...)*/
-	public void FTPUpload(String upload_Folder, String... path){
-		for(int i=0; i<path.length; i++){
-			Upload upload = new Upload(upload_Folder,path[i]);
-			new Thread(upload).start();
-		}
-	}
-	/**FTP서버에서 파일 다운로드 
-	 * FTPDownload(로컬 다운로드path, 받을파일1, 받을파일2, ...) 
-	 * 다운로드 path가 null 일시 기본 디렉토리에 다운로드*/
-	public void FTPDownload(String download_Folder, String... path){
-		for(int i=0; i<path.length; i++){
-			Download download = new Download(download_Folder,path[i]);
-			new Thread(download).start();
-		}
-	}
-	/**FTP서버에서 파일 삭제 
-	 * FTPDelete(지울파일1, 지울파일2, ...)*/
-	public void FTPDelete(String... path){
-		for(int i=0; i<path.length; i++){
-			Delete delete = new Delete(path[i]);
-			new Thread(delete).start();
-		}
-	}
-	/**FTP서버 파일 폴더이동(경로 변경),이름 변경
-	 * FTPChangePath(해당파일 포함 파일 path, 변경할 path)
-	 * ex) FTPChangePath("/text.txt","/dir/change.txt")*/
-	public void FTPChangePath(String file_path, String change_path){
-		Modify modify = new Modify(file_path, change_path);
-		new Thread(modify).start();
-	}
-	
-	/**upload thread*/
-	class Upload extends Thread{
-		String upload_Folder;
-		String path;
-		Upload(String upload_Folder, String path){
-			this.upload_Folder = upload_Folder;
-			this.path = path;
-		}
-		public void run(){
-			try {
-		    	upload_Folder = DataBase.Directory_Path_Arrangment(upload_Folder);
-		    	FTPMkdir(upload_Folder);
-		    	
-		    	BufferedInputStream bis = null;
-		    	InputStream inputStream = null;
-		    	
-	    		path = DataBase.Directory_Path_Arrangment(path);
-				File put_file = new File(path);
+	 * FTPUpload(업로드 상대경로, 업로드 파일 path1, path2, ...)
+	 * 성공 1 실패 0*/
+	public int FTPUpload(String upload_Folder, String... path){
+	    try {
+	    	upload_Folder = DataBase.Directory_Path_Arrangment(upload_Folder);
+	    	FTPMkdir(upload_Folder);
+	    	
+	    	BufferedInputStream bis = null;
+	    	InputStream inputStream = null;
+	    	for(int i=0; i<path.length; i++){
+	    		path[i] = DataBase.Directory_Path_Arrangment(path[i]);
+				File put_file = new File(path[i]);
 				if(put_file.isDirectory()){
 					String[] s =put_file.list();
 					for(int j=0; j<s.length; j++)
-						FTPUpload(upload_Folder+"/"+put_file.getName(),path+"/"+s[j]);
+						FTPUpload(upload_Folder+"/"+put_file.getName(),path[i]+"/"+s[j]);
 				}else{
-					String FileName = path.substring(path.lastIndexOf("/"));
+					String FileName = path[i].substring(path[i].lastIndexOf("/"));
 					inputStream = new FileInputStream(put_file);
 					bis = new BufferedInputStream(inputStream);
 				    boolean result = ftpClient.storeFile("./"+upload_Folder+FileName, bis);
@@ -260,90 +229,91 @@ public class FTPManager {
 						System.err.println("이미 있는 파일 "+FileName);
 					}
 				}
-		    	
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	    	}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;
 		}
+		
+		return 1;
 	}
-	/**download Thread*/
-	class Download extends Thread{
-		String download_Folder;
-		String path;
-		public Download(String download_Folder, String path) {
-			this.download_Folder=download_Folder;
-			this.path=path;
-		}
-		public void run(){
-			try {
-				if(download_Folder==null){
-					download_Folder = System.getProperty("user.home")+"/AppData/Local/file_downloads";
-				}
-				
-				File get_file = new File(download_Folder);
-				
-				BufferedOutputStream bos = null;
-				OutputStream outputStream = null;
-				path = DataBase.Directory_Path_Arrangment(path);
+	/**FTP서버에서 파일 다운로드 
+	 * FTPDownload(로컬 다운로드path, 받을파일1, 받을파일2, ...) 
+	 * 다운로드 path가 null 일시 기본 디렉토리에 다운로드
+	 *  성공 1 실패 0*/
+	public int FTPDownload(String download_Folder, String... path){
+		try {
+			if(download_Folder==null){
+				download_Folder = System.getProperty("user.home")+"/AppData/Local/file_downloads";
+			}
+			
+			File get_file = new File(download_Folder);
+			
+			BufferedOutputStream bos = null;
+			OutputStream outputStream = null;
+			for(int i=0; i<path.length; i++){
+				path[i] = DataBase.Directory_Path_Arrangment(path[i]);
 
-				FTPFile[] files = ftpClient.listFiles(path);
+				FTPFile[] files = ftpClient.listFiles(path[i]);
 				
-				if(ftpClient.changeWorkingDirectory("."+path)){
+				if(ftpClient.changeWorkingDirectory("."+path[i])){
 					if(files.length==0){
-						get_file = new File(download_Folder+path);
+						get_file = new File(download_Folder+path[i]);
 						get_file.mkdir();
 					}else{
 						for(int j=0; j<files.length; j++){
 							FTPFile f = files[j];
-							FTPDownload(download_Folder+path,files[j].getName());
+							FTPDownload(download_Folder+path[i],files[j].getName());
 						}
 					}
 					ftpClient.changeWorkingDirectory("../");
 				}else{
-					String Filepath = path.substring(0,path.lastIndexOf("/"));
+					String Filepath = path[i].substring(0,path[i].lastIndexOf("/"));
 					get_file = new File(DataBase.Directory_Path_Arrangment(download_Folder)+Filepath);
 					get_file.mkdirs();
-					get_file = new File(DataBase.Directory_Path_Arrangment(download_Folder)+path);
+					get_file = new File(DataBase.Directory_Path_Arrangment(download_Folder)+path[i]);
 				    outputStream = new FileOutputStream(get_file);
 				    bos = new BufferedOutputStream(outputStream);
-				    boolean result = ftpClient.retrieveFile(path, bos);
+				    boolean result = ftpClient.retrieveFile(path[i], bos);
 				    outputStream.flush();
 				    bos.flush();
 				    outputStream.close();
 					bos.close();
 				}
-				
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;		
 		}
+	   
+		return 1;
 	}
-	/**delete thread*/
-	class Delete extends Thread{
-		String path;
-		Delete(String path){
-			this.path=path;
-		}
-		public void run(){
-			try {
-				path = DataBase.Directory_Path_Arrangment(path);
+	/**FTP서버에서 파일 삭제 
+	 * FTPDelete(지울파일1, 지울파일2, ...) 
+	 *  성공 1 실패 0*/
+	public int FTPDelete(String... path){
+		try {
+			
+			for(int i=0; i<path.length; i++){
+				path[i] = DataBase.Directory_Path_Arrangment(path[i]);
 				//FTP삭제
-				FTPFile[] files = ftpClient.listFiles(path);
+				FTPFile[] files = ftpClient.listFiles(path[i]);
 				
-				if(ftpClient.changeWorkingDirectory("."+path)){
+				if(ftpClient.changeWorkingDirectory("."+path[i])){
 					ftpClient.changeWorkingDirectory("../");
 					if(files.length!=0){
 						for(int j=0; j<files.length; j++){
 							FTPFile f = files[j];
-							FTPDelete(path+"/"+files[j].getName());
+							FTPDelete(path[i]+"/"+files[j].getName());
 						}
 					}
-					ftpClient.removeDirectory(path);
+					ftpClient.removeDirectory(path[i]);
 					
 					//dir DB삭제
 					PreparedStatement pst;
-					String FilePath = workPath + path.substring(0, path.lastIndexOf("/"));
-					String FileName = path.substring(path.lastIndexOf("/"));
+					String FilePath = workPath + path[i].substring(0, path[i].lastIndexOf("/"));
+					String FileName = path[i].substring(path[i].lastIndexOf("/"));
 					FilePath = DataBase.Directory_Path_Arrangment(FilePath);
 					String extension = "dir";//파일 분류
 					try {					
@@ -353,12 +323,12 @@ public class FTPManager {
 						System.err.println("삭제 오류 dir");
 					}
 				}else{
-					ftpClient.deleteFile(workPath + path);
+					ftpClient.deleteFile(workPath + path[i]);
 					
 					//file DB삭제
 					PreparedStatement pst;
-					String FilePath = workPath + path.substring(0, path.lastIndexOf("/"));
-					String FileName = path.substring(path.lastIndexOf("/"));
+					String FilePath = workPath + path[i].substring(0, path[i].lastIndexOf("/"));
+					String FileName = path[i].substring(path[i].lastIndexOf("/"));
 					FilePath = DataBase.Directory_Path_Arrangment(FilePath);
 					String extension = DataBase.ExtensionDetermination(FileName);//파일 분류
 					try {					
@@ -368,45 +338,46 @@ public class FTPManager {
 						System.err.println("삭제 오류 "+ FileName);
 					}
 				}
-				
-			} catch (IOException e) {
-				e.printStackTrace();
+
 			}
-		}
-	}
-	/**change dir & rename thread*/
-	class Modify extends Thread{
-		String file_path;
-		String change_path;
-		Modify(String file_path, String change_path){
-			this.file_path = file_path;
-			this.change_path = change_path;
-		}
-		public void run(){
-			try {
-				file_path = DataBase.Directory_Path_Arrangment(file_path);
-				change_path = DataBase.Directory_Path_Arrangment(change_path);
-				
-				String change_name = change_path.substring(change_path.lastIndexOf("/"));
-				change_path = change_path.substring(0,change_path.lastIndexOf("/"));
-				
-				FTPMkdir(change_path);
-				ftpClient.rename(file_path,change_path+change_name);
 			
-				String file_name = file_path.substring(file_path.lastIndexOf("/"));
-				file_path = file_path.substring(0,file_path.lastIndexOf("/"));
-			
-				
-				
-				PreparedStatement pst = DataBase.conn.prepareStatement("update file set name='"+change_name+"',path='"+change_path+"' where name='"+file_name+"'&& path='"+file_path+"'");
-				pst.executeUpdate();
-			} catch (SQLException e) {
-				System.err.println("실패 : .");
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;		
+		}	   
+		return 1;
 	}
+	
+	/**FTP서버 파일 폴더이동(경로 변경),이름 변경
+	 * FTPChangePath(해당파일 포함 파일 path, 변경할 path)
+	 * ex) FTPChangePath("/text.txt","/dir/change.txt") 
+	 *  성공 1 실패 0*/
+	public int FTPChangePath(String file_path, String change_path){
+		try {
+			file_path = DataBase.Directory_Path_Arrangment(file_path);
+			change_path = DataBase.Directory_Path_Arrangment(change_path);
+			
+			String change_name = change_path.substring(change_path.lastIndexOf("/"));
+			change_path = change_path.substring(0,change_path.lastIndexOf("/"));
+			
+			FTPMkdir(change_path);
+			ftpClient.rename(file_path,change_path+change_name);
+		
+			String file_name = file_path.substring(file_path.lastIndexOf("/"));
+			file_path = file_path.substring(0,file_path.lastIndexOf("/"));
+		
+			
+			
+			PreparedStatement pst = DataBase.conn.prepareStatement("update file set name='"+change_name+"',path='"+change_path+"' where name='"+file_name+"'&& path='"+file_path+"'");
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("실패 : .");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return 0;
+	}
+	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		//단위 테스트용 main클래스
 		new DataBase();
