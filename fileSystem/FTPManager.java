@@ -385,15 +385,15 @@ public class FTPManager {
 //		fm.FTPMkdir("uploadtest");
 //		fm.FTPCd("uploadtest");
 //		fm.FTPGetFileList("/");
-//		fm.FTPUpload("", "C:/Users/BDG/Desktop/새폴더/hart.png");
+		fm.FTPUpload("", "C:/Users/BDG/Desktop/a");
 //		fm.FTPUpload("/test", "C:/Users/BDG/Desktop/새폴더/2.jpg/");
 //		fm.FTPUpload("test/", "C:/Users/BDG/Desktop/새폴더/3.jpg");
 //		fm.FTPUpload("/test/", "C:/Users/BDG/Desktop/새폴더/4.jpg/");
 //		System.out.println(fm.FTPDownload("C:/Users/BDG/Desktop/새폴더/main", "/"));
 //		fm.FTPDownload(null, "file_client_download_root/0123.jpg");
-//		fm.FTPDelete("fdfd");
-		fm.FTPChangePath("a/hart.png","b/hart.png");
-		fm.FTPDisconnect();
+//		fm.FTPDelete("ftp/hart.png");
+//		fm.FTPChangePath("a/hart.png","b/hart.png");
+//		fm.FTPDisconnect();
 		
 	}
 }

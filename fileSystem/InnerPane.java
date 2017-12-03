@@ -129,6 +129,7 @@ public class InnerPane extends JScrollPane {
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 				file_list[i].addItemListener(new BoxListener());
+				file_list[i].addMouseListener(new MusicListener(fd[i]));
 
 				if (type_flag == 0 || type_flag == 4)
 					add_box(file_list[i], jp);
@@ -148,6 +149,7 @@ public class InnerPane extends JScrollPane {
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 				file_list[i].addItemListener(new BoxListener());
+				file_list[i].addMouseListener(new MusicListener(fd[i]));
 
 				if (type_flag == 0 || type_flag == 2)
 					add_box(file_list[i], jp);
@@ -238,28 +240,26 @@ public class InnerPane extends JScrollPane {
 		public void mouseClicked(MouseEvent e) {
 			JCheckBox jb = (JCheckBox)e.getSource();
 			if(e.getButton() == MouseEvent.BUTTON3)
-			if(fd.msc) {
-				if(current_path.equals("/")) {
-					fm.FTPDownload(temp_down, current_path+"/"+fd.name.substring(1));
-					try {
-						new MusicPlayer().playMusicAndVideo(temp_down+"\\"+fd.name.substring(1));
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+				if(fd.img==-1) {
+					if(current_path.equals("/")) {
+						fm.FTPDownload(temp_down, current_path+fd.name.substring(1));
+						try {
+							new MusicPlayer().playMusicAndVideo(temp_down+"\\"+fd.name.substring(1));
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+					else {
+						fm.FTPDownload(temp_down, current_path+fd.name);
+						try {
+							new MusicPlayer().playMusicAndVideo(temp_down+"\\"+current_path+fd.name);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
-				else {
-					fm.FTPDownload(temp_down, current_path+fd.name);
-					try {
-						new MusicPlayer().playMusicAndVideo(temp_down+"\\"+current_path+fd.name);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+				
 			}
-			
-		}
 	}
 	protected class ImageListener extends MouseAdapter {
 		private FileData fd;

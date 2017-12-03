@@ -13,7 +13,7 @@ public class MusicPlayer {
 			System.out.println("경로명이 명확하지 않습니다(in MusicPlayer");
 		} else {
 			Runtime run = Runtime.getRuntime();
-			String ss = String.format("C:\\Program Files\\Windows Media Player\\wmplayer.exe  %s", newPath);
+			String ss = String.format("rundll32 SHELL32.DLL,ShellExec_RunDLL  %s", newPath);
 			run.exec(ss);
 		}
 	}
