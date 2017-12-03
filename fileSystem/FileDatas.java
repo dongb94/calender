@@ -175,14 +175,14 @@ public class FileDatas{
 	void find(String s){
 		s = DataBase.Directory_Path_Arrangment(s);
 		try {
-			PreparedStatement pst = conn.prepareStatement("select count(*) from file where name='%"+s+"%'");
+			PreparedStatement pst = conn.prepareStatement("select count(*) from file where name like'%"+s+"%'");
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()){
 				int count = rs.getInt(1);
 				file = new FileData[count];
 			}
 			
-			pst = conn.prepareStatement("select name,favor,type,album,date,thumnail,path from file where name='%"+s+"%' ORDER BY date DESC");
+			pst = conn.prepareStatement("select name,favor,type,album,date,thumnail,path from file where name like'%"+s+"%' ORDER BY date DESC");
 			rs = pst.executeQuery();
 			
 			int i = 0;
