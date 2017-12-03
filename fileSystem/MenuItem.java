@@ -129,6 +129,7 @@ public class MenuItem extends JPanel {
 				String filePath = chooser.getSelectedFile().getAbsolutePath();
 				filePath = filePath.replaceAll("\\\\", "/");
 				System.out.println(filePath);
+				System.out.println(filePath);
 				fm.FTPUpload(current_path, filePath);
 				ip.reload();
 			}
@@ -157,6 +158,7 @@ public class MenuItem extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				while(!file_name_list.isEmpty()) {
 					int i= 0;
+					System.out.println(current_path);
 					if(current_path=="/") {
 					fm.FTPDelete(current_path + file_name_list.get(i));
 					}
@@ -191,9 +193,16 @@ public class MenuItem extends JPanel {
 				while(!file_name_list.isEmpty()) {
 					int i = 0;
 					for(int j=0; j<fd.length; j++) {
-						fd[j].name = fd[j].name.replaceAll("/", "");
-						fd[j].name = fd[j].name.replaceAll("\\\\", "");
-						if (file_name_list.get(i).equals(fd[j].name)) {
+						String temp_name = fd[j].name;
+						System.out.println("original : "+ fd[j].name);
+						if(fd[j].name.indexOf("/")!= -1)
+							temp_name = fd[j].name.replaceAll("/", "");
+						else if (fd[j].name.indexOf("\\") != -1)
+							temp_name = fd[j].name.replaceAll("\\\\", "");
+						else
+							;
+						System.out.println("equals : "+temp_name);
+						if (file_name_list.get(i).equals(temp_name)) {
 							if(!fd[j].favor) {
 								fd[j].addFavor();
 								System.out.println("add favor!!");
@@ -209,6 +218,7 @@ public class MenuItem extends JPanel {
 					i++;
 				}
 				bm.reload();
+				ip.reload();
 			}
 		});
 

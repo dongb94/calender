@@ -76,9 +76,6 @@ public class InnerPane extends JScrollPane {
 		BackListener bl = new BackListener();
 		to_higher.addActionListener(bl);
 		
-		fds = new FileDatas(current_path);
-		fd = fds.getFileDatas();
-		
 		makeGUI();
 	}
 
@@ -87,11 +84,12 @@ public class InnerPane extends JScrollPane {
 		jp.removeAll();
 		this.remove(jp);
 		MenuItem.set_ip(self);
-
 		jp = new JPanel();
 		jp.setPreferredSize(new Dimension((int) (width * 0.8), (int) height));
 		this.setViewportView(jp);
 		jp.setLayout(fl);
+		fds = new FileDatas(current_path);
+		fd = fds.getFileDatas();
 		MenuItem.set_fd(fd);
 		MenuItem.set_fds(fds);
 
@@ -260,7 +258,8 @@ public class InnerPane extends JScrollPane {
 						File file = (File) list.get(i);
 						String fpath = file.getAbsolutePath();
 						fpath = fpath.replaceAll("\\\\", "/");
-						fm.FTPUpload(current_path, file.getAbsolutePath());
+						System.out.println(fpath);
+						fm.FTPUpload(current_path, fpath);
 						makeGUI();
 					}
 				} catch (Exception e) {
