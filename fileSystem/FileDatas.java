@@ -182,7 +182,7 @@ public class FileDatas{
 				file = new FileData[count];
 			}
 			
-			pst = conn.prepareStatement("select name,favor,type,album,date,thumnail from file where name='%"+s+"%' ORDER BY date DESC");
+			pst = conn.prepareStatement("select name,favor,type,album,date,thumnail,path from file where name='%"+s+"%' ORDER BY date DESC");
 			rs = pst.executeQuery();
 			
 			int i = 0;
@@ -192,6 +192,7 @@ public class FileDatas{
 				String type = rs.getString(3);
 				int img = rs.getInt(4);
 				long date = rs.getTimestamp(5).getTime();
+				String path = rs.getString(6);;
 				ImageIcon thumnail=null;
 				if(type.equals("img")) thumnail = new ImageIcon(rs.getBytes(6));
 				file[i++]=new FileData(path, name, fv, type, img, date, thumnail);
