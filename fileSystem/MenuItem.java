@@ -167,6 +167,7 @@ public class MenuItem extends JPanel {
 					}
 					file_name_list.remove(i++);
 				}
+				bm.reload();
 				ip.reload();
 			}
 		});

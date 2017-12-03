@@ -31,14 +31,12 @@ public class Bookmark extends InnerPane {
 		fds = new FileDatas();
 		fds.getFavoriteFiles();
 		fd = fds.getFileDatas();
-		System.out.println(fd.length);
 
 		JCheckBox[] file_list = new JCheckBox[fd.length];
 		for (int i = 0; i < fd.length; i++) {
 			ImageIcon file_icon;
 
 			if (fd[i].img != -1) {
-				System.out.println("img!!");
 				file_icon = fd[i].thumnail;
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);

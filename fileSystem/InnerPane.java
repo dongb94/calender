@@ -38,6 +38,8 @@ public class InnerPane extends JScrollPane {
 	protected ArrayList<String> name_list = new ArrayList<String>();
 	protected DropTarget dt;
 
+	protected String temp_down = System.getProperty("user.home")+"/AppData/Local/file_downloads";
+	
 	InnerPane(int flag, Viewer v, FTPManager fm) {
 		this.fm = fm;
 		self = this;
@@ -107,7 +109,8 @@ public class InnerPane extends JScrollPane {
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 				file_list[i].addItemListener(new BoxListener());
-
+				file_list[i].addMouseListener(new ImageListener(fd[i]));
+				
 				if (type_flag == 0 || type_flag == 1)
 					add_box(file_list[i], jp);
 
@@ -135,6 +138,7 @@ public class InnerPane extends JScrollPane {
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 				file_list[i].addItemListener(new BoxListener());
+				file_list[i].addMouseListener(new MusicListener(fd[i]));
 
 				if (type_flag == 0 || type_flag == 3)
 					add_box(file_list[i], jp);
@@ -186,6 +190,48 @@ public class InnerPane extends JScrollPane {
 	public void set_fd(FileData[] fd) {
 		this.fd = fd;
 		makeGUI();
+	}
+	protected class MusicListener extends MouseAdapter {
+		
+		private FileData fd;
+		MusicListener(FileData fd){
+			this.fd = fd;
+		}
+		
+		public void mouseClicked(MouseEvent e) {
+			JCheckBox jb = (JCheckBox)e.getSource();
+			if(e.getButton() == MouseEvent.BUTTON3)
+			if(fd.msc) {
+				fm.FTPDownload(temp_down, fd.path);
+				try {
+					new MusicPlayer().playMusicAndVideo(temp_down+"\\"+fd.name);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		}
+	}
+	protected class ImageListener extends MouseAdapter {
+		private FileData fd;
+		ImageListener(FileData fd){
+			this.fd = fd;
+		}
+		public void mouseClicked(MouseEvent e) {
+			JCheckBox jb = (JCheckBox)e.getSource();
+			if(e.getButton() == MouseEvent.BUTTON3)
+				if(fd.img!=-1) {
+					if(current_path.equals("/")) {
+						fm.FTPDownload(temp_down, current_path+"/"+fd.name.substring(1));
+						new PhotoPreview(temp_down+"\\"+fd.name.substring(1));
+					}
+					else {
+						fm.FTPDownload(temp_down, current_path+fd.name.substring(1));
+					new PhotoPreview(temp_down+"\\"+current_path+fd.name);
+					}
+				}
+		}
 	}
 
 	protected class FdListener extends MouseAdapter {
