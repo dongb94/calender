@@ -170,10 +170,22 @@ public class FileDatas{
 			System.err.println("추가 실패 : 이미 존재하는 엘범");
 		}
 	}
+	/**엘범 삭제
+	 * deleteAlbum(엘범 이름)*/
+	void deleteAlbum(String name){
+		try {
+			PreparedStatement pst = DataBase.conn.prepareStatement("delete into album values(?,?)");
+			pst.setString(1, null);
+			pst.setString(2, name);
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("추가 실패 : 이미 존재하는 엘범");
+		}
+	}
+	
 	/**검색기능
 	 * find(검색할 문자열)*/
 	void find(String s){
-		s = DataBase.Directory_Path_Arrangment(s);
 		try {
 			PreparedStatement pst = conn.prepareStatement("select count(*) from file where name like'%"+s+"%'");
 			ResultSet rs = pst.executeQuery();
@@ -182,19 +194,19 @@ public class FileDatas{
 				file = new FileData[count];
 			}
 			
-			pst = conn.prepareStatement("select name,favor,type,album,date,thumnail,path from file where name like'%"+s+"%' ORDER BY date DESC");
+			pst = conn.prepareStatement("select * from file where name like'%"+s+"%' ORDER BY date DESC");
 			rs = pst.executeQuery();
 			
 			int i = 0;
 			while (rs.next()) {
 				String name = rs.getString(1);
-				int fv = rs.getInt(2);
-				String type = rs.getString(3);
+				String path = rs.getString(2);
+				int fv = rs.getInt(3);
 				int img = rs.getInt(4);
 				long date = rs.getTimestamp(5).getTime();
-				String path = rs.getString(6);;
+				String type = rs.getString(6);
 				ImageIcon thumnail=null;
-				if(type.equals("img")) thumnail = new ImageIcon(rs.getBytes(6));
+				if(type.equals("img")) thumnail = new ImageIcon(rs.getBytes(7));
 				file[i++]=new FileData(path, name, fv, type, img, date, thumnail);
 			}
 			
@@ -212,62 +224,12 @@ public class FileDatas{
 		//단위 테스트용 main클래스
 		new DataBase();
 		
-		FileData fd = new FileData("/test", "/20160722_053051.jpg");
-		fd.deleteFavor();
-//		System.out.println("date = " + fd.date);
-//		System.out.println("favor = " + fd.favor);
-//		System.out.println("img = " + fd.img);
-//		System.out.println("dir = " + fd.dir);
-//		System.out.println("vid = " + fd.vid);
-		
-//		FileDatas fda= new FileDatas();
-//		fda.addAlbum("test");
-		
-//		fda.getAlbums();
-//		
-//		
-//		JFrame frame = new JFrame();
-//		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-//		frame.setSize(200, 200);
-//		JLabel l = new JLabel(fda.file[0].thumnail);
-//		frame.add(l);
-//		frame.setVisible(true);
-		
-//		System.out.println("------------------------------");
-//		FileDatas fds = new FileDatas("");
-//
-//		System.out.println("name = " + fds.file[0].name);
-//		System.out.println("path = " + fds.file[0].path);
-//		System.out.println("date = " + fds.file[0].date);
-//		System.out.println("favor = " + fds.file[0].favor);
-//		System.out.println("img = " + fds.file[0].img);
-//		System.out.println("dir = " + fds.file[0].dir);
-//		System.out.println("vid = " + fds.file[0].vid);
-//		System.out.println("------------------------------");
-//
-//		FileDatas album = new FileDatas();
-//		album.getAlbumFiles("dog");
-//		
-//		System.out.println("name = " + album.file[1].name);
-//		System.out.println("path = " + album.file[1].path);
-//		System.out.println("date = " + album.file[0].date);
-//		System.out.println("favor = " + album.file[0].favor);
-//		System.out.println("img = " + album.file[0].img);
-//		System.out.println("dir = " + album.file[0].dir);
-//		System.out.println("vid = " + album.file[0].vid);
-//		System.out.println("------------------------------");
-//		
-//		FileDatas favor = new FileDatas();
-//		favor.getFavoriteFiles();
-//		
-//		System.out.println("name = " + favor.file[1].name);
-//		System.out.println("path = " + favor.file[1].path);
-//		System.out.println("date = " + favor.file[0].date);
-//		System.out.println("favor = " + favor.file[0].favor);
-//		System.out.println("img = " + favor.file[0].img);
-//		System.out.println("dir = " + favor.file[1].dir);
-//		System.out.println("vid = " + favor.file[0].vid);
-//		System.out.println("------------------------------");
+//		FileData fd = new FileData("/test", "/20160722_053051.jpg");
+		FileDatas fds = new FileDatas();
+		fds.find("a");
+		System.out.println(fds.file.length);
+		System.out.println(fds.file[2].name);
+		System.out.println(fds.file[2].path);
 	}
 }
 
@@ -383,7 +345,7 @@ class FileData{
 	void addFavor(){
 		try {
 			PreparedStatement pst;
-			pst = conn.prepareStatement("update file set favor='1' where name='"+this.name+"'&& path='"+this.path+"'");
+			pst = conn.prepareStatement("update file set favor='1' where name='"+name+"'&& path='"+path+"'");
 			pst.executeUpdate();
 			
 			favor = true;
@@ -395,7 +357,7 @@ class FileData{
 	void deleteFavor(){
 		try {
 			PreparedStatement pst;
-			pst = conn.prepareStatement("update file set favor='0' where name='"+this.name+"'&& path='"+this.path+"'");
+			pst = conn.prepareStatement("update file set favor='0' where name='"+name+"'&& path='"+path+"'");
 			pst.executeUpdate();
 			
 			favor = false;

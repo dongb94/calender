@@ -119,7 +119,6 @@ public class FTPManager {
 			ftpClient.changeWorkingDirectory(path);
 	    	ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return workPath;
@@ -351,11 +350,25 @@ public class FTPManager {
 		return 1;
 	}
 	
-	/**FTP서버 파일 이름 변경
-	 * FTPRename(해당파일 포함 파일 path, 변경할이름) 
+	/**FTP서버 파일 폴더이동(경로 변경),이름 변경
+	 * FTPChangePath(해당파일 포함 파일 path, 변경할 path)
+	 * ex) FTPChangePath("/text.txt","/dir/change.txt") 
 	 *  성공 1 실패 0*/
-	public int FTPRename(String file_path, String rename){
-//		ftpClient.rename(, )
+	public int FTPChangePath(String file_path, String change_path){
+		try {
+			ftpClient.rename(file_path,change_path);
+		
+			String file_name = file_path.substring(file_path.lastIndexOf("/"));
+			file_path = file_path.substring(0,file_path.lastIndexOf("/"));
+		
+			PreparedStatement pst;
+			pst = DataBase.conn.prepareStatement("update file set name,path where name='"+file_name+"'&& path='"+file_path+"'");
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("실패 : .");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		return 0;
 		
 	}
