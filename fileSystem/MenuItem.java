@@ -11,7 +11,6 @@ public class MenuItem extends JPanel {
 
 	private double width;
 	private double height;
-	private JButton album_on;
 	private JButton upload;
 	private JButton download;
 	private JButton delete;
@@ -32,8 +31,6 @@ public class MenuItem extends JPanel {
 	private static FileData[] fd;
 	private static FileDatas fds;
 	private static Bookmark bm;
-	
-	Font f = new Font("휴먼매직체", Font.BOLD, 20);
 	
 	FTPManager fm;
 
@@ -94,13 +91,6 @@ public class MenuItem extends JPanel {
 		delete_img = delete_img.getScaledInstance(btn_size, btn_size, java.awt.Image.SCALE_SMOOTH);
 		delete_icon = new ImageIcon(delete_img);
 		delete = new JButton(delete_icon);
-		
-		
-		ImageIcon album_icon = new ImageIcon("img/album.png");
-		Image album_img = album_icon.getImage();
-		album_img = album_img.getScaledInstance(btn_size, btn_size, java.awt.Image.SCALE_SMOOTH);
-		album_icon = new ImageIcon(album_img);
-		album_on = new JButton("앨범", album_icon);
 
 		add(search_name);
 		add(search);
@@ -110,7 +100,6 @@ public class MenuItem extends JPanel {
 		add(plus);
 		add(show_path);
 		add(star);
-		add(album_on);
 		
 		star.setToolTipText("즐겨찾기에 등록합니다.");
 		search.setToolTipText("파일 이름을 검색합니다.");
@@ -129,8 +118,6 @@ public class MenuItem extends JPanel {
 		search_name.setBounds((int) (width - height * 8.40), (int) (height * 0.3), (int) (height * 4),
 				(int) (height * 0.40));
 		plus.setBounds((int) (width - height * 9.60), (int) (height * 0.05), btn_size, btn_size);
-		album_on.setBounds((int) (width - height * 12.60), (int) (height * 0.05),(int)(btn_size*2), btn_size );
-		album_on.setFont(f);
 
 		upload.addActionListener(new ActionListener() {
 			@Override
@@ -235,18 +222,6 @@ public class MenuItem extends JPanel {
 				ip.reload();
 			}
 		});
-		
-		album_on.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				new Album();
-			}
-			
-		});
-		
-		
 
 		setVisible(true);
 	}

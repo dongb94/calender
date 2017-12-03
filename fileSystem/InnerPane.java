@@ -11,9 +11,6 @@ import java.io.*;
 
 import javax.swing.event.*;
 
-import fileSystem.InnerPane.BoxListener;
-import fileSystem.InnerPane.FdListener;
-
 public class InnerPane extends JScrollPane {
 	/*
 	 * 0 = whole 1 = picture 2 = video 3 = music 4 = word 5 = bookmark
@@ -102,6 +99,7 @@ public class InnerPane extends JScrollPane {
 			jp.add(to_higher);
 			to_higher.setPreferredSize(new Dimension(icon_size, icon_size));
 			to_higher.setToolTipText("이전 위치로");
+		}
 		JCheckBox[] file_list = new JCheckBox[fd.length];
 		for (int i = 0; i < fd.length; i++) {
 			ImageIcon file_icon;
@@ -122,7 +120,9 @@ public class InnerPane extends JScrollPane {
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 				file_list[i].addItemListener(new BoxListener());
 				file_list[i].addMouseListener(new FdListener());
-				add_box(file_list[i], jp);
+
+				if (type_flag != 5)
+					add_box(file_list[i], jp);
 
 			} else if (fd[i].dcm) {
 				file_icon = new ImageIcon("img/doc.png");
@@ -132,7 +132,7 @@ public class InnerPane extends JScrollPane {
 
 				if (type_flag == 0 || type_flag == 4)
 					add_box(file_list[i], jp);
-				
+
 			} else if (fd[i].msc) {
 				file_icon = new ImageIcon("img/music.png");
 				file_icon = set_icon(file_icon);
@@ -151,53 +151,16 @@ public class InnerPane extends JScrollPane {
 
 				if (type_flag == 0 || type_flag == 2)
 					add_box(file_list[i], jp);
-
 			} else
 				return;
-		}
-		}else {
-			fds.getFavoriteFiles();
-			fd = fds.getFileDatas();
-			
-			JCheckBox[] file_list = new JCheckBox[fd.length];
-			for (int i = 0; i < fd.length; i++) {
-				ImageIcon file_icon;
-
-				if (fd[i].img != -1) {
-					file_icon = fd[i].thumnail;
-					file_icon = set_icon(file_icon);
-					file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
-					file_list[i].addItemListener(new BoxListener());
+			if (fd[i].favor) {
+				if (type_flag == 5) {
+					System.out.println(file_list[i].getName());
 					add_box(file_list[i], jp);
-				} else if (fd[i].dir) {
-					file_icon = new ImageIcon("img/folder.png");
-					file_icon = set_icon(file_icon);
-					file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
-					file_list[i].addItemListener(new BoxListener());
-					file_list[i].addMouseListener(new FdListener());
-					add_box(file_list[i], jp);
-				} else if (fd[i].dcm) {
-					file_icon = new ImageIcon("img/doc.png");
-					file_icon = set_icon(file_icon);
-					file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
-					file_list[i].addItemListener(new BoxListener());
-					add_box(file_list[i], jp);
-				} else if (fd[i].msc) {
-					file_icon = new ImageIcon("img/music.png");
-					file_icon = set_icon(file_icon);
-					file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
-					file_list[i].addItemListener(new BoxListener());
-					add_box(file_list[i], jp);
-				} else if (fd[i].vid) {
-					file_icon = new ImageIcon("img/video.png");
-					file_icon = set_icon(file_icon);
-					file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
-					file_list[i].addItemListener(new BoxListener());
-					add_box(file_list[i], jp);
-				} else
-					return;
+				}
 			}
 		}
+
 		setVisible(true);
 	}
 
