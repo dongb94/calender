@@ -32,7 +32,7 @@ public class Viewer extends JTabbedPane {
 		video_p = new InnerPane(2, this, fm);
 		music_p = new InnerPane(3, this, fm);
 		word_p = new InnerPane(4, this, fm);
-		book_p = new InnerPane(5, this, fm);
+		book_p = new Bookmark(5, this, fm);
 		
 		ImageIcon home_icon = new ImageIcon("img/home.png");
 		ImageIcon picture_icon = new ImageIcon("img/picture.png");

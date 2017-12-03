@@ -25,10 +25,13 @@ public class MenuItem extends JPanel {
 	private String folder_name = "folder";
 
 	private int btn_size;
-	private static ArrayList<String> file_name_list;
 	
+	private static ArrayList<String> file_name_list;
 	private static InnerPane ip;
-
+	private static FileData[] fd;
+	private static FileDatas fds;
+	private static Bookmark bm;
+	
 	FTPManager fm;
 
 	MenuItem(FTPManager fm) {
@@ -124,6 +127,7 @@ public class MenuItem extends JPanel {
 				if (ret != JFileChooser.APPROVE_OPTION)
 					return;
 				String filePath = chooser.getSelectedFile().getAbsolutePath();
+				filePath = filePath.replaceAll("\\\\", "/");
 				System.out.println(filePath);
 				fm.FTPUpload(current_path, filePath);
 				ip.reload();
@@ -153,11 +157,12 @@ public class MenuItem extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				while(!file_name_list.isEmpty()) {
 					int i= 0;
-					if(current_path=="/")
-					System.out.println(fm.FTPDelete(current_path + file_name_list.get(i)));
-					else
-					System.out.println(fm.FTPDelete(current_path + "/" + file_name_list.get(i)));
-					System.out.println(file_name_list.get(i));
+					if(current_path=="/") {
+					fm.FTPDelete(current_path + file_name_list.get(i));
+					}
+					else {
+					fm.FTPDelete(current_path + "/" + file_name_list.get(i));
+					}
 					file_name_list.remove(i++);
 				}
 				ip.reload();
@@ -174,6 +179,10 @@ public class MenuItem extends JPanel {
 		});
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String name = search_name.getText();
+				fds.find(name);
+				fd = fds.getFileDatas();
+				ip.set_fd(fd);
 				search_name.setText("");
 			}
 		});
@@ -181,10 +190,25 @@ public class MenuItem extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				while(!file_name_list.isEmpty()) {
 					int i = 0;
-					file_name_list.get(i);
+					for(int j=0; j<fd.length; j++) {
+						fd[j].name = fd[j].name.replaceAll("/", "");
+						fd[j].name = fd[j].name.replaceAll("\\\\", "");
+						if (file_name_list.get(i).equals(fd[j].name)) {
+							if(!fd[j].favor) {
+								fd[j].addFavor();
+								System.out.println("add favor!!");
+							}
+							else {
+								fd[j].deleteFavor();
+								System.out.println("delete favor!!");
+							}
+							System.out.println("favor : " +fd[j].favor);
+						}
+					}
+					file_name_list.remove(i);
 					i++;
 				}
-				ip.reload();
+				bm.reload();
 			}
 		});
 
@@ -204,5 +228,14 @@ public class MenuItem extends JPanel {
 	}
 	public static void set_ip(InnerPane inp) {
 		ip = inp;
+	}
+	public static void set_fd(FileData[] data) {
+		fd = data;
+	}
+	public static void set_fds(FileDatas file_datas) {
+		fds = file_datas;
+	}
+	public static void set_bmk(Bookmark bk) {
+		bm = bk;
 	}
 }

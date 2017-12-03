@@ -1,9 +1,9 @@
 package fileSystem;
 
-import java.awt.*;
+
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
-
+import java.awt.*;
 import javax.swing.*;
 import java.util.*;
 import java.awt.event.*;
@@ -16,27 +16,27 @@ public class InnerPane extends JScrollPane {
 	 * 0 = whole 1 = picture 2 = video 3 = music 4 = word 5 = bookmark
 	 */
 
-	private InnerPane self;
-	private int type_flag;
-	private JButton to_higher = new JButton("이전");
-	private FlowLayout fl = new FlowLayout(FlowLayout.LEFT);
+	protected InnerPane self;
+	protected int type_flag;
+	protected JButton to_higher = new JButton("이전");
+	protected FlowLayout fl = new FlowLayout(FlowLayout.LEFT);
 
-	private Dimension res;
-	private double width;
-	private double height;
+	protected Dimension res;
+	protected double width;
+	protected double height;
 
-	private int icon_size;
-	private String current_path;
-	private Viewer v;
-	private JPanel jp = new JPanel();
+	protected int icon_size;
+	protected String current_path;
+	protected Viewer v;
+	protected JPanel jp = new JPanel();
 
-	FTPManager fm;
-	private FileDatas fds;
-	private FileData[] fd;
-	private Font f = new Font("휴먼매직체", Font.BOLD, 20);
+	protected FTPManager fm;
+	protected FileDatas fds;
+	protected FileData[] fd;
+	protected Font f = new Font("휴먼매직체", Font.BOLD, 20);
 
-	public ArrayList<String> name_list = new ArrayList<String>();
-	public DropTarget dt;
+	protected ArrayList<String> name_list = new ArrayList<String>();
+	protected DropTarget dt;
 
 	InnerPane(int flag, Viewer v, FTPManager fm) {
 		this.fm = fm;
@@ -76,6 +76,9 @@ public class InnerPane extends JScrollPane {
 		BackListener bl = new BackListener();
 		to_higher.addActionListener(bl);
 		
+		fds = new FileDatas(current_path);
+		fd = fds.getFileDatas();
+		
 		makeGUI();
 	}
 
@@ -89,8 +92,8 @@ public class InnerPane extends JScrollPane {
 		jp.setPreferredSize(new Dimension((int) (width * 0.8), (int) height));
 		this.setViewportView(jp);
 		jp.setLayout(fl);
-		fds = new FileDatas(current_path);
-		fd = fds.getFileDatas();
+		MenuItem.set_fd(fd);
+		MenuItem.set_fds(fds);
 
 		if (type_flag == 0 || type_flag == 1 || type_flag == 2 || type_flag == 3 || type_flag == 4) {
 			jp.add(to_higher);
@@ -149,15 +152,17 @@ public class InnerPane extends JScrollPane {
 			} else
 				return;
 			if (fd[i].favor) {
-				if (type_flag == 5)
+				if (type_flag == 5) {
+					System.out.println(file_list[i].getName());
 					add_box(file_list[i], jp);
+				}
 			}
 		}
 
 		setVisible(true);
 	}
 
-	public void add_box(JCheckBox box, JPanel jp) {
+	protected void add_box(JCheckBox box, JPanel jp) {
 		box.setFont(f);
 		jp.add(box);
 		box.setPreferredSize(new Dimension(icon_size, icon_size));
@@ -168,7 +173,7 @@ public class InnerPane extends JScrollPane {
 		box.setBorderPainted(true);
 	}
 
-	public ImageIcon set_icon(ImageIcon icon) {
+	protected ImageIcon set_icon(ImageIcon icon) {
 		Image file_img = icon.getImage();
 		file_img = file_img.getScaledInstance((int) (icon_size * 0.8), (int) (icon_size * 0.8),
 				java.awt.Image.SCALE_SMOOTH);
@@ -180,8 +185,12 @@ public class InnerPane extends JScrollPane {
 		makeGUI();
 		System.out.println("reload");
 	}
+	public void set_fd(FileData[] fd) {
+		this.fd = fd;
+		makeGUI();
+	}
 
-	public class FdListener extends MouseAdapter {
+	protected class FdListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
 			JCheckBox jb = (JCheckBox) e.getSource();
 			if (e.getButton() == MouseEvent.BUTTON3) {
@@ -199,22 +208,23 @@ public class InnerPane extends JScrollPane {
 		}
 	}
 
-	public class BoxListener implements ItemListener {
+	protected class BoxListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent e) {
 			JCheckBox box = (JCheckBox) e.getSource();
-			if (box.isSelected())
+			if (box.isSelected()) 
 				name_list.add(box.getText());
 			else
 				name_list.remove(box.getText());
 			MenuItem.set_file_list(name_list);
 			MenuItem.set_ip(self);
-			System.out.println(name_list.size());
+			System.out.println("list counts : "+name_list.size());
+			MenuItem.set_fd(fd);
 		}
 
 	}
 
-	public class BackListener implements ActionListener {
+	protected class BackListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (current_path != "/") {
 				String go_to = current_path.substring(0, current_path.lastIndexOf("/"));
@@ -234,7 +244,7 @@ public class InnerPane extends JScrollPane {
 		}
 	}
 
-	public class DropListener extends DropTargetAdapter {
+	protected class DropListener extends DropTargetAdapter {
 
 		@Override
 		public void drop(DropTargetDropEvent dtde) {
@@ -248,8 +258,10 @@ public class InnerPane extends JScrollPane {
 					tr.getTransferData(DataFlavor.javaFileListFlavor);
 					for(int i=0; i< list.size(); i++){
 						File file = (File) list.get(i);
-						System.out.println(file.getAbsolutePath());
+						String fpath = file.getAbsolutePath();
+						fpath = fpath.replaceAll("\\\\", "/");
 						fm.FTPUpload(current_path, file.getAbsolutePath());
+						makeGUI();
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
