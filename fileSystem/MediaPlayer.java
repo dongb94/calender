@@ -1,6 +1,6 @@
 package fileSystem;
 
-public class MusicPlayer {
+public class MediaPlayer {
 	public void playMusicAndVideo(String path) throws Exception {
 		String[] strarr;
 		String newPath = "";

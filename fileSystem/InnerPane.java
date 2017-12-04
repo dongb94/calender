@@ -249,7 +249,7 @@ public class InnerPane extends JScrollPane {
 				if(fd.img==-1) {
 						fm.FTPDownload(temp_down, fd.path+fd.name);
 						try {
-							new MusicPlayer().playMusicAndVideo(temp_down+"\\"+fd.path+fd.name);
+							new MediaPlayer().playMusicAndVideo(temp_down+"\\"+fd.path+fd.name);
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
