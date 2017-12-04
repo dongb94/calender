@@ -41,7 +41,6 @@ public class PhotoPreview extends JFrame {
 		setSize(700, 700);
 		setLocationRelativeTo(null);
 		setTitle(path);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setUndecorated(true);
 		setVisible(true);
 		setResizable(true);

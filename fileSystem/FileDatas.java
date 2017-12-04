@@ -129,7 +129,7 @@ public class FileDatas{
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()){
 				int count = rs.getInt(1);
-				file = new FileData[count];
+				file = new FileData[count-2];
 			}
 
 			pst = conn.prepareStatement("select * from album");
