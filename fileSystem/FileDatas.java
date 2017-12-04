@@ -129,7 +129,7 @@ public class FileDatas{
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()){
 				int count = rs.getInt(1);
-				file = new FileData[count-2];
+				file = new FileData[count-1];
 			}
 
 			pst = conn.prepareStatement("select * from album");
@@ -142,7 +142,7 @@ public class FileDatas{
 				album_num = rs.getInt(1);
 				name = rs.getString(2);
 
-				if(album_num>0){
+				if(album_num>=0){
 					PreparedStatement pstt = conn.prepareStatement("select thumnail from file where album='"+album_num+"'");
 					ResultSet rst = pstt.executeQuery();
 					ImageIcon thumnail=null;
