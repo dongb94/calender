@@ -284,29 +284,13 @@ class MyMouseListener implements MouseListener {
 			}
 		}
 	}
-
-	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
-
-	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
-
-	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
-
-	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
@@ -751,17 +735,5 @@ public class Album extends JFrame {
 		box.setVerticalTextPosition(SwingConstants.BOTTOM);
 		box.setBorderPainted(true);
 		box.setBackground(Color.WHITE);
-	}
-	
-	
-	public static void main(String[] args0){
-		try {
-			new DataBase();
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		new Album();
 	}
 }
