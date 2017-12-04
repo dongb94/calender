@@ -98,9 +98,9 @@ class AddDialog extends JDialog {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					String selectedAlbum = (String)combo.getSelectedItem();
-					for (int i=0; i<album.imgfdLength; i++) {
-						if (album.file_list[i].isSelected()) {
-							album.imgfd[i].changeAlbum(selectedAlbum);
+					for (int i=0; i<album.albumFileFd.length; i++) {
+						if (album.albumFile_list[i].isSelected()) {
+							album.albumFileFd[i].changeAlbum(selectedAlbum);
 						}
 					}
 					album.makeBtnPanel();
@@ -208,8 +208,8 @@ class SelectedActionListener implements ActionListener {
 				}
 			}
 			
-			for (int i=0; i<album.imgfdLength; i++) {
-				if (album.file_list[i].isSelected()) {
+			for (int i=0; i<album.albumFileFd.length; i++) {
+				if (album.albumFile_list[i].isSelected()) {
 					AddDialog addDialog = new AddDialog(album, 1);
 					addDialog.setVisible(true);
 					return;
@@ -268,10 +268,12 @@ class MyMouseListener implements MouseListener {
 				new AlbumPreview(album.imgfd, album.imgfdLength, index);
 			}
 		} else { // 앨범 안의 사진
+			System.out.println("fdadsdfasdf");
 			JCheckBox jc = (JCheckBox) e.getSource();
 			System.out.println(jc.getText());
 			album.setAlbumFileFlag(1);
-			if (jc.getText().equals("default")) {
+			if (album.getSelectedAlbum().equals("default")) {
+				System.out.println("defaultAlbum");
 				album.makeDefaultAlbumFileSelectedBtnPanel();				
 			} else {
 				album.makeAlbumFileSelectedBtnPanel();				
@@ -540,7 +542,7 @@ public class Album extends JFrame {
 	}
 	
 	
-	void makeAlbumFileSelectedBtnPanel() {
+	void makeAlbumFileSelectedBtnPanel() {		
 		panelBtn.removeAll();
 		this.remove(panelBtn);
 		

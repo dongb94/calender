@@ -24,7 +24,7 @@ public class AlbumPreview extends JFrame {
 	FTPManager fm = new FTPManager(this);
 	private int fdlength, index;
 	String localPath = (System.getProperty("user.home")+"/AppData/Local/file_downloads");
-	String localFilePath;
+	String localFilePath, replacedString;
 
 	
 	public AlbumPreview(FileData[] fd, int fdlength, int index) {
@@ -34,8 +34,6 @@ public class AlbumPreview extends JFrame {
 		this.fdlength = fdlength;
 		this.fd = fd;
 		this.index = index;
-		
-		System.out.println(fd[index].path);
 		
 		makeGUI();
 		
@@ -58,16 +56,14 @@ public class AlbumPreview extends JFrame {
 		JLabel labelImage = new JLabel("");
 		labelImage.setHorizontalAlignment(SwingConstants.CENTER);
 		labelImage.setBackground(Color.BLACK);
+
+		fm.FTPDownload(null, fd[index].path+fd[index].name);
+		System.out.println(fd[index].path+fd[index].name);
+		localFilePath = localPath + fd[index].path + fd[index].name;
+		replacedString = localFilePath.replace('/', '\\');
+		System.out.println(replacedString);
 		
-		System.out.println("Before download");
-		System.out.println(index);
-		System.out.println(fd[index].name);
-		System.out.println(fd[index].path);
-		fm.FTPDownload(null, fd[index].path);
-		System.out.println("After download");
-		
-		localFilePath = localPath + fd[index].name;
-		labelImage.setIcon(changeImageSize(new ImageIcon(localFilePath), (int)(width*0.7), (int)(width*0.7)));
+		labelImage.setIcon(changeImageSize(new ImageIcon(replacedString), (int)(width*0.7), (int)(width*0.7)));
 		getContentPane().add(labelImage, BorderLayout.CENTER);
 		
 		JButton btnBefore = new JButton("");
@@ -82,7 +78,14 @@ public class AlbumPreview extends JFrame {
 				// TODO Auto-generated method stub
 				if (index != 0) {
 					index--;
-					labelImage.setIcon(changeImageSize(new ImageIcon(fd[index].path), (int)(width*0.7), (int)(width*0.7)));
+					
+					fm.FTPDownload(null, fd[index].path+fd[index].name);
+					System.out.println(fd[index].path+fd[index].name);
+					localFilePath = localPath + fd[index].path + fd[index].name;
+					replacedString = localFilePath.replace('/', '\\');
+					System.out.println(replacedString);
+					
+					labelImage.setIcon(changeImageSize(new ImageIcon(replacedString), (int)(width*0.7), (int)(width*0.7)));
 				}
 			}
 			
@@ -98,9 +101,16 @@ public class AlbumPreview extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if (index != fd.length && index < fdlength) {
+				if (index != fd.length-1 || index < fd.length-1) {
 					index++;
-					labelImage.setIcon(changeImageSize(new ImageIcon(fd[index].path), (int)(width*0.7), (int)(width*0.7)));
+					
+					fm.FTPDownload(null, fd[index].path+fd[index].name);
+					System.out.println(fd[index].path+fd[index].name);
+					localFilePath = localPath + fd[index].path + fd[index].name;
+					replacedString = localFilePath.replace('/', '\\');
+					System.out.println(replacedString);
+					
+					labelImage.setIcon(changeImageSize(new ImageIcon(replacedString), (int)(width*0.7), (int)(width*0.7)));
 				}
 			}
 			
