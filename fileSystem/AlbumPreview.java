@@ -25,7 +25,6 @@ public class AlbumPreview extends JFrame {
 	private int fdlength, index;
 	String localPath = (System.getProperty("user.home")+"/AppData/Local/file_downloads");
 	String localFilePath, replacedString;
-
 	
 	public AlbumPreview(FileData[] fd, int fdlength, int index) {
 		getContentPane().setBackground(Color.WHITE);
@@ -37,8 +36,10 @@ public class AlbumPreview extends JFrame {
 		
 		makeGUI();
 		
+		setAlwaysOnTop(true);
 		setResizable(true);
 		setVisible(true);
+		setFocusable(true);
 	}
 	
 	
@@ -125,6 +126,7 @@ public class AlbumPreview extends JFrame {
 		btnEdit.setBackground(Color.WHITE);
 		btnEdit.setIcon(changeImageSize(new ImageIcon("imgAlbum/iconEdit.png"), 30, 30));
 		btnEdit.setBorderPainted(false);
+		btnEdit.addActionListener(new MyActionListener(replacedString));
 		panel.add(btnEdit);
 	}
 	
@@ -132,8 +134,26 @@ public class AlbumPreview extends JFrame {
 	ImageIcon changeImageSize(ImageIcon originIcon, int width, int height) {
 		Image originImg = originIcon.getImage();
 		Image changedImg= originImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-		ImageIcon Icon = new ImageIcon(changedImg);		
+		ImageIcon Icon = new ImageIcon(changedImg);
 		
 		return Icon;
 	}
+	class MyActionListener implements ActionListener {
+
+		String path;
+		
+		MyActionListener(String path) {
+			this.path = path;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			setAlwaysOnTop(false);
+			PhotoEditor edit = new PhotoEditor(path);
+			
+		}
+		
+	}
 }
+
+

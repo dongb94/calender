@@ -449,56 +449,56 @@ class  PhotoEditor extends JFrame implements ActionListener{
 
 		msaveas=new JButton("사진저장");
 		msaveas.setFont(new Font("휴먼매직체", Font.PLAIN, 20));
-		icon_saveas = new ImageIcon("images/saveas.png");
+		icon_saveas = new ImageIcon("img/saveas.png");
 		msaveas.setIcon(icon_saveas);
 		msaveas.setBorderPainted(false);
 		msaveas.addActionListener(this);
 
 		mbright=new JButton("사진 밝기조절");
 		mbright.setFont(new Font("휴먼매직체", Font.PLAIN, 20));
-		icon_bright = new ImageIcon("images/brightness.png");
+		icon_bright = new ImageIcon("img/brightness.png");
 		mbright.setIcon(icon_bright);
 		mbright.setBorderPainted(false);
 		mbright.addActionListener(this);
 
 		maddtext=new JButton("사진에 글자넣기");
 		maddtext.setFont(new Font("휴먼매직체", Font.PLAIN, 20));
-		icon_text = new ImageIcon("images/text.png");
+		icon_text = new ImageIcon("img/text.png");
 		maddtext.setIcon(icon_text);
 		maddtext.setBorderPainted(false);
 		maddtext.addActionListener(this);  
 
 		mresize=new JButton("사진 크기조절");
 		mresize.setFont(new Font("휴먼매직체", Font.PLAIN, 20));
-		icon_resize = new ImageIcon("images/resize.png");
+		icon_resize = new ImageIcon("img/resize.png");
 		mresize.setIcon(icon_resize);
 		mresize.setBorderPainted(false);
 		mresize.addActionListener(this);
 
 		mrightrotate=new JButton("사진 오른쪽 회전");
 		mrightrotate.setFont(new Font("휴먼매직체", Font.PLAIN, 20));
-		icon_right90d = new ImageIcon("images/right90d.png");
+		icon_right90d = new ImageIcon("img/right90d.png");
 		mrightrotate.setIcon(icon_right90d);
 		mrightrotate.setBorderPainted(false);
 		mrightrotate.addActionListener(this);
 
 		mleftrotate=new JButton("사진 왼쪽 회전");
 		mleftrotate.setFont(new Font("휴먼매직체", Font.PLAIN, 20));
-		icon_left90d = new ImageIcon("images/left90d.png");
+		icon_left90d = new ImageIcon("img/left90d.png");
 		mleftrotate.setIcon(icon_left90d);
 		mleftrotate.setBorderPainted(false);
 		mleftrotate.addActionListener(this);		
 
 		mtransparent=new JButton("사진 자르기");
 		mtransparent.setFont(new Font("휴먼매직체", Font.PLAIN, 20));
-		icon_transparent = new ImageIcon("images/clip.png");
+		icon_transparent = new ImageIcon("img/clip.png");
 		mtransparent.setIcon(icon_transparent);
 		mtransparent.setBorderPainted(false);
 		mtransparent.addActionListener(this);
 
 		mcancel=new JButton("처음상태로");
 		mcancel.setFont(new Font("휴먼매직체", Font.PLAIN, 20));
-		icon_cancel = new ImageIcon("images/cancel.png");
+		icon_cancel = new ImageIcon("img/cancel.png");
 		mcancel.setIcon(icon_cancel);
 		mcancel.setBorderPainted(false);
 		mcancel.addActionListener(this);
@@ -527,7 +527,6 @@ class  PhotoEditor extends JFrame implements ActionListener{
 		editpanel.setBackground(new Color(255,255,0));
 
 		setTitle("사진 편집기");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
 		setVisible(true); 
 

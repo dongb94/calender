@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -27,6 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
 
 class AddDialog extends JDialog {
 	
@@ -268,12 +270,9 @@ class MyMouseListener implements MouseListener {
 				new AlbumPreview(album.imgfd, album.imgfdLength, index);
 			}
 		} else { // 앨범 안의 사진
-			System.out.println("fdadsdfasdf");
 			JCheckBox jc = (JCheckBox) e.getSource();
-			System.out.println(jc.getText());
 			album.setAlbumFileFlag(1);
 			if (album.getSelectedAlbum().equals("default")) {
-				System.out.println("defaultAlbum");
 				album.makeDefaultAlbumFileSelectedBtnPanel();				
 			} else {
 				album.makeAlbumFileSelectedBtnPanel();				
@@ -511,9 +510,14 @@ public class Album extends JFrame {
 		panelAlbum.removeAll();
 		spAlbum.remove(panelAlbum);
 	
+		spAlbum = new JScrollPane(panelAlbum);
+		spAlbum.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		spAlbum.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		spAlbum.setPreferredSize(new Dimension((int) width, (int) height));
+		
 		panelAlbum = new JPanel();
 		panelAlbum.setBackground(Color.WHITE);
-		panelAlbum.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+		panelAlbum.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		spAlbum.setViewportView(panelAlbum);
 
 		// 앨범 표시
@@ -537,7 +541,7 @@ public class Album extends JFrame {
 		for (int i=0; i<albumFd.length; i++) {
 			album_list[i].addMouseListener(new MyMouseListener(album, 0));
 		}
-		
+			
 		getContentPane().add(panelAlbum, BorderLayout.CENTER);
 	}
 	
@@ -702,6 +706,11 @@ public class Album extends JFrame {
 		
 		panelAlbum.removeAll();
 		spAlbum.remove(panelAlbum);
+
+		spAlbum = new JScrollPane(panelAlbum);
+		spAlbum.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		spAlbum.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		spAlbum.setPreferredSize(new Dimension((int) width, (int) height));
 	
 		panelAlbum = new JPanel();
 		panelAlbum.setBackground(Color.WHITE);
@@ -728,6 +737,8 @@ public class Album extends JFrame {
 		}
 		
 		getContentPane().add(panelAlbum, BorderLayout.CENTER);
+//		getContentPane().add(new JScrollPane(panelAlbum, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+//				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 	}
 	
 	
