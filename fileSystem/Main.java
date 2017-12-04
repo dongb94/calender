@@ -27,6 +27,11 @@ public class Main extends JFrame{
 		fm = new FTPManager(this);
 		mi = new MenuItem(fm);
 		v = new Viewer(fm);
+
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image img = toolkit.getImage("img/title.png");
+		this.setIconImage(img);
+
 		
 		makeGUI();
 		
