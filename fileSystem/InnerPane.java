@@ -276,7 +276,7 @@ public class InnerPane extends JScrollPane {
 					}
 					else {
 						fm.FTPDownload(temp_down, current_path+fd.name);
-					new PhotoPreview(temp_down+"\\"+current_path+fd.name);
+						new PhotoPreview(temp_down+"\\"+current_path+fd.name);
 					}
 				}
 		}

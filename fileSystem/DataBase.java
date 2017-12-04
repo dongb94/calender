@@ -37,6 +37,7 @@ public class DataBase {
 		case "WMV":
 		case "ASF":
 		case "ASX"://목록파일
+		case "MKV":	
 			// 그 외 RM,MOV,DAT 등
 			return "vid";
 		case "WAV":
@@ -45,7 +46,6 @@ public class DataBase {
 		case "WMA":
 		case "AU":
 		case "AAC":
-		case "MKV":	
 			// 그 외 등등
 			return "msc";
 		default ://문서 파일

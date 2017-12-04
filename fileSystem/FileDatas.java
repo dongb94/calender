@@ -217,20 +217,6 @@ public class FileDatas{
 	FileData[] getFileDatas(){
 		return file;
 	}
-	
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		//단위 테스트용 main클래스
-		new DataBase();
-		
-//		FileData fd = new FileData("/test", "/20160722_053051.jpg");
-		FileDatas fds = new FileDatas();
-//		fds.find("a");
-//		System.out.println(fds.file.length);
-//		System.out.println(fds.file[2].name);
-//		System.out.println(fds.file[2].path);
-		
-		fds.deleteAlbum("hahaha");
-	}
 }
 
 class FileData{

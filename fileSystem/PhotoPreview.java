@@ -39,6 +39,7 @@ public class PhotoPreview extends JFrame {
 		
 		add(jl);
 		setSize(700, 700);
+		setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		setTitle(path);
 		setUndecorated(true);

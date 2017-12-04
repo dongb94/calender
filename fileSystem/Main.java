@@ -24,7 +24,7 @@ public class Main extends JFrame{
 		setTitle("클라우드");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		fm = new FTPManager();
+		fm = new FTPManager(this);
 		mi = new MenuItem(fm);
 		v = new Viewer(fm);
 		
