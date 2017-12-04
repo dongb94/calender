@@ -133,6 +133,7 @@ public class InnerPane extends JScrollPane {
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 				file_list[i].addItemListener(new BoxListener());
+				file_list[i].addMouseListener(new MusicListener(fd[i]));
 
 				if (type_flag == 0 || type_flag == 4)
 					add_box(file_list[i], jp);
@@ -255,7 +256,6 @@ public class InnerPane extends JScrollPane {
 						}
 					
 				}
-				
 			}
 	}
 	protected class ImageListener extends MouseAdapter {

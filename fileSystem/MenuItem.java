@@ -190,7 +190,7 @@ public class MenuItem extends JPanel {
 					fm.FTPDelete(current_path + file_name_list.get(i));
 					}
 					else {
-					fm.FTPDelete(current_path + "/" + file_name_list.get(i));
+					fm.FTPDelete("/" + file_name_list.get(i));
 					}
 					file_name_list.remove(i++);
 				}
