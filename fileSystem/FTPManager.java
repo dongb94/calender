@@ -41,7 +41,7 @@ public class FTPManager {
 	String Password = "team1";
 	
 	//loading image
-	JDialog dialog;
+//	JDialog dialog;
 	FTPManager(JFrame frame){
 		try {
 			FTPClientConfig config = new FTPClientConfig();  
@@ -67,7 +67,7 @@ public class FTPManager {
 
 			}
 			
-			dialog = new JDialog(frame,true);
+//			dialog = new JDialog(frame,true);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -175,7 +175,7 @@ public class FTPManager {
 		Thread th = new Thread(pr);
 		th.start();
 		
-		new Thread(new Loding()).start();
+//		new Thread(new Loding()).start();
 
 		synchronized (th) {
 			try {
@@ -183,7 +183,7 @@ public class FTPManager {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			dialog.dispose();
+//			dialog.dispose();
 		}
 	}
 	/**FTP서버에서 파일 다운로드 
@@ -195,7 +195,7 @@ public class FTPManager {
 		Thread th = new Thread(pr);
 		th.start();
 
-		new Thread(new Loding()).start();
+//		new Thread(new Loding()).start();
 		
 		synchronized (th) {
 			try {
@@ -203,7 +203,7 @@ public class FTPManager {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			dialog.dispose();
+//			dialog.dispose();
 		}
 	}
 	/**FTP서버에서 파일 삭제 
@@ -214,7 +214,7 @@ public class FTPManager {
 		Thread th = new Thread(pr);
 		th.start();
 		
-		new Thread(new Loding()).start();
+//		new Thread(new Loding()).start();
 		
 		synchronized (th) {
 			try {
@@ -222,7 +222,7 @@ public class FTPManager {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			dialog.dispose();
+//			dialog.dispose();
 		}
 	}
 	
@@ -235,7 +235,7 @@ public class FTPManager {
 		Thread th = new Thread(pr);
 		th.start();
 		
-		new Thread(new Loding()).start();
+//		new Thread(new Loding()).start();
 		
 		synchronized (th) {
 			try {
@@ -243,7 +243,7 @@ public class FTPManager {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			dialog.dispose();
+//			dialog.dispose();
 		}
 	}
 	
@@ -483,21 +483,21 @@ public class FTPManager {
 			}
 		}
 	}
-	class Loding extends Thread{
-		public void run(){
-			ImageIcon icon = new ImageIcon("img/loading.gif");
-			JLabel loding = new JLabel(icon);
-			loding.setBackground(new Color(0,0,0));
-			loding.setVisible(true);
-			dialog.add(loding);
-			dialog.setUndecorated(true);
-			dialog.setBackground(new Color(0,0,0,0));
-			dialog.setAlwaysOnTop(true);
-			dialog.setSize(700, 700);
-			dialog.setLocationRelativeTo(null);
-			dialog.setVisible(true);
-		}
-	}
+//	class Loding extends Thread{
+//		public void run(){
+//			ImageIcon icon = new ImageIcon("img/loading.gif");
+//			JLabel loding = new JLabel(icon);
+//			loding.setBackground(new Color(0,0,0));
+//			loding.setVisible(true);
+//			dialog.add(loding);
+//			dialog.setUndecorated(true);
+//			dialog.setBackground(new Color(0,0,0,0));
+//			dialog.setAlwaysOnTop(true);
+//			dialog.setSize(700, 700);
+//			dialog.setLocationRelativeTo(null);
+//			dialog.setVisible(true);
+//		}
+//	}
 }
 
 
