@@ -44,7 +44,6 @@ public class FTPManager {
 	JDialog dialog;
 	FTPManager(JFrame frame){
 		try {
-			
 			FTPClientConfig config = new FTPClientConfig();  
 			config.setServerLanguageCode("ko");
 			ftpClient.configure(config);
@@ -67,17 +66,8 @@ public class FTPManager {
 		    	ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
 			}
-			ImageIcon icon = new ImageIcon("img/loading.gif");
-			JLabel loding = new JLabel(icon);
-			loding.setBackground(new Color(255,255,0,0));
-			dialog = new JDialog(frame,"",true);
-			dialog.add(loding);
-			dialog.setUndecorated(true);
-			dialog.setBackground(new Color(0,0,0,0));
-			dialog.setAlwaysOnTop(true);
-			dialog.setSize(700, 700);
-			dialog.setLocationRelativeTo(null);
 			
+			dialog = new JDialog(frame,true);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -185,8 +175,8 @@ public class FTPManager {
 		Thread th = new Thread(pr);
 		th.start();
 		
-		
-		dialog.setVisible(true);
+		new Thread(new Loding()).start();
+
 		synchronized (th) {
 			try {
 				th.wait();
@@ -205,7 +195,8 @@ public class FTPManager {
 		Thread th = new Thread(pr);
 		th.start();
 
-		dialog.setVisible(true);
+		new Thread(new Loding()).start();
+		
 		synchronized (th) {
 			try {
 				th.wait();
@@ -223,7 +214,8 @@ public class FTPManager {
 		Thread th = new Thread(pr);
 		th.start();
 		
-		dialog.setVisible(true);
+		new Thread(new Loding()).start();
+		
 		synchronized (th) {
 			try {
 				th.wait();
@@ -243,7 +235,8 @@ public class FTPManager {
 		Thread th = new Thread(pr);
 		th.start();
 		
-		dialog.setVisible(true);
+		new Thread(new Loding()).start();
+		
 		synchronized (th) {
 			try {
 				th.wait();
@@ -488,6 +481,21 @@ public class FTPManager {
 				}
 			notify();
 			}
+		}
+	}
+	class Loding extends Thread{
+		public void run(){
+			ImageIcon icon = new ImageIcon("img/loading.gif");
+			JLabel loding = new JLabel(icon);
+			loding.setBackground(new Color(0,0,0));
+			loding.setVisible(true);
+			dialog.add(loding);
+			dialog.setUndecorated(true);
+			dialog.setBackground(new Color(0,0,0,0));
+			dialog.setAlwaysOnTop(true);
+			dialog.setSize(700, 700);
+			dialog.setLocationRelativeTo(null);
+			dialog.setVisible(true);
 		}
 	}
 }
