@@ -21,16 +21,21 @@ public class AlbumPreview extends JFrame {
 	Dimension screenSize;
 	double width, height;
 	FileData[] fd;
-	private int i=0;
-	private int fdlength;
+	FTPManager fm = new FTPManager(this);
+	private int fdlength, index;
+	String localPath = (System.getProperty("user.home")+"/AppData/Local/file_downloads");
+	String localFilePath;
+
 	
-	
-	public AlbumPreview(FileData[] fd, int fdlength) {
+	public AlbumPreview(FileData[] fd, int fdlength, int index) {
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("앨범 미리보기");
 		
 		this.fdlength = fdlength;
 		this.fd = fd;
+		this.index = index;
+		
+		System.out.println(fd[index].path);
 		
 		makeGUI();
 		
@@ -53,7 +58,16 @@ public class AlbumPreview extends JFrame {
 		JLabel labelImage = new JLabel("");
 		labelImage.setHorizontalAlignment(SwingConstants.CENTER);
 		labelImage.setBackground(Color.BLACK);
-		labelImage.setIcon(changeImageSize(new ImageIcon(fd[i].path), (int)(width*0.7), (int)(width*0.7)));
+		
+		System.out.println("Before download");
+		System.out.println(index);
+		System.out.println(fd[index].name);
+		System.out.println(fd[index].path);
+		fm.FTPDownload(null, fd[index].path);
+		System.out.println("After download");
+		
+		localFilePath = localPath + fd[index].name;
+		labelImage.setIcon(changeImageSize(new ImageIcon(localFilePath), (int)(width*0.7), (int)(width*0.7)));
 		getContentPane().add(labelImage, BorderLayout.CENTER);
 		
 		JButton btnBefore = new JButton("");
@@ -66,9 +80,9 @@ public class AlbumPreview extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if (i != 0) {
-					i--;
-					labelImage.setIcon(changeImageSize(new ImageIcon(fd[i].path), (int)(width*0.7), (int)(width*0.7)));
+				if (index != 0) {
+					index--;
+					labelImage.setIcon(changeImageSize(new ImageIcon(fd[index].path), (int)(width*0.7), (int)(width*0.7)));
 				}
 			}
 			
@@ -84,9 +98,9 @@ public class AlbumPreview extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if (i != fd.length && i < fdlength) {
-					i++;
-					labelImage.setIcon(changeImageSize(new ImageIcon(fd[i].path), (int)(width*0.7), (int)(width*0.7)));
+				if (index != fd.length && index < fdlength) {
+					index++;
+					labelImage.setIcon(changeImageSize(new ImageIcon(fd[index].path), (int)(width*0.7), (int)(width*0.7)));
 				}
 			}
 			
