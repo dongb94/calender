@@ -154,7 +154,7 @@ public class MenuItem extends JPanel {
 				filePath = filePath.replaceAll("\\\\", "/");
 				System.out.println(filePath);
 				System.out.println(filePath);
-				fm.FTPUpload(current_path, filePath);
+				fm.FTPUpload("/", filePath);
 				v.set_path();
 				fds = new FileDatas(current_path);
 				ip.reload(fds.getFileDatas());

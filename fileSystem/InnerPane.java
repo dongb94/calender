@@ -187,6 +187,7 @@ public class InnerPane extends JScrollPane {
 					file_icon = set_icon(file_icon);
 					file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 					file_list[i].addItemListener(new BoxListener());
+					file_list[i].addMouseListener(new MusicListener(fd[i]));
 					add_box(file_list[i], jp);
 				} else if (fd[i].msc) {
 					file_icon = new ImageIcon("img/music.png");
@@ -344,7 +345,7 @@ public class InnerPane extends JScrollPane {
 						String fpath = file.getAbsolutePath();
 						fpath = fpath.replaceAll("\\\\", "/");
 						System.out.println(fpath);
-						fm.FTPUpload(current_path, fpath);
+						fm.FTPUpload("/", fpath);
 						fds = new FileDatas(current_path);
 						makeGUI(fds.getFileDatas());
 					}
