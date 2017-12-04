@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 public class PhotoPreview extends JFrame {
 	public PhotoPreview(String path) {
 		ImageIcon originIcon = new ImageIcon(path);

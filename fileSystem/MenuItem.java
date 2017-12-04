@@ -2,9 +2,7 @@ package fileSystem;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.event.*;
-import java.io.*;
 import java.util.*;
 
 public class MenuItem extends JPanel {

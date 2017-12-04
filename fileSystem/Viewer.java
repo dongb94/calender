@@ -3,7 +3,6 @@ package fileSystem;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.awt.event.*;
 
 public class Viewer extends JTabbedPane {
 	private String current_path="/";

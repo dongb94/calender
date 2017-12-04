@@ -9,11 +9,6 @@ import java.util.*;
 import java.awt.event.*;
 import java.io.*;
 
-import javax.swing.event.*;
-
-import fileSystem.InnerPane.BoxListener;
-import fileSystem.InnerPane.FdListener;
-
 public class InnerPane extends JScrollPane {
 	/*
 	 * 0 = whole 1 = picture 2 = video 3 = music 4 = word 5 = bookmark

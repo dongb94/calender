@@ -1,6 +1,5 @@
 package fileSystem;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
@@ -19,10 +18,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.imageio.*;
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
