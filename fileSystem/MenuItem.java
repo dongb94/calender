@@ -127,6 +127,7 @@ public class MenuItem extends JPanel {
 		download.setToolTipText("선택한 파일을 사용자의 컴퓨터 저장소로 다운로드합니다.");
 		delete.setToolTipText("선택한 파일을 삭제합니다.");
 		plus.setToolTipText("현재 위치에 폴더를 추가합니다.");
+		album_on.setToolTipText("그림 파일 작업을 시작하기 위해 앨범을 엽니다.");
 		refresh.setToolTipText("새로 고침하여 화면을 다시 불러옵니다.");
 		
 		

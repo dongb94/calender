@@ -220,6 +220,7 @@ public class InnerPane extends JScrollPane {
 		box.setHorizontalTextPosition(SwingConstants.CENTER);
 		box.setVerticalTextPosition(SwingConstants.BOTTOM);
 		box.setBorderPainted(true);
+		box.setToolTipText(box.getText());
 	}
 
 	protected ImageIcon set_icon(ImageIcon icon) {
