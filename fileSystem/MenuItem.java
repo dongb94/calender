@@ -20,6 +20,7 @@ public class MenuItem extends JPanel {
 	private JTextField search_name;
 	private JButton plus;
 	private static JLabel show_path;
+	private JButton refresh;
 
 	private static String current_path = "/";
 	private String file_name = "file";
@@ -31,7 +32,7 @@ public class MenuItem extends JPanel {
 	private static InnerPane ip;
 	private static FileData[] fd;
 	private static FileDatas fds;
-	private static Bookmark bm;
+	private static Viewer v;
 	
 	Font f = new Font("휴먼매직체", Font.BOLD, 20);
 	
@@ -55,6 +56,7 @@ public class MenuItem extends JPanel {
 		upload = new JButton("업");
 		download = new JButton("다운");
 		delete = new JButton("삭제");
+		refresh = new JButton("새로고침");
 		
 		show_path = new JLabel("current path : " +current_path);
 		show_path.setFont(f);
@@ -101,7 +103,13 @@ public class MenuItem extends JPanel {
 		album_img = album_img.getScaledInstance(btn_size, btn_size, java.awt.Image.SCALE_SMOOTH);
 		album_icon = new ImageIcon(album_img);
 		album_on = new JButton("앨범", album_icon);
-
+		
+		ImageIcon reload_icon = new ImageIcon("img/reload.png");
+		Image reload_img = reload_icon.getImage();
+		reload_img = reload_img.getScaledInstance(btn_size, btn_size, java.awt.Image.SCALE_SMOOTH);
+		reload_icon = new ImageIcon(reload_img);
+		refresh = new JButton(reload_icon);
+		
 		add(search_name);
 		add(search);
 		add(upload);
@@ -111,6 +119,7 @@ public class MenuItem extends JPanel {
 		add(show_path);
 		add(star);
 		add(album_on);
+		add(refresh);
 		
 		star.setToolTipText("즐겨찾기에 등록합니다.");
 		search.setToolTipText("파일 이름을 검색합니다.");
@@ -118,6 +127,7 @@ public class MenuItem extends JPanel {
 		download.setToolTipText("선택한 파일을 사용자의 컴퓨터 저장소로 다운로드합니다.");
 		delete.setToolTipText("선택한 파일을 삭제합니다.");
 		plus.setToolTipText("현재 위치에 폴더를 추가합니다.");
+		refresh.setToolTipText("새로 고침하여 화면을 다시 불러옵니다.");
 		
 		
 		show_path.setBounds((int)(width*0.01), (int)(height * 0.05), (int)(width*2/5), btn_size);
@@ -129,6 +139,7 @@ public class MenuItem extends JPanel {
 		search_name.setBounds((int) (width - height * 8.40), (int) (height * 0.3), (int) (height * 4),
 				(int) (height * 0.40));
 		plus.setBounds((int) (width - height * 9.60), (int) (height * 0.05), btn_size, btn_size);
+		refresh.setBounds((int) (width - height * 13.60), (int) (height * 0.05), btn_size, btn_size);
 		album_on.setBounds((int) (width - height * 12.60), (int) (height * 0.05),(int)(btn_size*2), btn_size );
 		album_on.setFont(f);
 
@@ -144,7 +155,9 @@ public class MenuItem extends JPanel {
 				System.out.println(filePath);
 				System.out.println(filePath);
 				fm.FTPUpload(current_path, filePath);
-				ip.reload();
+				v.set_path();
+				fds = new FileDatas(current_path);
+				ip.reload(fds.getFileDatas());
 			}
 		});
 
@@ -152,6 +165,7 @@ public class MenuItem extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				int ret = chooser.showSaveDialog(null);
 				if (ret != JFileChooser.APPROVE_OPTION)
 					return;
@@ -180,8 +194,9 @@ public class MenuItem extends JPanel {
 					}
 					file_name_list.remove(i++);
 				}
-				bm.reload();
-				ip.reload();
+				v.set_path();
+				fds = new FileDatas(current_path);
+				ip.reload(fds.getFileDatas());
 			}
 		});
 		plus.addActionListener(new ActionListener() {
@@ -189,17 +204,21 @@ public class MenuItem extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				folder_name = JOptionPane.showInputDialog("추가할 폴더 이름을 입력하세요");
 				fm.FTPMkdir(folder_name);
-				ip.reload();
+				v.set_path();
+				fds = new FileDatas(current_path);
+				ip.reload(fds.getFileDatas());
 			}
 
 		});
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = search_name.getText();
+				System.out.println("find : "+name);
 				fds.find(name);
 				fd = fds.getFileDatas();
-				ip.set_fd(fd);
-				search_name.setText("");
+				System.out.println("finded : "+ fd.length + " of datas");
+				v.set_path();
+				ip.reload(fd);
 			}
 		});
 		star.addActionListener(new ActionListener() {
@@ -231,8 +250,9 @@ public class MenuItem extends JPanel {
 					file_name_list.remove(i);
 					i++;
 				}
-				bm.reload();
-				ip.reload();
+				v.set_path();
+				fds = new FileDatas(current_path);
+				ip.reload(fds.getFileDatas());
 			}
 		});
 		
@@ -242,6 +262,17 @@ public class MenuItem extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				new Album();
+			}
+			
+		});
+		refresh.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				v.set_path();
+				fds = new FileDatas(current_path);
+				ip.reload(fds.getFileDatas());
 			}
 			
 		});
@@ -271,7 +302,7 @@ public class MenuItem extends JPanel {
 	public static void set_fds(FileDatas file_datas) {
 		fds = file_datas;
 	}
-	public static void set_bmk(Bookmark bk) {
-		bm = bk;
+	public static void set_vie(Viewer vie) {
+		v = vie;
 	}
 }

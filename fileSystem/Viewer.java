@@ -15,9 +15,12 @@ public class Viewer extends JTabbedPane {
 	InnerPane word_p;
 	InnerPane book_p;
 	
+	InnerPane[] to_menu = new InnerPane[6];
+	
 	private Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 	private double width;
 	private double height;
+	private FileDatas fds;
 	
 	private JButton album_on;
 	
@@ -73,6 +76,32 @@ public class Viewer extends JTabbedPane {
 		addTab("음악",music_icon, music_p);
 		addTab("문서",doc_icon, word_p);
 		addTab("즐겨찾기",star_icon, book_p);
+		
+		to_menu[0]=home_p;
+		to_menu[1]=picture_p;
+		to_menu[2]=video_p;
+		to_menu[3]=music_p;
+		to_menu[4]=word_p;
+		to_menu[5]=book_p;
+		
+		MenuItem.set_ip(home_p);
+		MenuItem.set_vie(this);
+		this.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(e.getSource() instanceof JTabbedPane) {
+					JTabbedPane jtp = (JTabbedPane) e.getSource();
+					InnerPane inp = (InnerPane) jtp.getSelectedComponent();
+					fds = new FileDatas(current_path);
+					inp.reload(fds.getFileDatas());
+					for(int i=0; i<to_menu.length; i++)
+						to_menu[i].set_path(current_path);
+				}
+				
+			}
+			
+		});
 		
 	}
 	public FTPManager get_fm() {

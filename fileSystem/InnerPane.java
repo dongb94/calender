@@ -81,20 +81,24 @@ public class InnerPane extends JScrollPane {
 		BackListener bl = new BackListener();
 		to_higher.addActionListener(bl);
 		
-		makeGUI();
-	}
-
-	public void makeGUI() {
-
-		jp.removeAll();
-		this.remove(jp);
-		MenuItem.set_ip(self);
-		jp = new JPanel();
-		jp.setPreferredSize(new Dimension((int) (width * 0.8), (int) height));
-		this.setViewportView(jp);
-		jp.setLayout(fl);
 		fds = new FileDatas(current_path);
 		fd = fds.getFileDatas();
+		
+		makeGUI(fd);
+	}
+
+	public void makeGUI(FileData[] fd) {
+	
+		jp.removeAll();
+		this.remove(jp);
+		jp = new JPanel();
+		this.fd = fd;
+		
+		int nopi = (int)(height/15) * fd.length;
+		
+		jp.setPreferredSize(new Dimension((int) (width * 0.8), nopi));
+		this.setViewportView(jp);
+		jp.setLayout(fl);
 		MenuItem.set_fd(fd);
 		MenuItem.set_fds(fds);
 
@@ -129,7 +133,6 @@ public class InnerPane extends JScrollPane {
 				file_icon = set_icon(file_icon);
 				file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 				file_list[i].addItemListener(new BoxListener());
-				file_list[i].addMouseListener(new MusicListener(fd[i]));
 
 				if (type_flag == 0 || type_flag == 4)
 					add_box(file_list[i], jp);
@@ -170,6 +173,7 @@ public class InnerPane extends JScrollPane {
 					file_icon = set_icon(file_icon);
 					file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 					file_list[i].addItemListener(new BoxListener());
+					file_list[i].addMouseListener(new ImageListener(fd[i]));
 					add_box(file_list[i], jp);
 				} else if (fd[i].dir) {
 					file_icon = new ImageIcon("img/folder.png");
@@ -189,12 +193,14 @@ public class InnerPane extends JScrollPane {
 					file_icon = set_icon(file_icon);
 					file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 					file_list[i].addItemListener(new BoxListener());
+					file_list[i].addMouseListener(new MusicListener(fd[i]));
 					add_box(file_list[i], jp);
 				} else if (fd[i].vid) {
 					file_icon = new ImageIcon("img/video.png");
 					file_icon = set_icon(file_icon);
 					file_list[i] = new JCheckBox(fd[i].name.substring(1), file_icon);
 					file_list[i].addItemListener(new BoxListener());
+					file_list[i].addMouseListener(new MusicListener(fd[i]));
 					add_box(file_list[i], jp);
 				} else
 					return;
@@ -222,13 +228,12 @@ public class InnerPane extends JScrollPane {
 		return icon;
 	}
 
-	public void reload() {
-		makeGUI();
+	public void reload(FileData[] fd) {
+		makeGUI(fd);
 		System.out.println("reload");
 	}
-	public void set_fd(FileData[] fd) {
-		this.fd = fd;
-		makeGUI();
+	public void set_path(String path) {
+		current_path = path;
 	}
 	protected class MusicListener extends MouseAdapter {
 		
@@ -241,22 +246,13 @@ public class InnerPane extends JScrollPane {
 			JCheckBox jb = (JCheckBox)e.getSource();
 			if(e.getButton() == MouseEvent.BUTTON3)
 				if(fd.img==-1) {
-					if(current_path.equals("/")) {
-						fm.FTPDownload(temp_down, current_path+fd.name.substring(1));
+						fm.FTPDownload(temp_down, fd.path+fd.name);
 						try {
-							new MusicPlayer().playMusicAndVideo(temp_down+"\\"+fd.name.substring(1));
+							new MusicPlayer().playMusicAndVideo(temp_down+"\\"+fd.path+fd.name);
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
-					}
-					else {
-						fm.FTPDownload(temp_down, current_path+fd.name);
-						try {
-							new MusicPlayer().playMusicAndVideo(temp_down+"\\"+current_path+fd.name);
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					}
+					
 				}
 				
 			}
@@ -270,14 +266,8 @@ public class InnerPane extends JScrollPane {
 			JCheckBox jb = (JCheckBox)e.getSource();
 			if(e.getButton() == MouseEvent.BUTTON3)
 				if(fd.img!=-1) {
-					if(current_path.equals("/")) {
-						fm.FTPDownload(temp_down, current_path+"/"+fd.name.substring(1));
-						new PhotoPreview(temp_down+"\\"+fd.name.substring(1));
-					}
-					else {
-						fm.FTPDownload(temp_down, current_path+fd.name);
-						new PhotoPreview(temp_down+"\\"+current_path+fd.name);
-					}
+					fm.FTPDownload(temp_down, fd.path+fd.name);
+					new PhotoPreview(temp_down+"\\"+fd.path+fd.name);
 				}
 		}
 	}
@@ -294,7 +284,8 @@ public class InnerPane extends JScrollPane {
 				fm.FTPCd(current_path);
 				MenuItem.set_path(current_path);
 				v.set_path();
-				makeGUI();
+				fds = new FileDatas(current_path);
+				makeGUI(fds.getFileDatas());
 				jb.removeMouseListener(this);
 			}
 		}
@@ -309,7 +300,6 @@ public class InnerPane extends JScrollPane {
 			else
 				name_list.remove(box.getText());
 			MenuItem.set_file_list(name_list);
-			MenuItem.set_ip(self);
 			System.out.println("list counts : "+name_list.size());
 			MenuItem.set_fd(fd);
 		}
@@ -327,7 +317,8 @@ public class InnerPane extends JScrollPane {
 				MenuItem.set_path(go_to);
 				v.set_path();
 				name_list.clear();
-				makeGUI();
+				fds = new FileDatas(current_path);
+				makeGUI(fds.getFileDatas());
 			} else {
 				JLabel la = new JLabel("여기가 최상위 디렉토리 이므로 더 이상 진행할 수 없습니다.");
 				la.setFont(f);
@@ -354,7 +345,8 @@ public class InnerPane extends JScrollPane {
 						fpath = fpath.replaceAll("\\\\", "/");
 						System.out.println(fpath);
 						fm.FTPUpload(current_path, fpath);
-						makeGUI();
+						fds = new FileDatas(current_path);
+						makeGUI(fds.getFileDatas());
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
